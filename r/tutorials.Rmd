@@ -1,0 +1,49 @@
+---
+title: "tutorial"
+author: "Jeff Walker"
+date: "1/20/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+fd <- data.table(treatment = as.factor(rep(c("cn", "tr"),  each=12)),
+                 id = as.factor(rep(1:6, each=4)),
+                 time=as.factor(c(0,2,4,6)),
+                 sbp = c(154,150,148,144,
+                         158,155,147,142,
+                         158,155,150,145,
+                         148,141,135,130,
+                         160,151,135,120,
+                         155,145,140,132))
+
+```
+
+```{r}
+m1 <- lmer(sbp ~ treatment*time + (1|id), data=fd)
+anova(m1)
+
+m1 <- lm(sbp ~ treatment*time, data=fd)
+anova(m1)
+
+```
+
+```{r}
+m2 <- gls(sbp ~ treatment*time,
+           weights = varIdent(form= ~ 1 | time),
+          correlation= corCompSymm(form = ~ 1|id),
+          data=fd)
+anova(m2)
+
+```
+
+The uncorrected table replicates
+```{r}
+aov_4(sbp ~ treatment*time + (time|id), data=fd)
+aov_4(sbp ~ treatment*time + (time|id), data=fd, anova_table = list(correction = "none"))
+aov_car(sbp ~ treatment*time + Error(id/time), data=fd)
+```
+

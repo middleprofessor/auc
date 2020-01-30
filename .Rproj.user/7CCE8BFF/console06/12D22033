@@ -1,0 +1,13 @@
+]0;~/Documents/Github projects/Research Projects/auc[?1034hC02Y52NRJHD3:auc jwalker$ [KC02Y52NRJHD3:auc jwalker$ [KC02Y52NRJHD3:auc jwalker$ [KC02Y52NRJHD3:auc jwalker$ [KC02Y52NRJHD3:auc jwalker$ git init
+Initialized empty Git repository in /Users/jwalker/Documents/Github projects/Research Projects/auc/.git/
+]0;~/Documents/Github projects/Research Projects/aucC02Y52NRJHD3:auc jwalker$ git remote add origin git@github.com:middleprofessor/auc.git
+]0;~/Documents/Github projects/Research Projects/aucC02Y52NRJHD3:auc jwalker$ git pull origi [Kn master
+remote: Enumerating objects: 4, done.[K
+remote: Counting objects:  25% (1/4)[Kremote: Counting objects:  50% (2/4)[Kremote: Counting objects:  75% (3/4)[Kremote: Counting objects: 100% (4/4)[Kremote: Counting objects: 100% (4/4), done.[K
+remote: Compressing objects:  25% (1/4)[Kremote: Compressing objects:  50% (2/4)[Kremote: Compressing objects:  75% (3/4)[Kremote: Compressing objects: 100% (4/4)[Kremote: Compressing objects: 100% (4/4), done.[K
+Unpacking objects:  25% (1/4)   Unpacking objects:  50% (2/4)   Unpacking objects:  75% (3/4)   Unpacking objects: 100% (4/4)   Unpacking objects: 100% (4/4), done.
+remote: Total 4 (delta 0), reused 0 (delta 0), pack-reused 0[K
+From github.com:middleprofessor/auc
+ * branch            master     -> FETCH_HEAD
+ * [new branch]      master     -> origin/master
+]0;~/Documents/Github projects/Research Projects/aucC02Y52NRJHD3:auc jwalker$ git add .

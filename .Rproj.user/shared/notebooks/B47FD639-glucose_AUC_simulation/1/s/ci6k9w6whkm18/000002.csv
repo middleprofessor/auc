@@ -1,0 +1,31 @@
+"0","mouse_folder <- ""Perinatal lead (Pb) exposure results in sex-specific effects on food intake, fat, weight, and insulin response across the murine life-course"""
+"0","mouse_file <- ""Glucose_Tolerance_Test_CompleteData.xlsx"""
+"0","mouse_path <- here(data_path, mouse_folder, mouse_file)"
+"0","mouse_wide <- read_excel(mouse_path,"
+"0","                    sheet = ""Sheet1"","
+"0","                    range = ""A1:Z109"") %>%"
+"0","  clean_names() %>%"
+"0","  data.table()"
+"1",""
+"1","-"
+"1",""
+"1","/"
+"1","                                                                                                     "
+"1",""
+"2","New names:
+* SE -> SE...5
+* SE -> SE...7
+* SE -> SE...9
+* SE -> SE...11
+* SE -> SE...13
+* … and 5 more problems
+"
+"0","times <- c(0, 15, 30, 60, 120)"
+"0","glucose_cols = paste0(""glucose"", times)"
+"0","insulin_cols = paste0(""insulin"", times)"
+"0","mouse <- melt(mouse_wide, "
+"0","              id.vars = c(""id"", ""sex"", ""exposure"", ""glucose_auc"", ""insulin_auc"", ""homair_liv""),"
+"0","              measure.vars = list(glucose_cols, insulin_cols),"
+"0","              variable.name = ""time"","
+"0","              value.name = c(""glucose"", ""insulin""))"
+"0","mouse[, time:=factor(glucose_cols[time], glucose_cols)]"

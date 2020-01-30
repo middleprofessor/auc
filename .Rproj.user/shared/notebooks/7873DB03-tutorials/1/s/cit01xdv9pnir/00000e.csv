@@ -1,0 +1,7 @@
+"0","m2 <- gls(sbp ~ treatment*time,"
+"0","           weights = varIdent(form= ~ 1 | time),"
+"0","          correlation= corCompSymm(form = ~ 1|id),"
+"0","          data=fd)"
+"0","anova(m2)"
+"1","Denom. DF: 16 
+"

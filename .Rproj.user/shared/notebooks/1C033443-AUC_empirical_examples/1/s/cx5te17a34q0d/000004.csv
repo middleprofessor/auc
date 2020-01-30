@@ -1,0 +1,111 @@
+"0","folder <- ""Recapitulating endocrine cell clustering in culture promotes maturation of human stem-cell-derived β cells"""
+"0","filename <- ""41556_2018_271_MOESM8_ESM.xlsx"""
+"0","file_path <- here(data_path, folder, filename)"
+"0","times <- c(0, 15, 30, 60, 90, 120)"
+"0","time_cols <- paste0(""glucose"", times)"
+"0","beta_wide <- data.table(treatment = ""eBCs"","
+"0","                       t(read_excel(file_path,"
+"0","                    col_names = FALSE,"
+"0","                    sheet = ""FIGURE 7"","
+"0","                    range = ""B5:F10"")))"
+"1",""
+"1","-"
+"1",""
+"1","/"
+"1","                                                                              "
+"1",""
+"2","New names:
+* `` -> ...1
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+"
+"0","beta_wide <- rbind(beta_wide,"
+"0","                    data.table(treatment = ""NEC"","
+"0","                       t(read_excel(file_path,"
+"0","                    col_names = FALSE,"
+"0","                    sheet = ""FIGURE 7"","
+"0","                    range = ""G5:J10""))))"
+"1",""
+"1","-"
+"1",""
+"1","/"
+"1","                                                                              "
+"1",""
+"2","New names:
+* `` -> ...1
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+"
+"0","beta_wide <- rbind(beta_wide,"
+"0","                    data.table(treatment = ""D20"","
+"0","                       t(read_excel(file_path,"
+"0","                    col_names = FALSE,"
+"0","                    sheet = ""FIGURE 7"","
+"0","                    range = ""K5:O10""))))"
+"1",""
+"1","-"
+"1",""
+"1","/"
+"1","                                                                              "
+"1",""
+"2","New names:
+* `` -> ...1
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+"
+"0","beta_wide <- rbind(beta_wide,"
+"0","                    data.table(treatment = ""No cells"","
+"0","                       t(read_excel(file_path,"
+"0","                    col_names = FALSE,"
+"0","                    sheet = ""FIGURE 7"","
+"0","                    range = ""P5:S10""))))"
+"1",""
+"1","-"
+"1",""
+"1","/"
+"1","                                                                              "
+"1",""
+"2","New names:
+* `` -> ...1
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+"
+"0","beta_wide <- rbind(beta_wide,"
+"0","                    data.table(treatment = ""Human"","
+"0","                       t(read_excel(file_path,"
+"0","                    col_names = FALSE,"
+"0","                    sheet = ""FIGURE 7"","
+"0","                    range = ""T5:V10""))))"
+"1",""
+"1","-"
+"1",""
+"1","/"
+"1","                                                                              "
+"1",""
+"2","New names:
+* `` -> ...1
+* `` -> ...2
+* `` -> ...3
+"
+"0","setnames(beta_wide, old=paste0(""V"", seq_along(times)), new=time_cols)"
+"0","beta_wide[, id := factor(1:.N)]"
+"0","beta_wide[, treatment := factor(treatment,"
+"0","                                c(""eBCs"", ""No cells"", ""NEC"", ""D20"", ""Human""))]"
+"0","Y <- beta_wide[, .SD, .SDcols = time_cols]"
+"0","beta_wide[, auc := apply(Y, 1, auc, x=times)] #check"
+"0","beta_wide[, iauc := apply(Y, 1, auc, x=times, method=""iauc"")]"
+"0","beta_wide[, pos.iauc := apply(Y, 1, auc, x=times, method=""pos.iauc"")]"
+"0","beta_wide[, pb.auc := apply(Y, 1, auc, x=times, method=""pb.auc"")]"
+"0","beta_wide[, glucose_mean := apply(Y, 1, mean)]"
+"0","beta_wide[, glucose_change := glucose_mean - glucose0]"
+"0","beta_long <- melt(beta_wide, "
+"0","                    id.vars = c(""treatment"", ""id""),"
+"0","                    measure.vars = time_cols,"
+"0","                    variable.name = ""time"","
+"0","                    value.name = ""glucose"")"

@@ -1,0 +1,59 @@
+"0","folder <- ""Interleukin-36 cytokines alter the intestinal microbiome and can protect against obesity and metabolic dysfunction"""
+"0","filename <- ""41467_2019_11944_MOESM3_ESM.xlsx"""
+"0","file_path <- here(data_path, folder, filename)"
+"0","times <- c(0, 15, 45, 70, 120)"
+"0","time_cols <- paste0(""glucose"", times)"
+"0","il36_wide <- data.table(treatment = ""wt"","
+"0","                       t(read_excel(file_path,"
+"0","                    col_names = FALSE,"
+"0","                    sheet = ""Figure 2d"","
+"0","                    range = ""C5:G9"")))"
+"1",""
+"1","-"
+"1",""
+"1","/"
+"1","                                                                              "
+"1",""
+"2","New names:
+* `` -> ...1
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+"
+"0","il36_wide <- rbind(il36_wide,"
+"0","                    data.table(treatment = ""il36rn-/-"","
+"0","                       t(read_excel(file_path,"
+"0","                    col_names = FALSE,"
+"0","                    sheet = ""Figure 2d"","
+"0","                    range = ""H5:L9""))))"
+"1",""
+"1","-"
+"1",""
+"1","/"
+"1","                                                                              "
+"1",""
+"2","New names:
+* `` -> ...1
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+"
+"0","setnames(il36_wide, old=paste0(""V"", seq_along(times)), new=time_cols)"
+"0","il36_wide[, id := factor(1:.N)]"
+"0","il36_wide[, treatment := factor(treatment,"
+"0","                                c(""wt"", ""il36rn-/-""))]"
+"0","Y <- il36_wide[, .SD, .SDcols = time_cols]"
+"0","il36_wide[, auc := apply(Y, 1, auc, x=times)] #check"
+"0","il36_wide[, iauc := apply(Y, 1, auc, x=times, method=""iauc"")]"
+"0","il36_wide[, pos.iauc := apply(Y, 1, auc, x=times, method=""pos.iauc"")]"
+"0","il36_wide[, pb.auc := apply(Y, 1, auc, x=times, method=""pb.auc"")]"
+"0","il36_wide[, glucose_mean := apply(Y, 1, mean)]"
+"0","il36_wide[, glucose_change := glucose_mean - glucose0]"
+"0","il36_long <- melt(il36_wide, "
+"0","                    id.vars = c(""treatment"", ""id""),"
+"0","                    measure.vars = time_cols,"
+"0","                    variable.name = ""time"","
+"0","                    value.name = ""glucose"")"
+"0","il36_long[, time:=factor(time)]"

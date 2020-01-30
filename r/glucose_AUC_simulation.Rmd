@@ -1,0 +1,727 @@
+---
+title: "Glucose tolerance test simulation"
+author: "Jeff Walker"
+date: "1/3/2020"
+output: html_document
+---
+
+# Simulation
+## Response variables - make this into a table
+area methods
+
+1. auc -- a weighted mean, where weights are a function of the time on either side of the point. Biased effects simply because baseline is part of area. Smaller baseline > more area
+2. iauc -- analogous to change score, biased effects. Bigger baseline > more area. Increase 
+3. area-cov -- weighted mean but no baseline bias. Should increase precision and power. area based on whole area or just post-baseline-area?
+
+mean methods - easy to implement in any stats program.
+4. mean - all post-baseline time points equally weighted. unconditionally unbiased. conditionally biased because of correlation between time points
+5. change score -- all post-baseline time points equally weighted. should increase precision and power but at cost of bias.
+6. mean-cov -- all post-baseline time points equally weighted. increase precision and power.
+
+multivariate -- need R or scripting
+7. multiple t
+8. multiple t with bonferroni
+9. two way ANOVA
+10. lmm/repeated measures ANOVA
+11. clda -- models correlation. Equivalent to mean-cov with only one post-baseline time but conditionally biased with multiple.
+12. lda-cov -- models correlations. 
+13. Roast -- 
+14. O'Brien --
+
+## simulations
+Treatment can have a direct and indirect effect. Direct is differential effect of glucose tolerance test. Indirect is effect at post-baseline time due to treatment effect at baseline and non-independent measures (correlated error).
+
+1. glucose tolerance effect at times 15, 30, 60
+   - effects at 15, 30, 60
+   - rho_models: 1) low baseline (0.2 max) + low non-baseline (0.3 max)
+                 2) low baseline (0.2 max) + high non-baseline (0.8 max)
+                 3) mod baseline (0.5 max) + high non-baseline (0.8 max)
+   - cohen_models of direct effect: 0, 0.8, 2
+2. effect of Rho
+   - rho_models: 1) low baseline (0.2 max) + low non-baseline (0.3 max)
+                 2) low baseline (0.2 max) + high non-baseline (0.8 max)
+   - cohen_models of direct effect: 0
+3. glucose tolerance effect at times 15 vs. 60 to show consequence of area as weighted mean
+   - run at rho=.8 and power = 2
+4. glucose tolerance effect at time 15, 30, 60 plus strain (genotype or treatment) effect at time 0 to show consequence of direct v total effect
+   - run at combos of rho = 0.8
+   - run at cohen glucose tolerance = 0, 2
+   - for cohen_gt = 0, set cohen to 2 and alpha_prime = 0.4, 0, 0, 0, 0
+   - for cohen_gt = 2, set coehn to 2 and alpha_prime = 0.4, 1, 1, 1, 0
+5. (a) glucose tolerance effect of opposite directions at time 15, 30 AND
+(b) treatment effect at time 0 but no glucose tolerance effect, both to show consequence of rmanova interaction p and treatment p
+   - run at combos of rho = 0.8
+   - for (b) cohen_gt = 0, set cohen to 2 and alpha_prime = 0.4, 0, 0, 0, 0
+   - for (a) cohen_gt = 2, set coehn to 2 and alpha_prime = 0, 1, -1, 0, 0
+   - run rmanova.i, rmanova.t, mean-cov, lda-cov
+
+notes
+1. what is excess type I for peeking at data and choosing a response summary measure based on pattern, for example, increased glucose at mid-time but not end-time? Better to fit a curve (cubic spline?) and get CI of curve and compare these.
+2. how does conditional p-value respond to 1 vs 2 vs many post-baseline measures? does it "average out"?
+3. How is performance a function of number of post-baseline measures?
+
+notes with real data
+1. COR t0, t1 from negative to small to moderate
+2. scott Fig 1c 
+
+# setup
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(here)
+library(readxl)
+library(janitor)
+library(data.table)
+library(Hmisc) # auc using trap.rule, probably faster than my code
+library(nlme)
+library(afex)
+library(lmerTest)
+library(emmeans)
+library(limma) # Roast
+library(mediation)
+library(multcomp)
+library(ggpubr)
+library(ggsci)
+library(DHARMa)
+library(mvtnorm)
+library(doBy)
+
+here <- here::here
+data_path <- "data"
+output_path <- "output"
+
+source_folder <- "R"
+auc_path <- here(source_folder, "auc.R")
+source(auc_path)
+```
+
+## Import mouse data
+```{r import-mouse}
+mouse_folder <- "Perinatal lead (Pb) exposure results in sex-specific effects on food intake, fat, weight, and insulin response across the murine life-course"
+mouse_file <- "Glucose_Tolerance_Test_CompleteData.xlsx"
+mouse_path <- here(data_path, mouse_folder, mouse_file)
+mouse_wide <- read_excel(mouse_path,
+                    sheet = "Sheet1",
+                    range = "A1:Z109") %>%
+  clean_names() %>%
+  data.table()
+
+times <- c(0, 15, 30, 60, 120)
+glucose_cols = paste0("glucose", times)
+insulin_cols = paste0("insulin", times)
+mouse <- melt(mouse_wide, 
+              id.vars = c("id", "sex", "exposure", "glucose_auc", "insulin_auc", "homair_liv"),
+              measure.vars = list(glucose_cols, insulin_cols),
+              variable.name = "time",
+              value.name = c("glucose", "insulin"))
+mouse[, time:=factor(glucose_cols[time], glucose_cols)]
+```
+
+## Estimate Sigma
+```{r}
+glucose_cols <- paste0("glucose", times)
+#cor(mouse_wide[sex == "m" & exposure == "16 ppm", .SD, .SDcols=glucose_cols])
+
+m1 <- lm(glucose0 ~ sex*exposure, data=mouse_wide, na.action = "na.exclude")
+mouse_wide[, glucose_cen_0 := residuals(m1)]
+m1 <- lm(glucose15 ~ sex*exposure, data=mouse_wide, na.action = "na.exclude")
+mouse_wide[, glucose_cen_15 := residuals(m1)]
+m1 <- lm(glucose30 ~ sex*exposure, data=mouse_wide, na.action = "na.exclude")
+mouse_wide[, glucose_cen_30 := residuals(m1)]
+m1 <- lm(glucose60 ~ sex*exposure, data=mouse_wide, na.action = "na.exclude")
+mouse_wide[, glucose_cen_60 := residuals(m1)]
+m1 <- lm(glucose120 ~ sex*exposure, data=mouse_wide, na.action = "na.exclude")
+mouse_wide[, glucose_cen_120 := residuals(m1)]
+
+glucose_cen_cols <- paste0("glucose_cen_", times)
+#cor(mouse_wide[sex == "m" & exposure == "16 ppm", .SD, .SDcols=glucose_cen_cols])
+
+round(cor(mouse_wide[, .SD, .SDcols=glucose_cen_cols]),3)
+
+```
+
+gls
+```{r}
+fit <- gls(glucose ~ time*sex*exposure,
+           data = mouse,
+           weights = varIdent(form= ~ 1 | time),
+           correlation= corSymm(form=~ 1| id)
+)
+round(cov2cor(getVarCov(fit, individual=mouse[1,id])), 3)
+
+```
+
+# simulation functions
+
+```{r simulation functions}
+  rho.1.2 <- 0.5
+  rho.1.p <- 0.6
+  rho.max.max <- 0.8
+  rho.max.min <- 0.7
+fake_Rho <- function(p=5,
+                     rho.base.2 = 0.6,
+                     rho.base.p = 0.5,
+                     rho.max.max = 0.8,
+                     rho.max.min = 0.7,
+                     rho.min = 0.5){
+  # rho.base.2 and rho.base.p control the correlations of baseline with post-baseline measures. These tend to be lower than the correlations among post-baseline measures, generally between 0 and 0.5
+  # rho.max.max and rho.max.min control the maximum post-baseline correlations. In general the correlations are highest beteween succeesive times and are highest between final two times, which is rho.max.max. rho.max.min is the correlation between time 2 and 3. The correlations drop to rho.min.
+  
+  Rho_fake <- matrix(1, nrow=p, ncol=p)
+  for(i in 1:(p-1)){
+    cells <- p - i
+    row.max <- (cells-1)/(p-2-1)*rho.max.min + (1-(cells-1)/(p-2-1))*rho.max.max
+    inc <- -(row.max - rho.min)/(p - 2 -1)
+    for(j in (i+1):p){
+      if(i==1){
+        Rho_fake[i,j] <- (j-2)/(p-2)*rho.base.p + (1-(j-2)/(p-2))*rho.base.2
+        Rho_fake[j,i] <- Rho_fake[i,j]
+      }else{
+        Rho_fake[i,j] <- row.max + inc*(cells - (p-j+1))
+        Rho_fake[j,i] <- Rho_fake[i,j]
+      }
+    }
+  }
+  return(Rho_fake)
+}
+
+simulate_it <- function(n=5, mu, beta, Sigma, times, niter=1000, method_list){
+  p_cols <- paste0(method_list, "_p")
+  sim_stats_cols <- c("d_baseline",
+                      "r.baseline",
+                      "abs.r.baseline",
+                      "r.nonbaseline",
+                      "abs.r.nonbaseline",
+                      p_cols)
+  sim_stats <- matrix(NA, nrow=niter, ncol=length(sim_stats_cols))
+  colnames(sim_stats) <- sim_stats_cols
+  n.times <- length(times)
+  p.clda <- n.times*2 - 2
+
+  # change names of mu (which will change colnames of Y)
+  names(mu) <- paste0("glucose", times)
+  
+  # for Roast and Obrien
+  xcols <- c("treatment", "glucose0")
+  zcols <- "treatment"
+  roast_form <- formula(paste('~',paste(xcols,collapse='+'),sep=''))
+  
+  # init fake data matrix
+  fd <- data.table(treatment=factor(rep(c("cn", "tr"), each=n)))
+  fd[, id:=factor(1:.N)]
+  
+  for(iter in 1:niter){
+    Y <- rbind(rmvnorm(n, mu, Sigma),
+               rmvnorm(n, mu+beta, Sigma))
+    fd[, glucose_0 := Y[,1]]
+    #fd[, area := apply(Y, 1, auc, x=times)]
+    fd[, area := apply(Y, 1, trap.rule, x=times)] # faster because compiled?
+    #fd[, area_base := apply(Y, 1, auc, x=times, baseline=TRUE)]
+    fd[, area_base := apply(Y-Y[,1], 1, trap.rule, x=times)]
+    fd[, glucose_mean := apply(Y[,-1], 1, mean)]
+    fd[, glucose_change := glucose_mean - glucose_0]
+    
+    fd_wide <- cbind(fd, Y)
+    fd_long <- melt(fd_wide, id.vars=c("treatment", "id", "glucose_0"),
+                      measure.vars = paste0("glucose", times),
+                      variable.name = "time",
+                      value.name = "glucose")
+    fd_long[, time:=factor(time)]
+    
+    # get sample correlation
+    fit <- gls(glucose ~ time*treatment,
+               data = fd_long,
+               weights = varIdent(form= ~ 1 | time),
+               correlation= corSymm(form=~ 1| id)
+    )
+    R.sample <- cov2cor(getVarCov(fit, individual=fd_long[1,id]))
+    sim_stats[iter, "r.baseline"] <- mean(R.sample[2:n.times,1])
+    sim_stats[iter, "abs.r.baseline"] <- mean(abs(R.sample[2:n.times,1]))
+    R.nonbaseline <- R.sample[2:n.times, 2:n.times]
+    sim_stats[iter, "r.nonbaseline"] <- mean(R.nonbaseline[lower.tri(R.nonbaseline)])
+    sim_stats[iter, "abs.r.nonbaseline"] <- mean(abs(R.nonbaseline[lower.tri(R.nonbaseline)]))
+
+    sim_stats[iter, "d_baseline"] <- mean(Y[1:n, 1]) - mean(Y[(n+1):(2*n), 1])
+    
+    # p-values
+    if("lm_area" %in% method_list){
+      m1 <- lm(area ~ treatment, data=fd)
+      sim_stats[iter, "lm_area_p"] <- coef(summary(m1))["treatmenttr","Pr(>|t|)"]
+      #sim_stats[iter, "lm_area_b"] <- coef(m1)["treatmenttr"]
+    }
+    if("lm_base" %in% method_list){
+      m2 <- lm(area_base ~ treatment, data=fd)
+      sim_stats[iter, "lm_base_p"] <- coef(summary(m2))["treatmenttr","Pr(>|t|)"]
+      #sim_stats[iter, "lm_base_b"] <- coef(m2)["treatmenttr"]
+    }
+    if("lm_cov" %in% method_list){
+      m3 <- lm(area ~ treatment + glucose_0, data=fd)
+      sim_stats[iter, "lm_cov_p"] <- coef(summary(m3))["treatmenttr","Pr(>|t|)"]
+      #sim_stats[iter, "lm_cov_b"] <- coef(m3)["treatmenttr"]
+    }
+    if("lm_mean" %in% method_list){
+      m4 <- lm(glucose_mean ~ treatment, data=fd)
+      sim_stats[iter, "lm_mean_p"] <- coef(summary(m4))["treatmenttr","Pr(>|t|)"]
+      #sim_stats[iter, "lm_mean_b"] <- coef(m4)["treatmenttr"]
+    }
+    if("lm_mean_cov" %in% method_list){
+      m5 <- lm(glucose_mean ~ treatment + glucose_0, data=fd)
+      sim_stats[iter, "lm_mean_cov_p"] <- coef(summary(m5))["treatmenttr","Pr(>|t|)"]
+      #sim_stats[iter, "lm_mean_cov_b"] <- coef(m5)["treatmenttr"]
+    }
+    if("lm_mean_change" %in% method_list){
+      m6 <- lm(glucose_change ~ treatment, data=fd)
+      sim_stats[iter, "lm_mean_change_p"] <- coef(summary(m6))["treatmenttr","Pr(>|t|)"]
+      #sim_stats[iter, "lm_mean_change_b"] <- coef(m6)["treatmenttr"]
+    }
+    if("rmanova" %in% method_list |
+       "rmanova.i" %in% method_list |
+       "rmanova.t" %in% method_list){
+      # rmanova returns the smallest unadjusted p of the pairs
+      # rmanova.i returns the p for the anova interaction
+      # rmanova.t returns the p for the anova treatment
+      m7 <- aov_4(glucose ~ time*treatment + (time|id),
+                 data=fd_long)
+      if("rmanova" %in% method_list){
+        m7.emm <- emmeans(m7,  ~ treatment*time)
+        sim_stats[iter, "rmanova_p"] <- min(summary(emmeans::contrast(m7.emm, 
+                 method = "revpairwise",
+                 simple = "each",
+                 combine = TRUE,
+                 adjust = "none"))[2:n.times, "p.value"])
+      }
+      if("rmanova.i" %in% method_list){
+        sim_stats[iter, "rmanova.i_p"] <- m7$anova_table["treatment:time", "Pr(>F)"]}
+      if("rmanova.t" %in% method_list){
+        sim_stats[iter, "rmanova.t_p"] <- m7$anova_table["treatment", "Pr(>F)"]}
+    }
+    if("multi_t" %in% method_list){
+      Yy <- Y[, -1]
+      fit <- lm(Yy ~ treatment, data=fd_wide)
+      sim_stats[iter, "multi_t_p"] <- min(
+        coefficients(summary(fit))[[1]]["treatmenttr","Pr(>|t|)"],
+        coefficients(summary(fit))[[2]]["treatmenttr","Pr(>|t|)"],
+        coefficients(summary(fit))[[3]]["treatmenttr","Pr(>|t|)"],
+        coefficients(summary(fit))[[4]]["treatmenttr","Pr(>|t|)"]
+      )
+      #sim_stats[iter, "multi_t_b"] <- NA
+    }
+    if("clda" %in% method_list){
+      # clda
+#      design <- model.matrix( ~ time + treatment:time, data=fd_long)
+      # remove intercept column and effect of tr at time 0
+#      X <- design[, -c(1, which(colnames(design) == "timeglucose0:treatmenttr"))]
+
+            # first check equivalence with single post baseline time
+      check_equivalence <- FALSE
+      if(check_equivalence == TRUE){
+        inc <- which(fd_long$time=="glucose0" | fd_long$time=="glucose15")
+        X.check <- design[inc, c(2,7)]
+        m8a <- gls(glucose ~ X.check, # clda
+                   data = fd_long[time=="glucose0" | time=="glucose15"],
+                   weights = varIdent(form= ~ 1 | time),
+                   correlation= corSymm(form=~ 1| id)
+        )
+        m8b <- lm(glucose ~ glucose_0 + treatment, # ancova-like
+                  data = fd_long[time=="glucose15"]
+        )
+        coef(summary(m8a))
+        coef(summary(m8b))
+        # note that clda has smaller SE.
+        # from https://datascienceplus.com/taking-the-baseline-measurement-into-account-constrained-lda-in-r/. By setting weights = varIdent(form = ~ 1 | Time) a separate standard deviation will be estimated for each time point and a seperate correlation will be estimated for each pair of time points (= unstructured variance covariance matrix). By setting weights = varIdent(form = ~ 1 | Time:Group), a separate variance is estimated for each combination of Group and Time (Pre-Exp Post-Exp Pre-Con Post-Con ). The argument correlation=corSymm (form = ~ 1 | Id) defines the subject levels. The correlation structure is assumed to apply only to observations within the same subject (in our example: Id); observations from different subjects (a different value for Id) are assumed to be uncorrelated.
+        
+      }
+
+#      m8 <- gls(glucose ~ X,
+#                 data = fd_long,
+#                 weights = varIdent(form= ~ 1 | time),
+#                 correlation= corSymm(form=~ 1| id))
+      
+      # # an alternative that gives same results. Simply code the interaction columns into a factor
+      fd_clda <- copy(fd_long)
+      fd_clda[, time.treatment := ifelse(time != "glucose0" & treatment=="tr", paste0(time, ":tr"), "cont")]
+      fd_clda[, time.treatment := factor(time.treatment, c("cont","glucose15:tr", "glucose30:tr",  "glucose60:tr", "glucose120:tr"))]
+      m8 <- gls(glucose ~ time + time.treatment,
+                 data = fd_clda,
+                 weights = varIdent(form= ~ 1 | time),
+                 correlation= corSymm(form=~ 1| id))
+      
+      r_fit <- cov2cor(getVarCov(m8))
+      r_bar <- mean(r_fit[upper.tri(r_fit)])
+      m <- round(5*n*2/(1 + r_bar*(5-1)), 0)
+
+      #m8.z <- summary(glht(m8, matrix(c(0, 0,0,0,0,1,1,1,1), 1)))
+      m8.t <- summary(glht(m8, 
+                            matrix(c(0, 0,0,0,0,1,1,1,1), 1),
+                            df = m - p.clda))
+
+      sim_stats[iter, "clda_p"] <- m8.t$test$pvalues
+      #sim_stats[iter, "clda_b"] <- m8.t$test$coefficients/4
+    }
+    if("lda_cov" %in% method_list){
+      subdata <- fd_long[time != "glucose0"] # needed for emmeans
+      m9 <- gls(glucose ~ time*treatment + glucose_0,
+                data = subdata,
+                weights = varIdent(form= ~ 1 | time),
+                correlation= corSymm(form=~ 1 | id))
+      # note interaction coefficients are not effects at times 30, 60, 120 
+      # but differences in effect from that at time 15. This is *not* what we want.
+      m9.emm <- emmeans(m9, 
+                        specs=c("treatment"),
+  #                      mode = "boot-satterthwaite",
+                        mode = "df.error",
+                        data = subdata)
+      m9.trt <- emmeans::contrast(m9.emm, method="revpairwise")
+
+      sim_stats[iter, "lda_cov_p"] <- summary(m9.trt)[, "p.value"]
+      #sim_stats[iter, "lda_cov_b"] <- summary(m9.trt)[, "estimate"]
+    }
+    if("roast" %in% method_list){
+      Yt <- t(Y[, -1]) # responses in rows
+      design <- model.matrix(roast_form, data=fd_wide)
+      colnames(design)[1] <- 'Intercept' # change '(Intercept)' to 'Intercept'
+      prob <- roast(y=Yt,design=design,contrast=2, nrot=2000)$p['UpOrDown','P.Value']
+      sim_stats[iter, "roast_p"] <- roast(y=Yt,design=design,contrast=2, nrot=2000)$p['UpOrDown','P.Value']
+      #sim_stats[iter, "roast_b"] <- NA
+      # cont.matrix <- makeContrasts(delta="zhedonia-zeudaimonia",levels=design)
+      # prob['delta'] <- roast(y=Yt,design=design,contrast=cont.matrix, nrot=perms)$p['UpOrDown','P.Value']
+    }
+    if("obrien" %in% method_list){
+      Yy <- Y[, -1]
+      # design matrix for obrien
+      X2 <- model.matrix(~ glucose0, data=fd_wide)
+      XTXI <- solve(t(X2)%*%X2)
+      fit <- lm.fit(X2, Yy)
+      e <- fit$residuals
+      ranks <- apply(e, 2, rank)
+      ranksum <- apply(ranks, 1, sum)
+      obrien.p <- t.test(ranksum ~ fd_wide$treatment, var.equal=TRUE)$p.value
+      # wilcox.test(ranksum ~ fd_wide$treatment)
+      # rank2 <- apply(e, 1, sum)
+      # wilcox.test(rank2 ~ fd_wide$treatment)
+      
+      sim_stats[iter, "obrien_p"] <- obrien.p
+      #sim_stats[iter, "obrien_b"] <- NA
+    }
+  }
+  return(sim_stats)
+}
+
+simulation_wrapper <- function(
+  niter = 1000,
+  n = 5,
+  method_list,
+  times = c(0, 15, 30, 60, 120),
+  gtt_effects = c(0, 1, 1, 1, 0),
+  mu,
+  sigma,
+  cohen_list = c(0, 0.8, 2),
+  cor_models
+){
+  p <- length(times)
+  combis <- expand.grid(cohen = cohen_list, cor_model = 1:nrow(cor_models))
+
+  for(i in 1:nrow(combis)){
+    cohen <- combis[i, "cohen"]
+    baseline_max <- cor_models[combis[i, "cor_model"], "baseline_max"]
+    non_baseline_max <- cor_models[combis[i, "cor_model"], "non_baseline_max"]
+    R <- fake_Rho(p,
+                  rho.base.2 = baseline_max,
+                  rho.base.p = 3/4*baseline_max,
+                  rho.max.max = non_baseline_max,
+                  rho.max.min = 7/8*non_baseline_max,
+                  rho.min = 5/8*non_baseline_max)
+    
+    R_0 <- R[,1] # correlation of each time with time0
+    R_0[1] <- 0 # don't add this component to first beta
+    Sigma <- diag(sigma)%*%R%*%diag(sigma)
+    # total = direct + indirect
+    alpha_1 <- gtt_effects[1]*cohen
+    beta_1 <- R_0*sigma
+    beta <- gtt_effects*cohen*sigma + alpha_1*beta_1
+    
+    sim_stats <- simulate_it(n = n, 
+                             mu = mu, 
+                             beta = beta, 
+                             Sigma = Sigma,
+                             times = times, 
+                             niter = niter,
+                             method_list = method_list)
+    
+    res <- rbind(res, data.table(iter = 1:niter,
+                                 effect = cohen,
+                                 baseline_max = baseline_max,
+                                 non_baseline_max = non_baseline_max,
+                                 data.table(sim_stats)))
+  }
+  
+  res[, effect := factor(effect)]
+  res[, baseline_max := factor(baseline_max)]
+  res[, non_baseline_max := factor(non_baseline_max)]
+  return(res)
+}
+```
+
+# Simulations
+## Simulation 1 -- glucose tolerance effect at times 15, 30, 60
+glucose tolerance effect at times 15, 30, 60
+   - times 0, 15, 30, 60, 120
+   - rho_models: 1) low baseline (0.2 max) + low non-baseline (0.3 max)
+                 2) low baseline (0.2 max) + high non-baseline (0.8 max)
+                 3) mod baseline (0.5 max) + high non-baseline (0.8 max)
+   - cohen_models of direct effect: 0, 0.8, 1.5
+
+```{r simulation-1, message=FALSE, warning=FALSE}
+# output fileame
+ptm <- proc.time()
+write_it <- TRUE
+sim_id <- "simulation-1."
+file_id <- paste(sample(c(letters, LETTERS, 1:9), 5), collapse="")
+
+n <- 6 # sample per treatment level
+p = 5 # number of time periods
+niter <- 2000 # number of iterations in simulation per parameter combination
+
+# empirical response mean
+mu <- c(148, 230, 230, 200, 146) # mu of control in perinatal lead
+emp.sigma.ratio <- c(0.12, 0.3, 0.3, 0.3, 0.3) # rougly median of empirical
+emp.sigma <- emp.sigma.ratio*(mu[2]-mu[1])
+
+res <- data.table(NULL)
+method_list <- c("lm_area", "lm_base", "lm_cov", "lm_mean", "lm_mean_change", "lm_mean_cov", "multi_t",  "rmanova", "clda", "lda_cov", "obrien", "roast")
+
+times <- c(0, 15, 30, 60, 120)
+gtt_effects <- c(0, 1, 1, 1, 0)
+cohen_list <- c(0, 0.8, 1.5)
+cor_models <- t(matrix(c(
+  c(0.6, 0.8)),
+  nrow = 2
+))
+colnames(cor_models) <- c("baseline_max", "non_baseline_max")
+
+set.seed(1)
+res <- simulation_wrapper(
+  niter = niter,
+  n = n,
+  method_list,
+  times = times,
+  gtt_effects = gtt_effects,
+  mu = mu,
+  sigma = emp.sigma,
+  cohen_list = cohen_list,
+  cor_models
+)
+
+if(write_it == TRUE){
+  fn <- paste0(sim_id, file_id, ".Rds")
+  save_file_path <- here(output_path, fn)
+  saveRDS(object = res, file = save_file_path)
+}
+sim_time <- proc.time() - ptm
+```
+
+## Simulation 2 -- effect of Rho
+glucose tolerance effect at times 15, 30, 60
+   - times 0, 15, 30, 60, 120
+   - rho_models: 1) low baseline (0.2 max) + low non-baseline (0.3 max)
+                 2) low baseline (0.2 max) + high non-baseline (0.8 max)
+                 3) mod baseline (0.5 max) + high non-baseline (0.8 max)
+   - cohen_models of direct effect: 0
+
+```{r simulation-2, message=FALSE, warning=FALSE}
+# output fileame
+write_it <- TRUE
+sim_id <- "simulation-2."
+file_id <- paste(sample(c(letters, LETTERS, 1:9), 5), collapse="")
+
+n <- 6 # sample per treatment level
+p = 5 # number of time periods
+niter <- 2000 # number of iterations in simulation per parameter combination
+
+mu <- c(148, 230, 230, 200, 146) # mu of control in perinatal lead
+emp.sigma.ratio <- c(0.12, 0.3, 0.3, 0.3, 0.3) # roughly median of empirical
+emp.sigma <- emp.sigma.ratio*(mu[2]-mu[1])
+
+res <- data.table(NULL)
+method_list <- c("lm_area", "lm_base", "lm_cov", "lm_mean", "lm_mean_change", "lm_mean_cov", "multi_t",  "rmanova", "clda", "lda_cov", "obrien", "roast")
+
+times <- c(0, 15, 30, 60, 120)
+gtt_effects <- c(0, 1, 1, 1, 0)
+cohen_list <- c(0)
+cor_models <- t(matrix(c(
+  c(0.2, 0.3),
+  c(0.2, 0.8)),
+  nrow = 2
+))
+colnames(cor_models) <- c("baseline_max", "non_baseline_max")
+
+set.seed(2)
+res <- simulation_wrapper(
+  niter = niter,
+  n = n,
+  method_list,
+  times = times,
+  gtt_effects = gtt_effects,
+  mu = mu,
+  sigma = emp.sigma,
+  cohen_list = cohen_list,
+  cor_models
+)
+
+if(write_it == TRUE){
+  fn <- paste0(sim_id, file_id, ".Rds")
+  save_file_path <- here(output_path, fn)
+  saveRDS(object = res, file = save_file_path)
+}
+```
+
+## Simulation 3 -- effect of location of difference
+
+glucose tolerance effect at times 15 vs. 60 to show consequence of area as weighted mean
+   - run at rho=.8 and power = 2
+
+```{r simulation-3, message=FALSE, warning=FALSE}
+# output fileame
+ptm <- proc.time()
+write_it <- TRUE
+sim_id <- "simulation-3."
+file_id <- paste(sample(c(letters, LETTERS, 1:9), 5), collapse="")
+
+n <- 6 # sample per treatment level
+p = 5 # number of time periods
+niter <- 2000 # number of iterations in simulation per parameter combination
+
+# empirical response mean
+mu <- c(148, 230, 230, 200, 146) # mu of control in perinatal lead
+emp.sigma.ratio <- c(0.12, 0.3, 0.3, 0.3, 0.3) # rougly median of empirical
+emp.sigma <- emp.sigma.ratio*(mu[2]-mu[1])
+
+res <- data.table(NULL)
+method_list <- c("lm_area", "lm_base", "lm_cov", "lm_mean", "lm_mean_change", "lm_mean_cov", "multi_t",  "rmanova", "clda", "lda_cov", "obrien", "roast")
+
+times <- c(0, 15, 30, 60, 120)
+gtt_effect_model <- (matrix(c(
+  c(0, 1, 0, 0, 0),
+  c(0, 0, 0, 1, 0)),
+  ncol = 2
+))
+colnames(gtt_effect_model) <- c("t15", "t60")
+
+cohen_list <- c(1.5)
+cor_models <- t(matrix(c(
+  c(0.6, 0.8)),
+  nrow = 2
+))
+colnames(cor_models) <- c("baseline_max", "non_baseline_max")
+
+set.seed(3)
+res15 <- simulation_wrapper(
+  niter = niter,
+  n = n,
+  method_list,
+  times = times,
+  gtt_effects = gtt_effect_model[,1],
+  mu = mu,
+  sigma = emp.sigma,
+  cohen_list = cohen_list,
+  cor_models
+)
+res60 <- simulation_wrapper(
+  niter = niter,
+  n = n,
+  method_list,
+  times = times,
+  gtt_effects = gtt_effect_model[,2],
+  mu = mu,
+  sigma = emp.sigma,
+  cohen_list = cohen_list,
+  cor_models
+)
+res <- rbind(data.table(effect_model="t15", res15),
+             data.table(effect_model="t60", res60))
+
+
+if(write_it == TRUE){
+  fn <- paste0(sim_id, file_id, ".Rds")
+  save_file_path <- here(output_path, fn)
+  saveRDS(object = res, file = save_file_path)
+}
+sim_time <- proc.time() - ptm
+```
+
+## Simulation 4 -- effect of initial difference
+
+glucose tolerance effect at time 15, 30, 60 plus strain (genotype or treatment) effect at time 0 to show consequence of direct v total effect
+   - run at combos of rho = 0.8
+   - run at cohen glucose tolerance = 0, 2
+   - for cohen_gt = 0, set cohen to 2 and alpha_prime = 0.4, 0, 0, 0, 0
+   - for cohen_gt = 2, set coehn to 2 and alpha_prime = 0.4, 1, 1, 1, 0
+
+```{r simulation-4, message=FALSE, warning=FALSE}
+# output fileame
+ptm <- proc.time()
+write_it <- TRUE
+sim_id <- "simulation-4."
+file_id <- paste(sample(c(letters, LETTERS, 1:9), 5), collapse="")
+
+n <- 6 # sample per treatment level
+p = 5 # number of time periods
+niter <- 2000 # number of iterations in simulation per parameter combination
+
+# empirical response mean
+mu <- c(148, 230, 230, 200, 146) # mu of control in perinatal lead
+emp.sigma.ratio <- c(0.12, 0.3, 0.3, 0.3, 0.3) # rougly median of empirical
+emp.sigma <- emp.sigma.ratio*(mu[2]-mu[1])
+
+res <- data.table(NULL)
+method_list <- c("lm_area", "lm_base", "lm_cov", "lm_mean", "lm_mean_change", "lm_mean_cov", "multi_t",  "rmanova", "clda", "lda_cov", "obrien", "roast")
+
+times <- c(0, 15, 30, 60, 120)
+gtt_effect_model <- (matrix(c(
+  c(0.5, 0.5, 0.5, 0.5, 0.5), # no added effect other than expected if no gtt
+  c(0.5, 1.5, 1.5, 1.5, 0.5)), # added gtt effect of 1
+  ncol = 2
+))
+colnames(gtt_effect_model) <- c("no gtt effect", "gtt effect")
+
+cohen_list <- c(1.5)
+cor_models <- t(matrix(c(
+  c(0.6, 0.8)),
+  nrow = 2
+))
+colnames(cor_models) <- c("baseline_max", "non_baseline_max")
+
+set.seed(3)
+res0 <- simulation_wrapper(
+  niter = niter,
+  n = n,
+  method_list,
+  times = times,
+  gtt_effects = gtt_effect_model[,1],
+  mu = mu,
+  sigma = emp.sigma,
+  cohen_list = cohen_list,
+  cor_models
+)
+res1 <- simulation_wrapper(
+  niter = niter,
+  n = n,
+  method_list,
+  times = times,
+  gtt_effects = gtt_effect_model[,2],
+  mu = mu,
+  sigma = emp.sigma,
+  cohen_list = cohen_list,
+  cor_models
+)
+res <- rbind(data.table(effect_model="no added", res0),
+             data.table(effect_model="added", res1))
+
+
+if(write_it == TRUE){
+  fn <- paste0(sim_id, file_id, ".Rds")
+  save_file_path <- here(output_path, fn)
+  saveRDS(object = res, file = save_file_path)
+}
+sim_time <- proc.time() - ptm
+```
+

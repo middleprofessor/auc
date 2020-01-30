@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1579450526079.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "95C9F699",
+    "lastKnownWriteTime" : 1580303098,
+    "last_content_update" : 1580303098951,
+    "path" : "~/Documents/Github projects/Research Projects/auc/manuscript/glucose_auc_ms.Rmd",
+    "project_path" : "manuscript/glucose_auc_ms.Rmd",
+    "properties" : {
+        "cursorPosition" : "228,0",
+        "last_setup_crc32" : "76E104AD98ce3992",
+        "scrollLine" : "231"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

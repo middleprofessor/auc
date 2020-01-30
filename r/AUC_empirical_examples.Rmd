@@ -1,0 +1,1318 @@
+---
+title: "Empirical examples of analysis of glucose tolerance tests"
+author: "Jeff Walker"
+date: "1/13/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(here)
+library(readxl)
+library(janitor)
+library(data.table)
+library(ggpubr)
+library(nlme)
+library(mediation)
+library(rms)
+data_path <- "data"
+```
+
+
+```{r functions}
+auc <- function(x, y, method="auc"){
+  # method = "auc", auc computed using trapezoidal calc
+  # method = "iauc" is an incremental AUC of Le Floch
+  # method = "pos.iauc" is a "positive" incremental AUC of Le Floch but not Wolever
+  # method = "pb.auc" is AUC of post-time0 values
+  if(method=="iauc"){y <- y - y[1]}
+  if(method=="pos.iauc"){y[y < 0] <- 0}
+  if(method=="pb.auc"){
+    x <- x[-1]
+    y <- y[-1]
+  }
+  n <- length(x)
+  area <- 0
+  for(i in 2:n){
+    area <- area + (x[i] - x[i-1])*(y[i-1] + y[i])
+  }
+  area/2
+}
+
+plot_all_curves <- function(data){
+  gg <- ggplot(data=data, 
+         aes(x = time,
+             y = glucose,
+             color = treatment)) +
+    geom_point() +
+    geom_line(aes(group = id))
+ return(gg)
+}
+
+```
+# Summary
+## Sigma
+## sigma
+lead    0.2527439 0.5507195 0.5451951 0.4125610 0.6009756
+ardb2   0.06581794 0.39155361 0.25379231 0.28717465
+arnt    0.12818475 0.08265306 0.30683136 0.12818475 0.08265306 0.30683136
+pi3k    0.4574595 0.8412703 1.6563243 2.3108919 1.9452703 2.0679189 1.6714054
+march1  0.09597674 0.31565550 0.18280642 0.27442647 0.24691554
+nrk1    0.06818708 0.06818708 0.06818708 0.06818708 0.06818708 0.06818708 0.06818708
+beta    0.04268047 0.18612678 0.04268047 0.18612678 0.04268047 0.18612678
+bcaa    0.1276123 0.2923751 0.2841936 0.1276123 0.2923751 0.2841936
+il36    0.04192377 0.04192377 0.04192377 0.04192377 0.04192377
+
+# Working template
+
+```{r import-xxx, echo=FALSE, eval=FALSE}
+folder <- "Recapitulating endocrine cell clustering in culture promotes maturation of human stem-cell-derived β cells"
+filename <- "41556_2018_271_MOESM8_ESM.xlsx"
+file_path <- here(data_path, folder, filename)
+times <- c(0, 15, 30, 60, 90, 120)
+time_cols <- paste0("glucose", times)
+
+xxx_wide <- data.table(treatment = "eBCs",
+                       t(read_excel(file_path,
+                    col_names = FALSE,
+                    sheet = "FIGURE 7",
+                    range = "B5:F10")))
+xxx_wide <- rbind(xxx_wide,
+                    data.table(treatment = "NEC",
+                       t(read_excel(file_path,
+                    col_names = FALSE,
+                    sheet = "FIGURE 7",
+                    range = "G5:J10"))))
+xxx_wide <- rbind(xxx_wide,
+                    data.table(treatment = "D20",
+                       t(read_excel(file_path,
+                    col_names = FALSE,
+                    sheet = "FIGURE 7",
+                    range = "K5:O10"))))
+xxx_wide <- rbind(xxx_wide,
+                    data.table(treatment = "No cells",
+                       t(read_excel(file_path,
+                    col_names = FALSE,
+                    sheet = "FIGURE 7",
+                    range = "P5:S10"))))
+xxx_wide <- rbind(xxx_wide,
+                    data.table(treatment = "Human",
+                       t(read_excel(file_path,
+                    col_names = FALSE,
+                    sheet = "FIGURE 7",
+                    range = "T5:V10"))))
+setnames(xxx_wide, old=paste0("V", seq_along(times)), new=time_cols)
+xxx_wide[, id := factor(1:.N)]
+xxx_wide[, treatment := factor(treatment,
+                                c("eBCs", "No cells", "NEC", "D20", "Human"))]
+Y <- xxx_wide[, .SD, .SDcols = time_cols]
+xxx_wide[, auc := apply(Y, 1, auc, x=times)] #check
+xxx_wide[, iauc := apply(Y, 1, auc, x=times, method="iauc")]
+xxx_wide[, pos.iauc := apply(Y, 1, auc, x=times, method="pos.iauc")]
+xxx_wide[, pb.auc := apply(Y, 1, auc, x=times, method="pb.auc")]
+xxx_wide[, glucose_mean := apply(Y, 1, mean)]
+xxx_wide[, glucose_change := glucose_mean - glucose0]
+
+xxx_long <- melt(xxx_wide, 
+                    id.vars = c("treatment", "id"),
+                    measure.vars = time_cols,
+                    variable.name = "time",
+                    value.name = "glucose")
+xxx_long[, time:=factor(time)]
+
+```
+
+
+```{r xxx-n, echo=FALSE, eval=FALSE}
+xxx_wide[, .(N=.N), by=.(treatment)]
+
+```
+
+```{r xxx-sigma, echo=FALSE, eval=FALSE}
+fit <- gls(glucose ~ time*treatment,
+           data = xxx_long,
+           weights = varIdent(form= ~ 1 | time),
+           correlation= corSymm(form=~ 1| id)
+)
+round(cov2cor(getVarCov(fit, individual=xxx_long[1,id])), 3)
+
+```
+
+```{r xxx-plot, echo=FALSE, eval=FALSE}
+plot_all_curves(xxx_long)
+```
+
+```{r xxx-models, echo=FALSE, eval=FALSE}
+m0 <- lm(glucose0 ~ treatment, data = xxx_wide)
+m1 <- lm(auc ~ treatment, data = xxx_wide)
+m2 <- lm(iauc ~ treatment, data = xxx_wide)
+m3 <- lm(pos.iauc ~ treatment, data = xxx_wide)
+m4 <- lm(pb.auc ~ glucose0 + treatment, data = xxx_wide)
+m5 <- lm(glucose_mean ~ glucose0 + treatment, data=xxx_wide)
+m6 <- lm(glucose_change ~ treatment, data=xxx_wide)
+
+coef(summary(m0))
+coef(summary(m1))
+coef(summary(m2))
+coef(summary(m3))
+coef(summary(m4))
+coef(summary(m5))
+coef(summary(m6))
+
+```
+
+# Perinatal lead (Pb) exposure results in sex-specific effects on food intake, fat, weight, and insulin response across the murine life-course
+
+1. Sigma
+2. sigma relative to initial change from baseline
+0.2527439 0.5507195 0.5451951 0.4125610 0.6009756
+
+```{r import-perinatal, message=FALSE}
+folder <- "Perinatal lead (Pb) exposure results in sex-specific effects on food intake, fat, weight, and insulin response across the murine life-course"
+filename <- "Glucose_Tolerance_Test_CompleteData.xlsx"
+file_path <- here(data_path, folder, filename)
+lead_wide <- read_excel(file_path,
+                    sheet = "Sheet1",
+                    range = "A1:Z109") %>%
+  clean_names() %>%
+  data.table()
+
+times <- c(0, 15, 30, 60, 120)
+glucose_cols = paste0("glucose", times)
+insulin_cols = paste0("insulin", times)
+lead_long <- melt(lead_wide, 
+              id.vars = c("id", "sex", "exposure", "glucose_auc", "insulin_auc", "homair_liv"),
+              measure.vars = list(glucose_cols, insulin_cols),
+              variable.name = "measure_time",
+              value.name = c("glucose", "insulin"))
+lead_long[, time := times[measure_time]]
+setnames(lead_long, old="exposure", new="treatment")
+```
+
+```{r perinatal N}
+lead_wide[, .(N=.N), by=.(exposure, sex)]
+```
+
+```{r perinatal-Sigma}
+fit <- gls(glucose ~ factor(time)*sex*treatment,
+           data = lead_long,
+           weights = varIdent(form= ~ 1 | time),
+           correlation= corSymm(form=~ 1| id)
+)
+mu <- apply(lead_wide[sex == "m" & exposure == "0 ppm", .SD, .SDcols=glucose_cols], 2, mean)
+mu
+Sigma <- getVarCov(fit, individual=lead_long[1,id])
+round(sqrt(diag(Sigma)), 3)
+round(sqrt(diag(Sigma)), 3)/(mu[2]-mu[1])
+round(cov2cor(Sigma), 3)
+
+```
+
+```{r perinatal-plot}
+plot_all_curves(lead_long)
+plot_all_curves(lead_long[treatment==unique(treatment)[1]])
+plot_all_curves(lead_long[treatment==unique(treatment)[2]])
+plot_all_curves(lead_long[treatment==unique(treatment)[3]])
+
+```
+
+# Adrb2 controls glucose homeostasis by developmental regulation of pancreatic islet vasculature
+
+1. Sigma - moderate negative baseline cors, non-baseline cors large positive
+1b. sigma relative to initial response
+0.06581794 0.39155361 0.25379231 0.28717465
+2. treatment has positive effect at T0
+3. All tests consistent in direction
+4. mediation test has moderate negative indirect effect which is consistent with moderate negative correlations between T0, T1-4
+
+```{r import-ardb2, message=FALSE}
+folder <- "Adrb2 controls glucose homeostasis by developmental regulation of pancreatic islet vasculature"
+filename <- "elife-39689-fig1-data1-v2.xlsx"
+file_path <- here(data_path, folder, filename)
+
+# female controls
+dt_wide <- read_excel(file_path, 
+                        sheet="Fig1A,B", 
+                        range="A6:G9", 
+                        col_names = FALSE) %>%
+  data.table
+n <- ncol(dt_wide) - 1
+id_cols <- paste0("cn", 1:n)
+colnames(dt_wide) <- c("time", id_cols)
+f_cn <- melt(dt_wide,
+             id.vars = "time",
+             measure.vars = id_cols,
+             variable.name = "id",
+             value.name = "glucose")
+
+# female treated
+dt_wide <- read_excel(file_path, 
+                        sheet="Fig1A,B", 
+                        range="A12:H15", 
+                        col_names = FALSE) %>%
+  data.table
+n <- ncol(dt_wide) - 1
+id_cols <- paste0("tr", 1:n)
+colnames(dt_wide) <- c("time", id_cols)
+f_tr <- melt(dt_wide,
+             id.vars = "time",
+             measure.vars = id_cols,
+             variable.name = "id",
+             value.name = "glucose")
+
+ardb2_long <- rbind(data.table(treatment = "cn", f_cn),
+               data.table(treatment = "Ardb2 cKO", f_tr))
+ardb2_long[, treatment := factor(treatment, c("cn", "Ardb2 cKO"))]
+times <- unique(ardb2_long$time)
+time_cols <- paste0("glucose", times)
+
+ardb2_wide <- dcast(ardb2_long, 
+                    id + treatment ~ time,
+                    value.var = "glucose")
+setnames(ardb2_wide, old=as.character(times), new=time_cols)
+Y <- ardb2_wide[, .SD, .SDcols=time_cols]
+ardb2_wide[, auc:=apply(Y, 1, auc, x=times)]
+ardb2_wide[, iauc:=apply(Y, 1, auc, x=times, method="iauc")]
+ardb2_wide[, pos.iauc:=apply(Y, 1, auc, x=times, method="pos.iauc")]
+ardb2_wide[, glucose_mean := apply(Y, 1, mean)]
+ardb2_wide[, glucose_change := glucose_mean - glucose0]
+
+```
+
+```{r ardb2 n}
+ardb2_wide[, .(N=.N), by=treatment]
+```
+
+
+```{r ardb2 plot curves}
+plot_all_curves(ardb2_long)
+
+```
+
+```{r ardb2 Sigma}
+fit <- gls(glucose ~ factor(time)*treatment,
+           data = ardb2_long,
+           weights = varIdent(form= ~ 1 | time),
+           correlation= corSymm(form=~ 1| id)
+)
+mu <- apply(ardb2_wide[treatment == "cn", .SD, .SDcols=time_cols], 2, mean)
+mu
+Sigma <- getVarCov(fit, individual=ardb2_long[1,id])
+round(sqrt(diag(Sigma)), 3)
+round(sqrt(diag(Sigma)), 3)/(mu[2]-mu[1])
+round(cov2cor(Sigma), 3)
+
+```
+
+```{r ardb2-models}
+m1 <- lm(auc ~ treatment, data = ardb2_wide)
+m2 <- lm(iauc ~ treatment, data = ardb2_wide)
+m3 <- lm(pos.iauc ~ treatment, data = ardb2_wide)
+m4 <- lm(glucose_mean ~ glucose0 + treatment, data=ardb2_wide)
+m5 <- lm(glucose_change ~ treatment, data=ardb2_wide)
+
+coef(summary(m1))["treatmentArdb2 cKO",]
+coef(summary(m2))["treatmentArdb2 cKO",]
+coef(summary(m3))["treatmentArdb2 cKO",]
+coef(summary(m4))["treatmentArdb2 cKO",]
+coef(summary(m5))["treatmentArdb2 cKO",]
+
+```
+
+```{r ardb2-difference-at-baseline}
+m1 <- lm(glucose0 ~ treatment, data=ardb2_wide)
+coef(summary(m1))
+
+ggdotplot(data=ardb2_wide,
+          x = "treatment",
+          y = "glucose0",
+          add = "mean_ci")
+
+```
+
+```{r ardb2 direct v indirect}
+
+m1 <- lm(glucose0 ~ treatment, data=ardb2_wide) # mediator model
+coef(summary(m1))
+
+m2 <- lm(glucose30 ~ treatment, data=ardb2_wide) # total effect
+coef(summary(m2))
+
+m3 <- lm(glucose30 ~ glucose0 + treatment, data=ardb2_wide) # outcome model
+coef(summary(m3))
+
+total <- coef(m2)["treatmentArdb2 cKO"]
+direct <- coef(m3)["treatmentArdb2 cKO"]
+indirect <- total - direct
+a <- coef(m1)["treatmentArdb2 cKO"]
+b <- coef(m3)["glucose0"]
+a
+b
+a*b
+total
+direct
+indirect
+
+m4 <- mediate(model.m <- m1, 
+                   model.y <- m3, 
+                   treat = "treatment", 
+                   mediator = "glucose0", 
+                   robustSE = TRUE, sims = 1000)
+summary(m4)
+
+```
+
+
+# Hepatic Aryl hydrocarbon Receptor Nuclear Translocator (ARNT) regulates metabolism in mice
+
+1. baseline cors very small for gtt, non-baseline cors mod to large positive
+1b. sigma relative to initial response in WT
+0.12818475 0.08265306 0.30683136 0.12818475 0.08265306 0.30683136
+2. AUC, mean-cov suggest positive treatment effect (p=.01, .1) BUT iAUC/mean-change suggest negative treatment effect (p=.44, .48).
+3. treatment has positive fasting effect.
+4. it looks like there is fasting difference (x0), then about same at x15, x30, then return to fasting difference, so "effect" is not a different response to gtt but simply fasting level...
+5. lm-cov model at time15 and time30 show small positive difference (p=.42, .18) not distinguishable from noise
+
+points
+1. one cannot blindly analyze AUC but needs to look at data. The AUC interpretation is there is a treatment effect on gtt but the data is more compatible with a fasting effect.
+
+```{r import-arnt-gtt}
+folder <- "Hepatic Aryl hydrocarbon Receptor Nuclear Translocator (ARNT) regulates metabolism in mice"
+
+## Fig 1A, D, E
+filename <- "Fasting glucose and GTT and AUCGTT.xlsx"
+file_path <- here(data_path, folder, filename)
+arnt_wide <- read_excel(file_path, 
+                        range="A1:J23") %>%
+  clean_names() %>%
+  data.table()
+times <- c(0, 15, 30, 60, 90, 120)
+time_cols <- paste0("x", times)
+y_cols <- paste0("x", times[times != 0])
+
+arnt_wide[, my_auc := apply(arnt_wide[, .SD, .SDcols=time_cols], 1, auc, x=times)] #check
+arnt_wide[, iauc := apply(arnt_wide[, .SD, .SDcols=time_cols], 1, auc, x=times, method="iauc")]
+arnt_wide[, ipos.auc := apply(arnt_wide[, .SD, .SDcols=time_cols], 1, auc, x=times, method="pos.iauc")]
+arnt_wide[, glucose_mean := apply(arnt_wide[, .SD, .SDcols=y_cols], 1, mean)]
+arnt_wide[, glucose_change := glucose_mean - x0]
+
+# there is a miscoded value in cre-wt: "Wt" instead of "WT"
+arnt_wide[cre_wt == "Wt", cre_wt := "WT"]
+arnt_wide[, treatment := factor(cre_wt, c("WT", "Cre"))]
+arnt_wide[, id := as.character(mouse_no)]
+
+arnt_long <- melt(arnt_wide,
+                  id.vars = c("id", "treatment", "sex", "auc", "iauc"),
+                  measure.vars = time_cols,
+                  variable.name = "time",
+                  value.name = "glucose")
+arnt_long[, time := factor(time)]
+
+
+```
+
+```{r arnt-n}
+arnt_wide[, .(N=.N), by=treatment]
+# miscoded "Wt" - go back up and fix
+```
+
+```{r arnt-sigma}
+fit <- gls(glucose ~ time*treatment,
+           data = arnt_long,
+           weights = varIdent(form= ~ 1 | time),
+           correlation= corSymm(form=~ 1 | id)
+)
+mu <- apply(arnt_wide[treatment == "WT", .SD, .SDcols=time_cols], 2, mean)
+mu
+Sigma <- getVarCov(fit, individual=arnt_long[1,id])
+round(sqrt(diag(Sigma)), 3)
+round(sqrt(diag(Sigma)), 3)/(mu[2]-mu[1])
+round(cov2cor(Sigma), 3)
+
+```
+
+```{r arnt-plot-all}
+plot_all_curves(arnt_long)
+```
+ 
+```{r arnt-models}
+m1 <- lm(auc ~ treatment, data = arnt_wide)
+m2 <- lm(iauc ~ treatment, data = arnt_wide)
+m3 <- lm(ipos.auc ~ treatment, data = arnt_wide)
+m4 <- lm(glucose_mean ~ x0 + treatment, data=arnt_wide)
+m5 <- lm(glucose_change ~ treatment, data=arnt_wide)
+
+coef(summary(m1))
+coef(summary(m2))
+coef(summary(m3))
+coef(summary(m4))
+coef(summary(m5))
+
+```
+
+```{r arnt-difference-at-time0}
+m1 <- lm(x0 ~ treatment, data=arnt_wide)
+coef(summary(m1))
+
+ggdotplot(data=arnt_wide,
+          x = "treatment",
+          y = "x0",
+          add = "mean_ci")
+```
+
+```{r arnt-differences at time15-30-60}
+m0 <- lm(x0 ~ treatment, data=arnt_wide)
+m1 <- lm(x15 ~ x0 + treatment, data=arnt_wide)
+m2 <- lm(x30 ~ x0 + treatment, data=arnt_wide)
+m3 <- lm(x60 ~ x0 + treatment, data=arnt_wide)
+m4 <- lm(x90 ~ x0 + treatment, data=arnt_wide)
+m5 <- lm(x120 ~ x0 + treatment, data=arnt_wide)
+
+
+m6 <- lm(x15 ~ treatment, data=arnt_wide)
+m7 <- lm(x120 ~ treatment, data=arnt_wide)
+
+coef(summary(m0))["treatmentCre",]
+coef(summary(m1))["treatmentCre",]
+coef(summary(m2))["treatmentCre",]
+coef(summary(m3))["treatmentCre",]
+coef(summary(m4))["treatmentCre",]
+coef(summary(m5))["treatmentCre",]
+
+coef(summary(m6))["treatmentCre",]
+coef(summary(m7))["treatmentCre",]
+
+```
+
+```{r import-arnt-ptt}
+## fig 1B, C
+filename <- "PTT LARNT.xls"
+file_path <- here(data_path, folder, filename)
+larnt_ptt_wide <- read_excel(file_path, 
+                        range="A2:G16") %>%
+  data.table()
+times_ptt <- c(0, 15, 30, 45, 60)
+ptt_times_cols <- paste0("x", times_ptt)
+colnames(larnt_ptt_wide) <- c("id", "treatment", ptt_times_cols)
+Y <- larnt_ptt_wide[, .SD, .SDcols=ptt_times_cols]
+larnt_ptt_wide[, my_auc := apply(Y, 1, auc, x=times_ptt)] #check
+larnt_ptt_wide[, iauc := apply(Y, 1, auc, x=times_ptt, method="iauc")]
+larnt_ptt_wide[, ipos.auc := apply(Y, 1, auc, x=times_ptt, method="pos.iauc")]
+larnt_ptt_wide[, glucose_mean := apply(Y, 1, mean)]
+larnt_ptt_wide[, treatment := factor(treatment)]
+
+larnt_ptt_long <- melt(larnt_ptt_wide,
+                  id.vars = c("id", "treatment", "my_auc", "iauc"),
+                  measure.vars = ptt_times_cols <- paste0("x", times_ptt),
+                  variable.name = "time",
+                  value.name = "glucose")
+
+```
+
+```{r ptt-models}
+m1 <- lm(my_auc ~ treatment, data = larnt_ptt_wide)
+m2 <- lm(iauc ~ treatment, data = larnt_ptt_wide)
+m3 <- lm(ipos.auc ~ treatment, data = larnt_ptt_wide)
+m4 <- lm(glucose_mean ~ x0 + treatment, data=larnt_ptt_wide)
+
+coef(summary(m1))
+coef(summary(m2))
+coef(summary(m3))
+coef(summary(m4))
+
+t.test(my_auc ~ treatment, data = larnt_ptt_wide, var.equal=FALSE)
+# my lm/t.test differs because the authors computed a
+# different AUC for mouse 106 (same for all others)
+# regardles mouse 106 time 1 measure is an extreme outlier
+# re-run without this
+
+m1 <- lm(my_auc ~ treatment, data = larnt_ptt_wide[id != 106])
+m4 <- lm(glucose_mean ~ x0 + treatment, data=larnt_ptt_wide[id != 106])
+coef(summary(m1))
+coef(summary(m4))
+
+```
+
+Authors computed something like a positive incremental area but not correctly.
+
+```{r larnt-ptt-plot}
+plot_all_curves(larnt_ptt_long)
+```
+
+# Suppression of insulin feedback enhances the efficacy of PI3K inhibitors
+
+1. small correlations in Sigma. Noise is apparent from plot
+1b. sd relative to initial response in control
+0.4574595 0.8412703 1.6563243 2.3108919 1.9452703 2.0679189 1.6714054 1.7787838
+2. treatment effect consistent
+
+```{r import-pi3k}
+folder <- "Suppression of insulin feedback enhances the efficacy of PI3K inhibitors"
+filename <- "41586_2018_343_MOESM4_ESM.xlsx"
+file_path <- here(data_path, folder, filename)
+pi3k_wide <- read_excel(file_path,
+                    col_names = FALSE,
+                    sheet = "Figure 1A (Glucose Curves)",
+                    range = "A2:U9") %>%
+  data.table()
+
+# give columns names
+colnames(pi3k_wide) <- c(
+  "time",
+  paste0("Vehicle_", 1:5),
+  paste0("BKM120", 1:5),
+  paste0("BYL719", 1:5),
+  paste0("GDC0032", 1:5)
+)
+
+# melt 1
+pi3k_long <- melt(pi3k_wide, 
+              id.vars = c("time"),
+              measure.vars = patterns("^Vehicle",
+                                      "^BKM120",
+                                      "^BYL719",
+                                      "GDC0032"),
+              variable.name = "rep",
+              value.name = c("Vehicle",
+                                "BKM120",
+                                "BYL719",
+                                "GDC0032"))
+
+# melt 2
+pi3k_long <- melt(pi3k_long, 
+              id.vars = c("time", "rep"),
+              measure.vars = c("Vehicle",
+                                "BKM120",
+                                "BYL719",
+                                "GDC0032"),
+              variable.name = "treatment",
+              value.name = "glucose")
+pi3k_long[, time:=factor(time)]
+pi3k_long[, id := paste(treatment, rep, sep="_")]
+
+pi3k_wide <- dcast(data = pi3k_long,
+                    id + treatment + rep ~ time, value.var = "glucose")
+times <- c(0, 15, 30, 60, 90, 120, 180, 240)
+time_cols <- paste0("glucose", times)
+setnames(pi3k_wide, old=as.character(times), new=time_cols)
+Y <- pi3k_wide[, .SD, .SDcols = time_cols]
+pi3k_wide[, auc := apply(Y, 1, auc, x=times)] #check
+pi3k_wide[, iauc := apply(Y, 1, auc, x=times, method="iauc")]
+pi3k_wide[, ipos.auc := apply(Y, 1, auc, x=times, method="pos.iauc")]
+pi3k_wide[, glucose_mean := apply(Y, 1, mean)]
+pi3k_wide[, glucose_change := glucose_mean - glucose0]
+
+```
+
+
+```{r pi3k-n}
+pi3k_wide[, .(N=.N), by=.(treatment)]
+
+```
+
+```{r pi3k-sigma}
+fit <- gls(glucose ~ time*treatment,
+           data = pi3k_long,
+           weights = varIdent(form= ~ 1 | time),
+           correlation= corSymm(form=~ 1| id)
+)
+mu <- apply(pi3k_wide[treatment == "Vehicle", .SD, .SDcols=time_cols], 2, mean)
+mu
+Sigma <- getVarCov(fit, individual=pi3k_long[1,id])
+round(sqrt(diag(Sigma)), 3)
+round(sqrt(diag(Sigma)), 3)/(mu[2]-mu[1])
+round(cov2cor(Sigma), 3)
+
+```
+
+```{r pi3k-plot}
+plot_all_curves(pi3k_long)
+```
+
+```{r pi3k-models}
+m1 <- lm(auc ~ treatment, data = pi3k_wide)
+m2 <- lm(iauc ~ treatment, data = pi3k_wide)
+m3 <- lm(ipos.auc ~ treatment, data = pi3k_wide)
+m4 <- lm(glucose_mean ~ glucose0 + treatment, data=pi3k_wide)
+m5 <- lm(glucose_change ~ treatment, data=pi3k_wide)
+
+coef(summary(m1))
+coef(summary(m2))
+coef(summary(m3))
+coef(summary(m4))
+coef(summary(m5))
+
+```
+
+# The E3 ubiquitin ligase MARCH1 regulates glucose-tolerance and lipid storage in a sex-specific manner
+
+1. very small baseline cor, mod to mod-large non-baseline cors
+1b. sigma relative to initial response in WT
+0.09597674 0.31565550 0.18280642 0.27442647 0.24691554
+
+```{r import-March1}
+folder <- "The E3 ubiquitin ligase MARCH1 regulates glucose-tolerance and lipid storage in a sex-specific manner"
+filename <- "Figure2_data.xlsx"
+file_path <- here(data_path, folder, filename)
+times <- c(0, 20, 40, 60, 90)
+time_cols <- paste0("glucose", times)
+
+march1_wide <- data.table(sex = "male",
+                       treatment = "wt",
+                       t(read_excel(file_path,
+                    col_names = FALSE,
+                    sheet = "Panels A and B",
+                    range = "B2:I6")))
+march1_wide <- rbind(march1_wide,
+                    data.table(sex = "male",
+                       treatment = "march1-ko",
+                       t(read_excel(file_path,
+                    col_names = FALSE,
+                    sheet = "Panels A and B",
+                    range = "j2:p6"))))
+march1_wide <- rbind(march1_wide,
+                    data.table(sex = "female",
+                       treatment = "wt",
+                       t(read_excel(file_path,
+                    col_names = FALSE,
+                    sheet = "Panels A and B",
+                    range = "R2:AA6"))))
+march1_wide <- rbind(march1_wide,
+                    data.table(sex = "female",
+                       treatment = "march1-ko",
+                       t(read_excel(file_path,
+                    col_names = FALSE,
+                    sheet = "Panels A and B",
+                    range = "AB2:AM6"))))
+setnames(march1_wide, old=paste0("V", 1:5), new=time_cols)
+march1_wide[, id := factor(as.character(1:.N))]
+march1_wide[, treatment := factor(treatment)]
+march1_wide[, sex := factor(sex)]
+
+Y <- march1_wide[, .SD, .SDcols = time_cols]
+march1_wide[, auc := apply(Y, 1, auc, x=times)] #check
+march1_wide[, iauc := apply(Y, 1, auc, x=times, method="iauc")]
+march1_wide[, ipos.auc := apply(Y, 1, auc, x=times, method="pos.iauc")]
+march1_wide[, glucose_mean := apply(Y, 1, mean)]
+march1_wide[, glucose_change := glucose_mean - glucose0]
+
+march1_long <- melt(march1_wide, 
+                    id.vars = c("sex", "treatment", "id"),
+                    measure.vars = time_cols,
+                    variable.name = "time",
+                    value.name = "glucose")
+march1_long[, time := factor(time)]
+
+```
+
+
+```{r march1-n}
+march1_wide[, .(N=.N), by=.(treatment, sex)]
+
+```
+
+```{r march1-sigma}
+fit <- gls(glucose ~ sex*time*treatment,
+           data = march1_long,
+           weights = varIdent(form= ~ 1 | time),
+           correlation= corSymm(form=~ 1| id)
+)
+mu <- apply(march1_wide[treatment == "wt", .SD, .SDcols=time_cols], 2, mean)
+mu
+Sigma <- getVarCov(fit, individual=march1_long[1,id])
+round(sqrt(diag(Sigma)), 3)
+round(sqrt(diag(Sigma)), 3)/(mu[2]-mu[1])
+round(cov2cor(Sigma), 3)
+
+```
+
+```{r march1-plot}
+plot_all_curves(march1_long)
+```
+
+```{r march-models}
+m1 <- lm(auc ~ treatment, data = march1_wide[sex=="male"])
+m2 <- lm(iauc ~ treatment, data = march1_wide[sex=="male"])
+m3 <- lm(ipos.auc ~ treatment, data = march1_wide[sex=="male"])
+m4 <- lm(glucose_mean ~ glucose0 + treatment, data=march1_wide[sex=="male"])
+m5 <- lm(glucose_change ~ treatment, data=march1_wide[sex=="male"])
+subdata <- march1_long[sex == "male"]
+m6 <- aov_4(glucose ~ time*treatment + (time|id),
+                 data = subdata)
+m7 <- aov_4(glucose ~ time*treatment + (time|id),
+                 data = subdata, anova_table = list(correction = "none"))
+m8 <- gls(glucose ~ treatment*time,
+           weights = varIdent(form= ~ 1 | time),
+          correlation= corCompSymm(form = ~ 1|id),
+          data=subdata)
+m9 <- lmer(glucose ~ treatment*time + (1|id),
+          data=subdata)
+m6$anova_table
+m7$anova_table
+anova(m8)
+anova(m9)
+emmeans(m7, revpairwise ~ treatment | time)
+contrast(emmeans(m7, specs = ))
+
+
+coef(summary(m1))
+coef(summary(m2))
+coef(summary(m3))
+coef(summary(m4))
+coef(summary(m5))
+
+```
+
+# Endogenous nicotinamide riboside metabolism protects against diet-induced liver damage
+
+ptt fig 1
+1. baseline cors are mod to mod-large positive. glucose15 cor is mod positive with glucose0 and glucose30 but very low with everything else. Non-baseline cors after glucose15 mod to large positive
+2. Treatment effects very consistent among models except that auc has high SE and so p = .09 while other p = .02
+
+gtt fig 2
+1. mistake in pval for iuc for gtt. The auc are incorrectly assigned to treatment -- see excel file and compare to my results. Good example of excel problems.
+2. baseline cor high pos to low from t15 to t180, non-baseline cor have pattern in fake_rho simulation (high to mod) except t15 is mod to very low.
+
+## nrk1 ptt
+```{r import-nrk1}
+folder <- "Endogenous nicotinamide riboside metabolism protects against diet-induced liver damage"
+filename <- "41467_2019_12262_MOESM4_ESM.xlsx"
+file_path <- here(data_path, folder, filename)
+times <- c(0, 15, 30, 45, 60, 90, 120)
+time_cols <- paste0("glucose", times)
+
+nrk1_wide <- data.table(treatment = "wt",
+                       t(read_excel(file_path,
+                    col_names = FALSE,
+                    sheet = "Figure 1",
+                    range = "C4:H10")))
+nrk1_wide <- rbind(nrk1_wide,
+                    data.table(treatment = "nrk1-ko",
+                       t(read_excel(file_path,
+                    col_names = FALSE,
+                    sheet = "Figure 1",
+                    range = "I4:O10"))))
+setnames(nrk1_wide, old=paste0("V", seq_along(times)), new=time_cols)
+nrk1_wide[, id := as.character(1:.N)]
+nrk1_wide[, treatment := factor(treatment, c("wt", "nrk1-ko"))]
+Y <- nrk1_wide[, .SD, .SDcols = time_cols]
+nrk1_wide[, auc := apply(Y, 1, auc, x=times)] #check
+nrk1_wide[, iauc := apply(Y, 1, auc, x=times, method="iauc")]
+nrk1_wide[, pos.iauc := apply(Y, 1, auc, x=times, method="pos.iauc")]
+nrk1_wide[, pb.auc := apply(Y, 1, auc, x=times, method="pb.auc")]
+nrk1_wide[, glucose_mean := apply(Y, 1, mean)]
+nrk1_wide[, glucose_change := glucose_mean - glucose0]
+
+nrk1_long <- melt(nrk1_wide, 
+                    id.vars = c("treatment", "id"),
+                    measure.vars = time_cols,
+                    variable.name = "time",
+                    value.name = "glucose")
+```
+
+
+```{r nrk1-n}
+nrk1_wide[, .(N=.N), by=.(treatment)]
+
+```
+
+```{r nrk1-sigma}
+fit <- gls(glucose ~ time*treatment,
+           data = nrk1_long,
+           weights = varIdent(form= ~ 1 | time),
+           correlation= corSymm(form=~ 1| id)
+)
+round(cov2cor(getVarCov(fit, individual=nrk1_long[1,id])), 3)
+
+```
+
+```{r nrk1-plot}
+plot_all_curves(nrk1_long)
+```
+
+```{r nrk1-models}
+m0 <- lm(glucose0 ~ treatment, data = nrk1_wide)
+m1 <- lm(auc ~ treatment, data = nrk1_wide)
+m2 <- lm(iauc ~ treatment, data = nrk1_wide)
+m3 <- lm(pos.iauc ~ treatment, data = nrk1_wide)
+m4 <- lm(pb.auc ~ glucose0 + treatment, data = nrk1_wide)
+m5 <- lm(glucose_mean ~ glucose0 + treatment, data=nrk1_wide)
+m6 <- lm(glucose_change ~ treatment, data=nrk1_wide)
+
+coef(summary(m0))["treatmentnrk1-ko",]
+coef(summary(m1))["treatmentnrk1-ko",]
+coef(summary(m2))["treatmentnrk1-ko",]
+coef(summary(m3))["treatmentnrk1-ko",]
+coef(summary(m4))["treatmentnrk1-ko",]
+coef(summary(m5))["treatmentnrk1-ko",]
+coef(summary(m6))["treatmentnrk1-ko",]
+
+```
+
+## nrk1 gtt
+
+
+```{r import-nrk1}
+folder <- "Endogenous nicotinamide riboside metabolism protects against diet-induced liver damage"
+filename <- "41467_2019_12262_MOESM4_ESM.xlsx"
+file_path <- here(data_path, folder, filename)
+times <- c(0, 15, 30, 45, 60, 90, 120, 150, 180)
+time_cols <- paste0("glucose", times)
+
+nrk1_wide <- data.table(treatment = "cn",
+                       t(read_excel(file_path,
+                    col_names = FALSE,
+                    sheet = "Figure 2",
+                    range = "D66:K74")))
+nrk1_wide <- rbind(nrk1_wide,
+                    data.table(treatment = "nrk1-ko",
+                       t(read_excel(file_path,
+                    col_names = FALSE,
+                    sheet = "Figure 2",
+                    range = "L66:U74"))))
+setnames(nrk1_wide, old=paste0("V", seq_along(times)), new=time_cols)
+nrk1_wide[, id := as.character(1:.N)]
+nrk1_wide[, treatment := factor(treatment, c("cn", "nrk1-ko"))]
+Y <- nrk1_wide[, .SD, .SDcols = time_cols]
+nrk1_wide[, auc := apply(Y, 1, auc, x=times)] #check
+nrk1_wide[, iauc := apply(Y, 1, auc, x=times, method="iauc")]
+nrk1_wide[, pos.iauc := apply(Y, 1, auc, x=times, method="pos.iauc")]
+nrk1_wide[, pb.auc := apply(Y, 1, auc, x=times, method="pb.auc")]
+nrk1_wide[, glucose_mean := apply(Y, 1, mean)]
+nrk1_wide[, glucose_change := glucose_mean - glucose0]
+
+nrk1_long <- melt(nrk1_wide, 
+                    id.vars = c("treatment", "id"),
+                    measure.vars = time_cols,
+                    variable.name = "time",
+                    value.name = "glucose")
+```
+
+
+```{r nrk1-n}
+nrk1_wide[, .(N=.N), by=.(treatment)]
+
+```
+
+```{r nrk1-sigma}
+fit <- gls(glucose ~ time*treatment,
+           data = nrk1_long,
+           weights = varIdent(form= ~ 1 | time),
+           correlation= corSymm(form=~ 1| id)
+)
+mu <- apply(nrk1_wide[treatment == "cn", .SD, .SDcols=time_cols], 2, mean)
+mu
+Sigma <- getVarCov(fit, individual=nrk1_long[1,id])
+round(sqrt(diag(Sigma)), 3)
+round(sqrt(diag(Sigma)), 3)/(mu[2]-mu[1])
+round(cov2cor(Sigma), 3)
+
+```
+
+```{r nrk1-plot}
+plot_all_curves(nrk1_long)
+```
+
+```{r nrk1-models}
+m0 <- lm(glucose0 ~ treatment, data = nrk1_wide)
+m1 <- lm(auc ~ treatment, data = nrk1_wide)
+m2 <- lm(iauc ~ treatment, data = nrk1_wide)
+m3 <- lm(pos.iauc ~ treatment, data = nrk1_wide)
+m4 <- lm(pb.auc ~ glucose0 + treatment, data = nrk1_wide)
+m5 <- lm(glucose_mean ~ glucose0 + treatment, data=nrk1_wide)
+m6 <- lm(glucose_change ~ treatment, data=nrk1_wide)
+
+coef(summary(m0))["treatmentnrk1-ko",]
+coef(summary(m1))["treatmentnrk1-ko",]
+coef(summary(m2))["treatmentnrk1-ko",]
+coef(summary(m3))["treatmentnrk1-ko",]
+coef(summary(m4))["treatmentnrk1-ko",]
+coef(summary(m5))["treatmentnrk1-ko",]
+coef(summary(m6))["treatmentnrk1-ko",]
+
+```
+
+# Recapitulating endocrine cell clustering in culture promotes maturation of human stem-cell-derived β cells
+1. Very small baseline cor and mod to large non baseline cor
+1b. sigma relative to initial response in "no cells"
+0.04268047 0.18612678 0.04268047 0.18612678 0.04268047 0.18612678
+2. heterogenity of baseline glucose, eith eBCs very low
+
+```{r import-beta}
+folder <- "Recapitulating endocrine cell clustering in culture promotes maturation of human stem-cell-derived β cells"
+filename <- "41556_2018_271_MOESM8_ESM.xlsx"
+file_path <- here(data_path, folder, filename)
+times <- c(0, 15, 30, 60, 90, 120)
+time_cols <- paste0("glucose", times)
+
+beta_wide <- data.table(treatment = "eBCs",
+                       t(read_excel(file_path,
+                    col_names = FALSE,
+                    sheet = "FIGURE 7",
+                    range = "B5:F10")))
+beta_wide <- rbind(beta_wide,
+                    data.table(treatment = "NEC",
+                       t(read_excel(file_path,
+                    col_names = FALSE,
+                    sheet = "FIGURE 7",
+                    range = "G5:J10"))))
+beta_wide <- rbind(beta_wide,
+                    data.table(treatment = "D20",
+                       t(read_excel(file_path,
+                    col_names = FALSE,
+                    sheet = "FIGURE 7",
+                    range = "K5:O10"))))
+beta_wide <- rbind(beta_wide,
+                    data.table(treatment = "No cells",
+                       t(read_excel(file_path,
+                    col_names = FALSE,
+                    sheet = "FIGURE 7",
+                    range = "P5:S10"))))
+beta_wide <- rbind(beta_wide,
+                    data.table(treatment = "Human",
+                       t(read_excel(file_path,
+                    col_names = FALSE,
+                    sheet = "FIGURE 7",
+                    range = "T5:V10"))))
+setnames(beta_wide, old=paste0("V", seq_along(times)), new=time_cols)
+beta_wide[, id := factor(1:.N)]
+beta_wide[, treatment := factor(treatment,
+                                c("eBCs", "No cells", "NEC", "D20", "Human"))]
+Y <- beta_wide[, .SD, .SDcols = time_cols]
+beta_wide[, auc := apply(Y, 1, auc, x=times)] #check
+beta_wide[, iauc := apply(Y, 1, auc, x=times, method="iauc")]
+beta_wide[, pos.iauc := apply(Y, 1, auc, x=times, method="pos.iauc")]
+beta_wide[, pb.auc := apply(Y, 1, auc, x=times, method="pb.auc")]
+beta_wide[, glucose_mean := apply(Y, 1, mean)]
+beta_wide[, glucose_change := glucose_mean - glucose0]
+
+beta_long <- melt(beta_wide, 
+                    id.vars = c("treatment", "id"),
+                    measure.vars = time_cols,
+                    variable.name = "time",
+                    value.name = "glucose")
+```
+
+
+```{r beta-n}
+beta_wide[, .(N=.N), by=.(treatment)]
+
+```
+
+```{r beta-sigma}
+fit <- gls(glucose ~ time*treatment,
+           data = beta_long,
+           weights = varIdent(form= ~ 1 | time),
+           correlation= corSymm(form=~ 1| id)
+)
+mu <- apply(beta_wide[treatment == "No cells", .SD, .SDcols=time_cols], 2, mean)
+mu
+Sigma <- getVarCov(fit, individual=beta_long[1,id])
+round(sqrt(diag(Sigma)), 3)
+round(sqrt(diag(Sigma)), 3)/(mu[2]-mu[1])
+round(cov2cor(Sigma), 3)
+
+```
+
+```{r beta-plot}
+plot_all_curves(beta_long)
+```
+
+```{r beta-models}
+m0 <- lm(glucose0 ~ treatment, data = beta_wide)
+m1 <- lm(auc ~ treatment, data = beta_wide)
+m2 <- lm(iauc ~ treatment, data = beta_wide)
+m3 <- lm(pos.iauc ~ treatment, data = beta_wide)
+m4 <- lm(pb.auc ~ glucose0 + treatment, data = beta_wide)
+m5 <- lm(glucose_mean ~ glucose0 + treatment, data=beta_wide)
+m6 <- lm(glucose_change ~ treatment, data=beta_wide)
+
+coef(summary(m0))
+coef(summary(m1))
+coef(summary(m2))
+coef(summary(m3))
+coef(summary(m4))
+coef(summary(m5))
+coef(summary(m6))
+
+```
+
+# BCAA catabolism in brown fat controls energy homeostasis through SLC25A44
+
+1. moderate to moderately high baseline cor and moderate-very high non-baseline cor
+1b. sigma relative to initial response in control
+0.1276123 0.2923751 0.2841936 0.1276123 0.2923751 0.2841936
+2. some evidence of increased glucose at baseline in treatment (p ~ 0.05)
+3. evidence of glucose intolerance less compelling using covariate model than not using covariate model (p ~ 0.05 v .005)
+4. Good candidate for difference in estimate based on cov v. non cov model. Mediation model shows >50% of effect is indirect
+5. Good example of regression to the mean at glucose15 when there is a baseline difference (is this real?)
+
+```{r import-bcaa}
+folder <- "BCAA catabolism in brown fat controls energy homeostasis through SLC25A44"
+filename <- "41586_2019_1503_MOESM8_ESM.xlsx"
+file_path <- here(data_path, folder, filename)
+times <- c(0, 15, 30, 60, 90, 120)
+time_cols <- paste0("glucose", times)
+
+bcaa_wide <- read_excel(file_path,
+                        sheet = "Fig2g",
+                        range = "A2:G30") %>%
+  data.table()
+colnames(bcaa_wide) <- c("id", time_cols)
+bcaa_wide[, id := factor(id)]
+bcaa_wide[, treatment := factor(ifelse(substr(id,1,1)=="C", "Control", "BckdhaUcp1 KO"),
+                                c("Control", "BckdhaUcp1 KO"))]
+
+Y <- bcaa_wide[, .SD, .SDcols = time_cols]
+bcaa_wide[, auc := apply(Y, 1, auc, x=times)] #check
+bcaa_wide[, iauc := apply(Y, 1, auc, x=times, method="iauc")]
+bcaa_wide[, pos.iauc := apply(Y, 1, auc, x=times, method="pos.iauc")]
+bcaa_wide[, pb.auc := apply(Y, 1, auc, x=times, method="pb.auc")]
+bcaa_wide[, glucose_mean := apply(Y, 1, mean)]
+bcaa_wide[, glucose_change := glucose_mean - glucose0]
+
+bcaa_long <- melt(bcaa_wide, 
+                    id.vars = c("treatment", "id", "glucose0"),
+                    measure.vars = time_cols,
+                    variable.name = "time",
+                    value.name = "glucose")
+bcaa_long[, time := factor(time)]
+bcaa_long[, minutes := times[as.integer(time)]]
+```
+
+
+```{r bcaa-n}
+bcaa_wide[, .(N=.N), by=.(treatment)]
+
+```
+
+```{r bcaa-sigma}
+fit <- gls(glucose ~ time*treatment,
+           data = bcaa_long,
+           weights = varIdent(form= ~ 1 | time),
+           correlation= corSymm(form=~ 1| id)
+)
+mu <- apply(bcaa_wide[treatment == "Control", .SD, .SDcols=time_cols], 2, mean)
+mu
+Sigma <- getVarCov(fit, individual=bcaa_long[1,id])
+round(sqrt(diag(Sigma)), 3)
+round(sqrt(diag(Sigma)), 3)/(mu[2]-mu[1])
+round(cov2cor(Sigma), 3)
+
+```
+
+```{r bcaa-plot}
+plot_all_curves(bcaa_long)
+```
+
+```{r bcaa-models}
+m0 <- lm(glucose0 ~ treatment, data = bcaa_wide)
+m1 <- lm(auc ~ treatment, data = bcaa_wide)
+m2 <- lm(iauc ~ treatment, data = bcaa_wide)
+m3 <- lm(pos.iauc ~ treatment, data = bcaa_wide)
+m4 <- lm(pb.auc ~ glucose0 + treatment, data = bcaa_wide)
+m5 <- lm(glucose_mean ~ glucose0 + treatment, data=bcaa_wide)
+m6 <- lm(glucose_change ~ treatment, data=bcaa_wide)
+
+coef(summary(m0))
+coef(summary(m1))
+coef(summary(m2))
+coef(summary(m3))
+coef(summary(m4))
+coef(summary(m5))
+coef(summary(m6))
+
+```
+
+```{r bcaa-rmanova}
+m1 <- aov_4(glucose ~ time*treatment + (time|id),
+                 data = bcaa_long)
+m2 <- aov_4(glucose ~ time*treatment + (time|id),
+                 data = bcaa_long, anova_table = list(correction = "none"))
+
+m1$anova_table
+m2$anova_table
+        m1.emm <- emmeans(m1,  ~ treatment*time)
+        contrast(m1.emm, 
+                 method = "revpairwise",
+                 simple = "each",
+                 combine = TRUE,
+                 adjust = "none")[1:6,]
+```
+
+```{r bcaa-Gls-setup}
+subdata <- bcaa_long[time != "glucose0"]
+cp <- list(corCAR1,corExp,corCompSymm,corLin,corGaus,corSpher)
+z <- vector( 'list', length(cp))
+for(k in 1:length(cp)){
+  z[[k]] <- gls(glucose ~ treatment * rcs(minutes, 3) +
+                  rcs(glucose0, 3), data=subdata,
+                correlation =cp[[k]](form = ~minutes | id))
+}
+anova(z[[1]],z[[2]],z[[3]],z[[4]],z[[5]],z[[6]])
+
+```
+
+```{r bcaa-Gls}
+
+ddname <- datadist(subdata)
+options(datadist="ddname")
+
+m1 <- Gls(glucose ~ treatment * rcs(minutes, 3) +
+                  rcs(glucose0, 3), data=subdata,
+                correlation =corExp(form = ~minutes | id))
+m1
+```
+
+```{r bcaa-Gls-pairs}
+
+(m1.pairs <- rms::contrast(m1, 
+               list(minutes=c(15, 30, 60, 90, 120), treatment = "Control"),
+               list(minutes=c(15, 30, 60, 90, 120), treatment = "BckdhaUcp1 KO")))
+
+```
+
+glucose0   .         BckdhaUcp1 KO - Control     20.7 21.5 50.2 0.964   0.3397 
+ glucose15  .         BckdhaUcp1 KO - Control     59.7 21.5 50.2 2.773   0.0078 
+ glucose30  .         BckdhaUcp1 KO - Control     67.5 21.5 50.2 3.136   0.0029 
+ glucose60  .         BckdhaUcp1 KO - Control     63.5 21.5 50.2 2.951   0.0048 
+ glucose90  .         BckdhaUcp1 KO - Control     69.6 21.5 50.2 3.234   0.0022 
+ glucose120 .         BckdhaUcp1 KO - Control     48.7 21.5 50.2 2.266   0.0278 
+
+```{r bcaa-mediation-15}
+m1 <- lm(glucose0 ~ treatment, data=bcaa_wide) # mediator model
+
+m2 <- lm(glucose15 ~ treatment, data=bcaa_wide) # total effect
+
+m3 <- lm(glucose15 ~ glucose0 + treatment, data=bcaa_wide) # outcome model
+
+m4 <- mediate(model.m <- m1, 
+                   model.y <- m3, 
+                   treat = "treatment", 
+                   mediator = "glucose0", 
+                   robustSE = TRUE, sims = 1000)
+summary(m4)
+
+```
+
+```{r bcaa-mediation-mean}
+m1 <- lm(glucose0 ~ treatment, data=bcaa_wide) # mediator model
+
+m2 <- lm(glucose_mean ~ treatment, data=bcaa_wide) # total effect
+
+m3 <- lm(glucose_mean ~ glucose0 + treatment, data=bcaa_wide) # outcome model
+
+m4 <- mediate(model.m <- m1, 
+                   model.y <- m3, 
+                   treat = "treatment", 
+                   mediator = "glucose0", 
+                   robustSE = TRUE, sims = 1000)
+summary(m4)
+
+
+```
+
+# Interleukin-36 cytokines alter the intestinal microbiome and can protect against obesity and metabolic dysfunction
+
+1. baseline cor has small to large *negative* cor. non-baseline cor has small (glucose15) to large (glucose30+) positive cor.
+
+```{r import-il36}
+folder <- "Interleukin-36 cytokines alter the intestinal microbiome and can protect against obesity and metabolic dysfunction"
+filename <- "41467_2019_11944_MOESM3_ESM.xlsx"
+file_path <- here(data_path, folder, filename)
+times <- c(0, 15, 45, 70, 120)
+time_cols <- paste0("glucose", times)
+
+il36_wide <- data.table(treatment = "wt",
+                       t(read_excel(file_path,
+                    col_names = FALSE,
+                    sheet = "Figure 2d",
+                    range = "C5:G9")))
+il36_wide <- rbind(il36_wide,
+                    data.table(treatment = "il36rn-/-",
+                       t(read_excel(file_path,
+                    col_names = FALSE,
+                    sheet = "Figure 2d",
+                    range = "H5:L9"))))
+
+setnames(il36_wide, old=paste0("V", seq_along(times)), new=time_cols)
+il36_wide[, id := factor(1:.N)]
+il36_wide[, treatment := factor(treatment,
+                                c("wt", "il36rn-/-"))]
+Y <- il36_wide[, .SD, .SDcols = time_cols]
+il36_wide[, auc := apply(Y, 1, auc, x=times)] #check
+il36_wide[, iauc := apply(Y, 1, auc, x=times, method="iauc")]
+il36_wide[, pos.iauc := apply(Y, 1, auc, x=times, method="pos.iauc")]
+il36_wide[, pb.auc := apply(Y, 1, auc, x=times, method="pb.auc")]
+il36_wide[, glucose_mean := apply(Y, 1, mean)]
+il36_wide[, glucose_change := glucose_mean - glucose0]
+
+il36_long <- melt(il36_wide, 
+                    id.vars = c("treatment", "id"),
+                    measure.vars = time_cols,
+                    variable.name = "time",
+                    value.name = "glucose")
+il36_long[, time:=factor(time)]
+```
+
+
+```{r il36-n}
+il36_wide[, .(N=.N), by=.(treatment)]
+
+```
+
+```{r il36-sigma}
+fit <- gls(glucose ~ time*treatment,
+           data = il36_long,
+           weights = varIdent(form= ~ 1 | time),
+           correlation= corSymm(form=~ 1| id)
+)
+mu <- apply(il36_wide[treatment == "wt", .SD, .SDcols=time_cols], 2, mean)
+mu
+Sigma <- getVarCov(fit, individual=il36_long[1,id])
+round(sqrt(diag(Sigma)), 3)
+round(sqrt(diag(Sigma)), 3)/(mu[2]-mu[1])
+round(cov2cor(Sigma), 3)
+
+```
+
+```{r il36-plot}
+plot_all_curves(il36_long)
+```
+
+```{r il36-models}
+m0 <- lm(glucose0 ~ treatment, data = il36_wide)
+m1 <- lm(auc ~ treatment, data = il36_wide)
+m2 <- lm(iauc ~ treatment, data = il36_wide)
+m3 <- lm(pos.iauc ~ treatment, data = il36_wide)
+m4 <- lm(pb.auc ~ glucose0 + treatment, data = il36_wide)
+m5 <- lm(glucose_mean ~ glucose0 + treatment, data=il36_wide)
+m6 <- lm(glucose_change ~ treatment, data=il36_wide)
+
+coef(summary(m0))
+coef(summary(m1))
+coef(summary(m2))
+coef(summary(m3))
+coef(summary(m4))
+coef(summary(m5))
+coef(summary(m6))
+
+```
+
+```{r il36-rmanova}
+m1 <- aov_4(glucose ~ time*treatment + (time|id),
+                 data = il36_long)
+m2 <- aov_4(glucose ~ time*treatment + (time|id),
+                 data = il36_long, anova_table = list(correction = "none"))
+
+m1$anova_table
+m2$anova_table
+        m1.emm <- emmeans(m1,  ~ treatment*time)
+        contrast(m1.emm, 
+                 method = "revpairwise",
+                 simple = "each",
+                 combine = TRUE,
+                 adjust = "none")[1:6,]
+```
+

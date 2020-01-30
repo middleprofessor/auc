@@ -1,0 +1,59 @@
+"0","folder <- ""Endogenous nicotinamide riboside metabolism protects against diet-induced liver damage"""
+"0","filename <- ""41467_2019_12262_MOESM4_ESM.xlsx"""
+"0","file_path <- here(data_path, folder, filename)"
+"0","times <- c(0, 15, 30, 45, 60, 90, 120)"
+"0","time_cols <- paste0(""glucose"", times)"
+"0","nrk1_wide <- data.table(treatment = ""wt"","
+"0","                       t(read_excel(file_path,"
+"0","                    col_names = FALSE,"
+"0","                    sheet = ""Figure 1"","
+"0","                    range = ""C4:H10"")))"
+"1",""
+"1","-"
+"1",""
+"1","/"
+"1","                                                                            "
+"1",""
+"2","New names:
+* `` -> ...1
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* … and 1 more problem
+"
+"0","nrk1_wide <- rbind(nrk1_wide,"
+"0","                    data.table(treatment = ""nrk1-ko"","
+"0","                       t(read_excel(file_path,"
+"0","                    col_names = FALSE,"
+"0","                    sheet = ""Figure 1"","
+"0","                    range = ""I4:O10""))))"
+"1",""
+"1","-"
+"1",""
+"1","/"
+"1","                                                                            "
+"1",""
+"2","New names:
+* `` -> ...1
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* … and 2 more problems
+"
+"0","setnames(nrk1_wide, old=paste0(""V"", seq_along(times)), new=time_cols)"
+"0","nrk1_wide[, id := as.character(1:.N)]"
+"0","nrk1_wide[, treatment := factor(treatment, c(""wt"", ""nrk1-ko""))]"
+"0","Y <- nrk1_wide[, .SD, .SDcols = time_cols]"
+"0","nrk1_wide[, auc := apply(Y, 1, auc, x=times)] #check"
+"0","nrk1_wide[, iauc := apply(Y, 1, auc, x=times, method=""iauc"")]"
+"0","nrk1_wide[, pos.iauc := apply(Y, 1, auc, x=times, method=""pos.iauc"")]"
+"0","nrk1_wide[, pb.auc := apply(Y, 1, auc, x=times, method=""pb.auc"")]"
+"0","nrk1_wide[, glucose_mean := apply(Y, 1, mean)]"
+"0","nrk1_wide[, glucose_change := glucose_mean - glucose0]"
+"0","nrk1_long <- melt(nrk1_wide, "
+"0","                    id.vars = c(""treatment"", ""id""),"
+"0","                    measure.vars = time_cols,"
+"0","                    variable.name = ""time"","
+"0","                    value.name = ""glucose"")"

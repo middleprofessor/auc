@@ -1,0 +1,104 @@
+"0","folder <- ""The E3 ubiquitin ligase MARCH1 regulates glucose-tolerance and lipid storage in a sex-specific manner"""
+"0","filename <- ""Figure2_data.xlsx"""
+"0","file_path <- here(data_path, folder, filename)"
+"0","times <- c(0, 20, 40, 60, 90)"
+"0","time_cols <- paste0(""glucose"", times)"
+"0","march1_wide <- data.table(sex = ""male"","
+"0","                       treatment = ""wt"","
+"0","                       t(read_excel(file_path,"
+"0","                    col_names = FALSE,"
+"0","                    sheet = ""Panels A and B"","
+"0","                    range = ""B2:I6"")))"
+"1",""
+"1","-"
+"1",""
+"1","/"
+"1","                                                                              "
+"1",""
+"2","New names:
+* `` -> ...1
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* … and 3 more problems
+"
+"0","march1_wide <- rbind(march1_wide,"
+"0","                    data.table(sex = ""male"","
+"0","                       treatment = ""march1-ko"","
+"0","                       t(read_excel(file_path,"
+"0","                    col_names = FALSE,"
+"0","                    sheet = ""Panels A and B"","
+"0","                    range = ""j2:p6""))))"
+"1",""
+"1","-"
+"1",""
+"1","/"
+"1","                                                                              "
+"1",""
+"2","New names:
+* `` -> ...1
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* … and 2 more problems
+"
+"0","march1_wide <- rbind(march1_wide,"
+"0","                    data.table(sex = ""female"","
+"0","                       treatment = ""wt"","
+"0","                       t(read_excel(file_path,"
+"0","                    col_names = FALSE,"
+"0","                    sheet = ""Panels A and B"","
+"0","                    range = ""R2:AA6""))))"
+"1",""
+"1","-"
+"1",""
+"1","/"
+"1","                                                                              "
+"1",""
+"2","New names:
+* `` -> ...1
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* … and 5 more problems
+"
+"0","march1_wide <- rbind(march1_wide,"
+"0","                    data.table(sex = ""female"","
+"0","                       treatment = ""march1-ko"","
+"0","                       t(read_excel(file_path,"
+"0","                    col_names = FALSE,"
+"0","                    sheet = ""Panels A and B"","
+"0","                    range = ""AB2:AM6""))))"
+"1",""
+"1","-"
+"1",""
+"1","/"
+"1","                                                                              "
+"1",""
+"2","New names:
+* `` -> ...1
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* … and 7 more problems
+"
+"0","setnames(march1_wide, old=paste0(""V"", 1:5), new=time_cols)"
+"0","march1_wide[, id := factor(as.character(1:.N))]"
+"0","march1_wide[, treatment := factor(treatment)]"
+"0","march1_wide[, sex := factor(sex)]"
+"0","Y <- march1_wide[, .SD, .SDcols = time_cols]"
+"0","march1_wide[, auc := apply(Y, 1, auc, x=times)] #check"
+"0","march1_wide[, iauc := apply(Y, 1, auc, x=times, method=""iauc"")]"
+"0","march1_wide[, ipos.auc := apply(Y, 1, auc, x=times, method=""pos.iauc"")]"
+"0","march1_wide[, glucose_mean := apply(Y, 1, mean)]"
+"0","march1_wide[, glucose_change := glucose_mean - glucose0]"
+"0","march1_long <- melt(march1_wide, "
+"0","                    id.vars = c(""sex"", ""treatment"", ""id""),"
+"0","                    measure.vars = time_cols,"
+"0","                    variable.name = ""time"","
+"0","                    value.name = ""glucose"")"
+"0","march1_long[, time := factor(time)]"

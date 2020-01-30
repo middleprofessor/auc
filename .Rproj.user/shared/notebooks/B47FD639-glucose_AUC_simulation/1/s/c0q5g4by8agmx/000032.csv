@@ -1,0 +1,8 @@
+"0","      # rmanova returns the smallest unadjusted p of the pairs
+      # rmanova.i returns the p for the anova interaction
+      # rmanova.t returns the p for the anova treatment
+      m7 <- aov_4(glucose ~ time*treatment + (time|id),
+                 data=fd_long)
+"
+"2","Contrasts set to contr.sum for the following variables: treatment
+"

@@ -1,0 +1,141 @@
+"0","knitr::opts_chunk$set(echo = TRUE)"
+"0","library(here)"
+"2","here() starts at /Users/jwalker/Documents/Github projects/Research Projects/auc
+"
+"0","library(readxl)"
+"0","library(janitor)"
+"2","
+Attaching package: ‘janitor’
+
+"
+"2","The following objects are masked from ‘package:stats’:
+
+    chisq.test, fisher.test
+
+"
+"0","library(data.table)"
+"2","data.table 1.12.6 using 4 threads (see ?getDTthreads).  Latest news: r-datatable.com
+"
+"0","library(Hmisc) # auc using trap.rule, probably faster than my code"
+"2","Loading required package: lattice
+"
+"2","Loading required package: survival
+"
+"2","Loading required package: Formula
+"
+"2","Loading required package: ggplot2
+"
+"2","Need help? Try Stackoverflow: https://stackoverflow.com/tags/ggplot2.
+"
+"2","
+Attaching package: ‘Hmisc’
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    format.pval, units
+
+"
+"0","library(nlme)"
+"0","library(afex)"
+"2","Loading required package: lme4
+"
+"2","Loading required package: Matrix
+"
+"2","
+Attaching package: ‘lme4’
+
+"
+"2","The following object is masked from ‘package:nlme’:
+
+    lmList
+
+"
+"2","************
+Welcome to afex. For support visit: http://afex.singmann.science/
+"
+"2","- Functions for ANOVAs: aov_car(), aov_ez(), and aov_4()
+- Methods for calculating p-values with mixed(): 'KR', 'S', 'LRT', and 'PB'
+- 'afex_aov' and 'mixed' objects can be passed to emmeans() for follow-up tests
+- NEWS: library('emmeans') now needs to be called explicitly!
+- Get and set global package options with: afex_options()
+- Set orthogonal sum-to-zero contrasts globally: set_sum_contrasts()
+- For example analyses see: browseVignettes(""afex"")
+************
+"
+"2","
+Attaching package: ‘afex’
+
+"
+"2","The following object is masked from ‘package:lme4’:
+
+    lmer
+
+"
+"0","library(lmerTest)"
+"2","
+Attaching package: ‘lmerTest’
+
+"
+"2","The following object is masked from ‘package:lme4’:
+
+    lmer
+
+"
+"2","The following object is masked from ‘package:stats’:
+
+    step
+
+"
+"0","library(emmeans)"
+"2","Welcome to emmeans.
+NOTE -- Important change from versions <= 1.41:
+    Indicator predictors are now treated as 2-level factors by default.
+    To revert to old behavior, use emm_options(cov.keep = character(0))
+"
+"0","library(limma) # Roast"
+"0","library(mediation)"
+"2","Loading required package: MASS
+"
+"2","Loading required package: mvtnorm
+"
+"2","Loading required package: sandwich
+"
+"2","mediation: Causal Mediation Analysis
+Version: 4.5.0
+
+"
+"0","library(multcomp)"
+"2","Loading required package: TH.data
+"
+"2","
+Attaching package: ‘TH.data’
+
+"
+"2","The following object is masked from ‘package:MASS’:
+
+    geyser
+
+"
+"0","library(ggpubr)"
+"2","Loading required package: magrittr
+"
+"0","library(ggsci)"
+"0","library(DHARMa)"
+"2","
+Attaching package: ‘DHARMa’
+
+"
+"2","The following object is masked from ‘package:nlme’:
+
+    getResponse
+
+"
+"0","library(mvtnorm)"
+"0","library(doBy)"
+"0","here <- here::here"
+"0","data_path <- ""data"""
+"0","output_path <- ""output"""
+"0","source_folder <- ""R"""
+"0","auc_path <- here(source_folder, ""auc.R"")"
+"0","source(auc_path)"

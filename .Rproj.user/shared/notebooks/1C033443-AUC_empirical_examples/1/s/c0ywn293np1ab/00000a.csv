@@ -1,0 +1,90 @@
+"0","ddname <- datadist(subdata)"
+"0","options(datadist=""ddname"")"
+"0","m1 <- Gls(glucose ~ treatment * rcs(minutes, 3) +"
+"0","                  rcs(glucose0, 3), data=subdata,"
+"0","                correlation =corExp(form = ~minutes | id))"
+"2","3 knots requested with 5 unique values of x.  knots set to 3 interior values."
+"0","m1"
+"1","Generalized Least Squares Fit by REML
+"
+"1"," "
+"1","
+"
+"1"," "
+"1","Gls(model = glucose ~ treatment * rcs(minutes, 3) + rcs(glucose0, 
+"
+"1"," "
+"1","    3), data = subdata, correlation = corExp(form = ~minutes | 
+"
+"1"," "
+"1","    id))
+"
+"1"," "
+"1","
+"
+"1"," "
+"1","                                                  
+"
+"1"," "
+"1","Obs  140      Log-restricted-likelihood-705.27    
+"
+"1"," "
+"1","Clusters28    Model d.f. 7                        
+"
+"1"," "
+"1","g 95.526      sigma48.8797                        
+"
+"1"," "
+"1","              d.f.     132                        
+"
+"1"," "
+"1","
+"
+"1"," "
+"1","                                   Coef     S.E.    t     Pr(>|t|)
+"
+"1"," "
+"1","Intercept                          234.0860 89.3440  2.62 0.0098  
+"
+"1"," "
+"1","treatment=BckdhaUcp1 KO             29.1594 24.0151  1.21 0.2268  
+"
+"1"," "
+"1","minutes                             -1.4676  0.3651 -4.02 <0.0001 
+"
+"1"," "
+"1","minutes'                            -0.3002  0.3762 -0.80 0.4264  
+"
+"1"," "
+"1","glucose0                             0.9536  0.6804  1.40 0.1634  
+"
+"1"," "
+"1","glucose0'                            0.4848  0.6100  0.79 0.4282  
+"
+"1"," "
+"1","treatment=BckdhaUcp1 KO * minutes    0.2474  0.4988  0.50 0.6207  
+"
+"1"," "
+"1","treatment=BckdhaUcp1 KO * minutes'  -0.4026  0.5140 -0.78 0.4349  
+"
+"1"," "
+"1","
+"
+"1"," "
+"1","Correlation Structure: Exponential spatial correlation
+"
+"1"," "
+"1"," Formula: ~minutes | id 
+"
+"1"," "
+"1"," Parameter estimate(s):
+"
+"1"," "
+"1","   range 
+"
+"1"," "
+"1","55.39861 
+"
+"1"," "
+"1","
+"
