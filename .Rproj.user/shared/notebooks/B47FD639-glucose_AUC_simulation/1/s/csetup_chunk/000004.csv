@@ -25,7 +25,8 @@ Attaching package: ‘janitor’
 "
 "2","Loading required package: ggplot2
 "
-"2","Need help? Try Stackoverflow: https://stackoverflow.com/tags/ggplot2.
+"2","Want to understand how all the pieces fit together? See the R for Data
+Science book: http://r4ds.had.co.nz/
 "
 "2","
 Attaching package: ‘Hmisc’

@@ -11,3 +11,377 @@ From github.com:middleprofessor/auc
  * branch            master     -> FETCH_HEAD
  * [new branch]      master     -> origin/master
 ]0;~/Documents/Github projects/Research Projects/aucC02Y52NRJHD3:auc jwalker$ git add .
+]0;~/Documents/Github projects/Research Projects/aucC02Y52NRJHD3:auc jwalker$ git commit - m[K[Km # st[K[Kiniit[K[Ktiaal [K[K[Kl commit
+error: switch `m' requires a value
+]0;~/Documents/Github projects/Research Projects/aucC02Y52NRJHD3:auc jwalker$ git commit -m "init site"
+[master 9def99e] init site
+ 351 files changed, 75946 insertions(+)
+ create mode 100644 .DS_Store
+ create mode 100644 .Rhistory
+ create mode 100644 .Rproj.user/7CCE8BFF/console06/12D22033
+ create mode 100644 .Rproj.user/7CCE8BFF/console06/12D22033.env
+ create mode 100644 .Rproj.user/7CCE8BFF/console06/INDEX001
+ create mode 100644 .Rproj.user/7CCE8BFF/pcs/files-pane.pper
+ create mode 100644 .Rproj.user/7CCE8BFF/pcs/packages-pane.pper
+ create mode 100644 .Rproj.user/7CCE8BFF/pcs/source-pane.pper
+ create mode 100644 .Rproj.user/7CCE8BFF/pcs/windowlayoutstate.pper
+ create mode 100644 .Rproj.user/7CCE8BFF/pcs/workbench-pane.pper
+ create mode 100644 .Rproj.user/7CCE8BFF/rmd-outputs
+ create mode 100644 .Rproj.user/7CCE8BFF/saved_source_markers
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/prop/1940BC2A
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/prop/1ED86544
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/prop/1FAE9915
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/prop/3317515C
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/prop/5F2B64EC
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/prop/6175C378
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/prop/93C8F703
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/prop/A8C49F21
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/prop/C8E0B582
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/prop/CB61FFAE
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/prop/CF748E22
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/prop/E659ABD0
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/prop/E8CA2C06
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/prop/INDEX
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/s-76E104AD/53307BAD-contents
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/s-76E104AD/7661932E
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/s-76E104AD/7661932E-contents
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/s-76E104AD/7A4D5145-contents
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/s-76E104AD/95C9F699
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/s-76E104AD/95C9F699-contents
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/s-76E104AD/993F2EC0-contents
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/s-76E104AD/ED8E17F6-contents
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/s-76E104AD/F434BF04
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/s-76E104AD/F434BF04-contents
+ create mode 100644 .Rproj.user/7CCE8BFF/sources/s-76E104AD/lock_file
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/7CCE8BFFDD37F137/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c0sfm8inys48w/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c0ywn293np1ab/000008.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c0ywn293np1ab/000009.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c0ywn293np1ab/000009.rdf
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c0ywn293np1ab/00000a.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c15mh4s776u34/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c1xdt03vsrm02/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c2666gya22q1h/00000a.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c2euxg3l7rpwf/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c2qyyb4f0jncr/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c2udr7i4jfe7u/000006.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c3czm0mkz6d7l/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c3czm0mkz6d7l/000005.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c3czm0mkz6d7l/000005.rdf
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c55r60kweygd8/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c5gahu2co82cv/000006.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c5gahu2co82cv/000007.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c5gahu2co82cv/000007.rdf
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c7mix8vncomuz/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c7mix8vncomuz/000005.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c7mix8vncomuz/000005.png
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c7mix8vncomuz/000005.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c84jrhpt0h5pz/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c898ge7jbt3ff/00000a.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c898ge7jbt3ff/00000b.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c898ge7jbt3ff/00000b.png
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c898ge7jbt3ff/00000b.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c898ge7jbt3ff/00000c.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c898ge7jbt3ff/00000d.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c898ge7jbt3ff/00000d.png
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c898ge7jbt3ff/00000d.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c898ge7jbt3ff/00000e.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c898ge7jbt3ff/00000f.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c898ge7jbt3ff/00000f.png
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c898ge7jbt3ff/00000f.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c898ge7jbt3ff/000010.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c898ge7jbt3ff/000011.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c898ge7jbt3ff/000011.png
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c898ge7jbt3ff/000011.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c8m1jm63a8nau/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c945i8b8qdwsn/000006.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c9n1xkxqljcr4/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/c9u9n6ntqnozj/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cazryy6nnfdzd/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cba4wi0t366qv/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cba4wi0t366qv/000003.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cba4wi0t366qv/000003.rdf
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cbfxmpvewwovy/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cbfxmpvewwovy/000005.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cbfxmpvewwovy/000005.png
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cbfxmpvewwovy/000005.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cbiw2lkfkzxhr/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cbiw2lkfkzxhr/000005.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cbiw2lkfkzxhr/000005.png
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cbiw2lkfkzxhr/000005.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cbjmguc7qqynm/00000a.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cbjmguc7qqynm/00000b.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cbjmguc7qqynm/00000b.rdf
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cdvo0ivlfcdtn/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cdvo0ivlfcdtn/000003.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cdvo0ivlfcdtn/000003.png
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cdvo0ivlfcdtn/000003.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cdwbwx5j5m2p2/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cdwbwx5j5m2p2/000005.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cdwbwx5j5m2p2/000005.png
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cdwbwx5j5m2p2/000005.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cdx4c63cal73f/000016.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cf6ik4fi4l78z/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cf6ik4fi4l78z/000005.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cf6ik4fi4l78z/000005.png
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cf6ik4fi4l78z/000005.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cfmi95714qtzi/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cfmi95714qtzi/000005.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cfmi95714qtzi/000005.rdf
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cfmi95714qtzi/000006.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cgwa96s1aj0nk/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/chq2luxsiqhwg/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cic1dupn3t4zi/000008.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cjgojkq8jmmss/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cjgojkq8jmmss/000005.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cjgojkq8jmmss/000005.rdf
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cjve0jlihk8oy/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/ck4dxp9qwmvex/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/ck4dxp9qwmvex/000003.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/ck4dxp9qwmvex/000003.png
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/ck4dxp9qwmvex/000003.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cku8yxmac69eg/000008.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cl56o8jiacneq/000008.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/clh7izw2lb8ec/000006.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cmjwtcaveah5e/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cnrcqs6ie8oez/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/co515wgn6a5oh/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/coapqlg187c9s/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/coorsq45bllux/000010.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/coznmigi8jevi/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/coznmigi8jevi/000005.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/coznmigi8jevi/000005.png
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/coznmigi8jevi/000005.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cozv6jzcn1dn4/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cpovd7kdlb4u4/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cpovd7kdlb4u4/000005.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cpovd7kdlb4u4/000005.rdf
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cpwk9owgjhrz1/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cpwk9owgjhrz1/000003.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cpwk9owgjhrz1/000003.rdf
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cpwk9owgjhrz1/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cqaxqy5xa2y1a/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cqaxqy5xa2y1a/000005.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cqaxqy5xa2y1a/000005.png
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cqaxqy5xa2y1a/000005.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/csetup_chunk/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/ctbqov3eatkf3/000006.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cth5qzo6bpkc3/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cth5qzo6bpkc3/000005.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cth5qzo6bpkc3/000005.rdf
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/ctuat1o1t06ae/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/ctuat1o1t06ae/000005.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/ctuat1o1t06ae/000005.png
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/ctuat1o1t06ae/000005.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cvpyctw6p2pzd/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cvx6dnlp4x00p/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cvz63ditynq4e/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cvz63ditynq4e/000005.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cvz63ditynq4e/000005.png
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cvz63ditynq4e/000005.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cwcci6meybipe/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cx5te17a34q0d/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cxdnq5qx0fp7h/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cxza7miim61iu/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cxza7miim61iu/000003.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cxza7miim61iu/000003.png
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cxza7miim61iu/000003.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cydixgi82zt9d/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cygxykmt0ixp1/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cylsb0k03z5b1/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cylsb0k03z5b1/000003.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cylsb0k03z5b1/000003.rdf
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cyv27ktb3st4l/000012.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/cz5bq9tybon6h/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/czoqx17h74di5/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/czoqx17h74di5/000005.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/1C033443-AUC_empirical_examples/1/s/czoqx17h74di5/000005.rdf
+ create mode 100644 .Rproj.user/shared/notebooks/7873DB03-tutorials/1/s/c59hb0e1rq6pc/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/7873DB03-tutorials/1/s/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/7873DB03-tutorials/1/s/cit01xdv9pnir/00000e.csv
+ create mode 100644 .Rproj.user/shared/notebooks/7873DB03-tutorials/1/s/cit01xdv9pnir/00000f.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/7873DB03-tutorials/1/s/cit01xdv9pnir/00000f.rdf
+ create mode 100644 .Rproj.user/shared/notebooks/7873DB03-tutorials/1/s/cmasjdfnob207/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/7873DB03-tutorials/1/s/csetup_chunk/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/9157D09F-explore/1/7CCE8BFF76E104AD/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/9157D09F-explore/1/s/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/9157D09F-explore/1/s/cq6gdfi45gvz3/000018.csv
+ create mode 100644 .Rproj.user/shared/notebooks/9157D09F-explore/1/s/cq6gdfi45gvz3/000019.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/9157D09F-explore/1/s/cq6gdfi45gvz3/000019.png
+ create mode 100644 .Rproj.user/shared/notebooks/9157D09F-explore/1/s/cq6gdfi45gvz3/000019.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/9157D09F-explore/1/s/csetup_chunk/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/9628F65F-biology_faculty_infrastructure/1/s/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/B47FD639-glucose_AUC_simulation/1/7CCE8BFF1E17EB6F/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/B47FD639-glucose_AUC_simulation/1/7CCE8BFF2AA15661/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/B47FD639-glucose_AUC_simulation/1/7CCE8BFF4C79B30E/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/B47FD639-glucose_AUC_simulation/1/7CCE8BFF76E104AD/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/B47FD639-glucose_AUC_simulation/1/7CCE8BFF7E1BBD80/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/B47FD639-glucose_AUC_simulation/1/7CCE8BFFD3065B02/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/B47FD639-glucose_AUC_simulation/1/7CCE8BFFDD37F137/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/B47FD639-glucose_AUC_simulation/1/7CCE8BFFF4D50D73/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/B47FD639-glucose_AUC_simulation/1/s/c0q5g4by8agmx/000032.csv
+ create mode 100644 .Rproj.user/shared/notebooks/B47FD639-glucose_AUC_simulation/1/s/cacuwx1w0mnhp/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/B47FD639-glucose_AUC_simulation/1/s/cds5ytpf1ne4q/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/B47FD639-glucose_AUC_simulation/1/s/cefkm00qulx70/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/B47FD639-glucose_AUC_simulation/1/s/chj0nexymbog1/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/B47FD639-glucose_AUC_simulation/1/s/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/B47FD639-glucose_AUC_simulation/1/s/ci6k9w6whkm18/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/B47FD639-glucose_AUC_simulation/1/s/cs0w1gb5o8f7o/000024.csv
+ create mode 100644 .Rproj.user/shared/notebooks/B47FD639-glucose_AUC_simulation/1/s/csetup_chunk/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/B47FD639-glucose_AUC_simulation/1/s/cvxytb41j7at2/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/7CCE8BFF76E104AD/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/7CCE8BFFDD37F137/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/7CCE8BFFF4D50D73/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/c36030tqtkrvt/000003.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/c36030tqtkrvt/000003.rdf
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/c45fg6hzokqc8/000010.csv
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/c45fg6hzokqc8/000011.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/c45fg6hzokqc8/000011.png
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/c45fg6hzokqc8/000011.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/c7x8de9qf8se8/000007.csv
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/c7x8de9qf8se8/000008.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/c7x8de9qf8se8/000008.png
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/c7x8de9qf8se8/000008.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/c7x8de9qf8se8/000009.csv
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/chunks.json
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/ciz5g1t9zqjh2/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/ck2tu9acx4eam/000014.csv
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/ck2tu9acx4eam/000015.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/ck2tu9acx4eam/000015.png
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/ck2tu9acx4eam/000015.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/clzz7ch3mzaqb/000006.csv
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/clzz7ch3mzaqb/000007.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/clzz7ch3mzaqb/000007.png
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/clzz7ch3mzaqb/000007.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/cqvdfjmvmut3t/00000c.csv
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/cqvdfjmvmut3t/00000d.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/cqvdfjmvmut3t/00000d.png
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/cqvdfjmvmut3t/00000d.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/cr4dky9w7wwkq/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/csetup_chunk/000002.csv
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/cssbkg03gkah5/00000a.csv
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/cub9dvwb0d12q/000014.csv
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/cub9dvwb0d12q/000015.metadata
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/cub9dvwb0d12q/000015.png
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/cub9dvwb0d12q/000015.snapshot
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/cub9dvwb0d12q/000016.csv
+ create mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/cyvd527l565oa/000004.csv
+ create mode 100644 .Rproj.user/shared/notebooks/patch-chunk-names
+ create mode 100644 .Rproj.user/shared/notebooks/paths
+ create mode 100644 auc.Rproj
+ create mode 100644 data/.DS_Store
+ create mode 100644 data/Adrb2 controls glucose homeostasis by developmental regulation of pancreatic islet vasculature/elife-39689-fig1-data1-v2.xlsx
+ create mode 100644 data/Adrb2 controls glucose homeostasis by developmental regulation of pancreatic islet vasculature/elife-39689-v2.pdf
+ create mode 100644 data/BCAA catabolism in brown fat controls energy homeostasis through SLC25A44/41586_2019_1503_MOESM10_ESM.xlsx
+ create mode 100644 data/BCAA catabolism in brown fat controls energy homeostasis through SLC25A44/41586_2019_1503_MOESM11_ESM.xlsx
+ create mode 100644 data/BCAA catabolism in brown fat controls energy homeostasis through SLC25A44/41586_2019_1503_MOESM12_ESM.xlsx
+ create mode 100644 data/BCAA catabolism in brown fat controls energy homeostasis through SLC25A44/41586_2019_1503_MOESM13_ESM.xlsx
+ create mode 100644 data/BCAA catabolism in brown fat controls energy homeostasis through SLC25A44/41586_2019_1503_MOESM14_ESM.xlsx
+ create mode 100644 data/BCAA catabolism in brown fat controls energy homeostasis through SLC25A44/41586_2019_1503_MOESM15_ESM.xlsx
+ create mode 100644 data/BCAA catabolism in brown fat controls energy homeostasis through SLC25A44/41586_2019_1503_MOESM16_ESM.xlsx
+ create mode 100644 data/BCAA catabolism in brown fat controls energy homeostasis through SLC25A44/41586_2019_1503_MOESM17_ESM.xlsx
+ create mode 100644 data/BCAA catabolism in brown fat controls energy homeostasis through SLC25A44/41586_2019_1503_MOESM18_ESM.xlsx
+ create mode 100644 data/BCAA catabolism in brown fat controls energy homeostasis through SLC25A44/41586_2019_1503_MOESM19_ESM.xlsx
+ create mode 100644 data/BCAA catabolism in brown fat controls energy homeostasis through SLC25A44/41586_2019_1503_MOESM20_ESM.xlsx
+ create mode 100644 data/BCAA catabolism in brown fat controls energy homeostasis through SLC25A44/41586_2019_1503_MOESM7_ESM.xlsx
+ create mode 100644 data/BCAA catabolism in brown fat controls energy homeostasis through SLC25A44/41586_2019_1503_MOESM8_ESM.xlsx
+ create mode 100644 data/BCAA catabolism in brown fat controls energy homeostasis through SLC25A44/41586_2019_1503_MOESM9_ESM.xlsx
+ create mode 100644 data/BCAA catabolism in brown fat controls energy homeostasis through SLC25A44/how many p-values.txt
+ create mode 100644 data/BCAA catabolism in brown fat controls energy homeostasis through SLC25A44/s41586-019-1503-x.pdf
+ create mode 100644 data/Endogenous nicotinamide riboside metabolism protects against diet-induced liver damage/41467_2019_12262_MOESM4_ESM.xlsx
+ create mode 100644 data/Endogenous nicotinamide riboside metabolism protects against diet-induced liver damage/s41467-019-12262-x.pdf
+ create mode 100644 data/Hepatic Aryl hydrocarbon Receptor Nuclear Translocator (ARNT) regulates metabolism in mice/.DS_Store
+ create mode 100755 data/Hepatic Aryl hydrocarbon Receptor Nuclear Translocator (ARNT) regulates metabolism in mice/2009-11-30 LARNT liver ATP(1) done by Kim.xlsx
+ create mode 100755 data/Hepatic Aryl hydrocarbon Receptor Nuclear Translocator (ARNT) regulates metabolism in mice/Fasting glucose and GTT and AUCGTT.xlsx
+ create mode 100755 data/Hepatic Aryl hydrocarbon Receptor Nuclear Translocator (ARNT) regulates metabolism in mice/ITT LARNT.xls
+ create mode 100755 data/Hepatic Aryl hydrocarbon Receptor Nuclear Translocator (ARNT) regulates metabolism in mice/LARNT PCR ins genes.xlsx
+ create mode 100755 data/Hepatic Aryl hydrocarbon Receptor Nuclear Translocator (ARNT) regulates metabolism in mice/LARNT PCR rest.xls
+ create mode 100755 data/Hepatic Aryl hydrocarbon Receptor Nuclear Translocator (ARNT) regulates metabolism in mice/LARNT fasting insulin.xls
+ create mode 100755 data/Hepatic Aryl hydrocarbon Receptor Nuclear Translocator (ARNT) regulates metabolism in mice/LARNT liver TG file.pzf
+ create mode 100755 data/Hepatic Aryl hydrocarbon Receptor Nuclear Translocator (ARNT) regulates metabolism in mice/LHIF PTTs.xls
+ create mode 100755 data/Hepatic Aryl hydrocarbon Receptor Nuclear Translocator (ARNT) regulates metabolism in mice/LHIF weights 18 weeks.xls
+ create mode 100755 data/Hepatic Aryl hydrocarbon Receptor Nuclear Translocator (ARNT) regulates metabolism in mice/LIPID oxidation 2 exp combined.xls
+ create mode 100755 data/Hepatic Aryl hydrocarbon Receptor Nuclear Translocator (ARNT) regulates metabolism in mice/PTT LARNT.xls
+ create mode 100755 data/Hepatic Aryl hydrocarbon Receptor Nuclear Translocator (ARNT) regulates metabolism in mice/PTT LHIF mice.xlsx
+ create mode 100755 data/Hepatic Aryl hydrocarbon Receptor Nuclear Translocator (ARNT) regulates metabolism in mice/Weights 18 wk LARNT.xls
+ create mode 100644 data/Hepatic Aryl hydrocarbon Receptor Nuclear Translocator (ARNT) regulates metabolism in mice/journal.pone.0186543.pdf
+ create mode 100755 data/Hepatic Aryl hydrocarbon Receptor Nuclear Translocator (ARNT) regulates metabolism in mice/serum TG LARNT mice.xlsx
+ create mode 100644 data/Hepatic Aryl hydrocarbon Receptor Nuclear Translocator (ARNT) regulates metabolism in mice/~$Fasting glucose and GTT and AUCGTT.xlsx
+ create mode 100644 data/Interleukin-36 cytokines alter the intestinal microbiome and can protect against obesity and metabolic dysfunction/.DS_Store
+ create mode 100644 data/Interleukin-36 cytokines alter the intestinal microbiome and can protect against obesity and metabolic dysfunction/41467_2019_11944_MOESM3_ESM.xlsx
+ create mode 100644 data/Interleukin-36 cytokines alter the intestinal microbiome and can protect against obesity and metabolic dysfunction/s41467-019-11944-w.pdf
+ create mode 100755 data/Perinatal lead (Pb) exposure results in sex-specific effects on food intake, fat, weight, and insulin response across the murine life-course/Glucose_Tolerance_Test_CompleteData.xlsx
+ create mode 100755 data/Perinatal lead (Pb) exposure results in sex-specific effects on food intake, fat, weight, and insulin response across the murine life-course/LeadMMOC_Complete.xlsx
+ create mode 100755 data/Perinatal lead (Pb) exposure results in sex-specific effects on food intake, fat, weight, and insulin response across the murine life-course/LeadWeeklyWeights_Complete.xlsx
+ create mode 100644 "data/Recapitulating endocrine cell clustering in culture promotes maturation of human stem-cell-derived \316\262 cells/41556_2018_271_MOESM8_ESM.xlsx"
+ create mode 100644 "data/Recapitulating endocrine cell clustering in culture promotes maturation of human stem-cell-derived \316\262 cells/nair2019.pdf"
+ create mode 100644 data/Suppression of insulin feedback enhances the efficacy of PI3K inhibitors/41586_2018_343_MOESM10_ESM.xlsx
+ create mode 100644 data/Suppression of insulin feedback enhances the efficacy of PI3K inhibitors/41586_2018_343_MOESM11_ESM.xlsx
+ create mode 100644 data/Suppression of insulin feedback enhances the efficacy of PI3K inhibitors/41586_2018_343_MOESM12_ESM.xlsx
+ create mode 100644 data/Suppression of insulin feedback enhances the efficacy of PI3K inhibitors/41586_2018_343_MOESM13_ESM.xlsx
+ create mode 100644 data/Suppression of insulin feedback enhances the efficacy of PI3K inhibitors/41586_2018_343_MOESM4_ESM.xlsx
+ create mode 100644 data/Suppression of insulin feedback enhances the efficacy of PI3K inhibitors/41586_2018_343_MOESM5_ESM.xlsx
+ create mode 100644 data/Suppression of insulin feedback enhances the efficacy of PI3K inhibitors/41586_2018_343_MOESM6_ESM.xlsx
+ create mode 100644 data/Suppression of insulin feedback enhances the efficacy of PI3K inhibitors/41586_2018_343_MOESM7_ESM.xlsx
+ create mode 100644 data/Suppression of insulin feedback enhances the efficacy of PI3K inhibitors/41586_2018_343_MOESM8_ESM.xlsx
+ create mode 100644 data/Suppression of insulin feedback enhances the efficacy of PI3K inhibitors/41586_2018_343_MOESM9_ESM.xlsx
+ create mode 100644 data/Suppression of insulin feedback enhances the efficacy of PI3K inhibitors/Suppression of insulin feedback enhances the efficacy of PI3K inhibitors.pdf
+ create mode 100755 data/The E3 ubiquitin ligase MARCH1 regulates glucose-tolerance and lipid storage in a sex-specific manner/Adipose blots.tif
+ create mode 100755 data/The E3 ubiquitin ligase MARCH1 regulates glucose-tolerance and lipid storage in a sex-specific manner/Figure1_data.xlsx
+ create mode 100755 data/The E3 ubiquitin ligase MARCH1 regulates glucose-tolerance and lipid storage in a sex-specific manner/Figure2_data.xlsx
+ create mode 100755 data/The E3 ubiquitin ligase MARCH1 regulates glucose-tolerance and lipid storage in a sex-specific manner/Figure3_data.xlsx
+ create mode 100755 data/The E3 ubiquitin ligase MARCH1 regulates glucose-tolerance and lipid storage in a sex-specific manner/Liver blots.tif
+ create mode 100755 data/The E3 ubiquitin ligase MARCH1 regulates glucose-tolerance and lipid storage in a sex-specific manner/Muscle blots.tif
+ create mode 100755 data/The E3 ubiquitin ligase MARCH1 regulates glucose-tolerance and lipid storage in a sex-specific manner/Quantification InsR blots.xlsx
+ create mode 100644 data/The E3 ubiquitin ligase MARCH1 regulates glucose-tolerance and lipid storage in a sex-specific manner/The E3 ubiquitin ligase MARCH1 regulates glucose-tolerance and lipid storage in a sex-specific manner.pdf
+ create mode 100644 data/The E3 ubiquitin ligase MARCH1 regulates glucose-tolerance and lipid storage in a sex-specific manner/~$Figure2_data.xlsx
+ create mode 100644 data/The short-chain fatty acid propionate increases glucagon and FABP4 production, impairing insulin action in mice and humans/Propionate_Tiroshetal._eaav0120.full.pdf
+ create mode 100644 data/The short-chain fatty acid propionate increases glucagon and FABP4 production, impairing insulin action in mice and humans/aav0120_Data_file_S1.xlsx
+ create mode 100644 data/The short-chain fatty acid propionate increases glucagon and FABP4 production, impairing insulin action in mice and humans/~$aav0120_Data_file_S1.xlsx
+ create mode 100644 data/harrell rms/cdystonia.dta
+ create mode 100644 data/harrell rms/cdystonia.sav
+ create mode 100644 manuscript/glucose_auc_ms.Rmd
+ create mode 100644 output/.DS_Store
+ create mode 100644 output/.Rapp.history
+ create mode 100644 output/simulation-1. 5PpF7 .Rds
+ create mode 100644 output/simulation-1.9OYaG.Rds
+ create mode 100644 output/simulation-1.L9mRZ.Rds
+ create mode 100644 output/simulation-1.Le6N9.Rds
+ create mode 100644 output/simulation-1.NTBxF.Rds
+ create mode 100644 output/simulation-1.Wy13c.Rds
+ create mode 100644 output/simulation-1.dIW3e.Rds
+ create mode 100644 output/simulation-1.h6Htx.Rds
+ create mode 100644 output/simulation-1.iOB4r.Rds
+ create mode 100644 output/simulation-1.qwH1l.Rds
+ create mode 100644 output/simulation-2.IHnEG.Rds
+ create mode 100644 output/simulation-2.IYuLw.Rds
+ create mode 100644 output/simulation-2.Le6N9.Rds
+ create mode 100644 output/simulation-2.OkGqR.Rds
+ create mode 100644 output/simulation-2.YonKI.Rds
+ create mode 100644 output/simulation-2.bQnBI.Rds
+ create mode 100644 output/simulation-2.kjduG.Rds
+ create mode 100644 output/simulation-3.GFxuq.Rds
+ create mode 100644 r/AUC_empirical_examples.Rmd
+ create mode 100644 r/auc.R
+ create mode 100644 r/explore.Rmd
+ create mode 100644 r/glucose_AUC_simulation.Rmd
+ create mode 100644 r/tutorials.Rmd
+]0;~/Documents/Github projects/Research Projects/aucC02Y52NRJHD3:auc jwalker$ git push origin master
+Enumerating objects: 460, done.
+Counting objects:   0% (1/460)   Counting objects:   1% (5/460)   Counting objects:   2% (10/460)   Counting objects:   3% (14/460)   Counting objects:   4% (19/460)   Counting objects:   5% (23/460)   Counting objects:   6% (28/460)   Counting objects:   7% (33/460)   Counting objects:   8% (37/460)   Counting objects:   9% (42/460)   Counting objects:  10% (46/460)   Counting objects:  11% (51/460)   Counting objects:  12% (56/460)   Counting objects:  13% (60/460)   Counting objects:  14% (65/460)   Counting objects:  15% (69/460)   Counting objects:  16% (74/460)   Counting objects:  17% (79/460)   Counting objects:  18% (83/460)   Counting objects:  19% (88/460)   Counting objects:  20% (92/460)   Counting objects:  21% (97/460)   Counting objects:  22% (102/460)   Counting objects:  23% (106/460)   Counting objects:  24% (111/460)   Counting objects:  25% (115/460)   Counting objects:  26% (120/460)   Counting objects:  27% (125/460)   Counting objects:  28% (129/460)   Counting objects:  29% (134/460)   Counting objects:  30% (138/460)   Counting objects:  31% (143/460)   Counting objects:  32% (148/460)   Counting objects:  33% (152/460)   Counting objects:  34% (157/460)   Counting objects:  35% (161/460)   Counting objects:  36% (166/460)   Counting objects:  37% (171/460)   Counting objects:  38% (175/460)   Counting objects:  39% (180/460)   Counting objects:  40% (184/460)   Counting objects:  41% (189/460)   Counting objects:  42% (194/460)   Counting objects:  43% (198/460)   Counting objects:  44% (203/460)   Counting objects:  45% (207/460)   Counting objects:  46% (212/460)   Counting objects:  47% (217/460)   Counting objects:  48% (221/460)   Counting objects:  49% (226/460)   Counting objects:  50% (230/460)   Counting objects:  51% (235/460)   Counting objects:  52% (240/460)   Counting objects:  53% (244/460)   Counting objects:  54% (249/460)   Counting objects:  55% (253/460)   Counting objects:  56% (258/460)   Counting objects:  57% (263/460)   Counting objects:  58% (267/460)   Counting objects:  59% (272/460)   Counting objects:  60% (276/460)   Counting objects:  61% (281/460)   Counting objects:  62% (286/460)   Counting objects:  63% (290/460)   Counting objects:  64% (295/460)   Counting objects:  65% (299/460)   Counting objects:  66% (304/460)   Counting objects:  67% (309/460)   Counting objects:  68% (313/460)   Counting objects:  69% (318/460)   Counting objects:  70% (322/460)   Counting objects:  71% (327/460)   Counting objects:  72% (332/460)   Counting objects:  73% (336/460)   Counting objects:  74% (341/460)   Counting objects:  75% (345/460)   Counting objects:  76% (350/460)   Counting objects:  77% (355/460)   Counting objects:  78% (359/460)   Counting objects:  79% (364/460)   Counting objects:  80% (368/460)   Counting objects:  81% (373/460)   Counting objects:  82% (378/460)   Counting objects:  83% (382/460)   Counting objects:  84% (387/460)   Counting objects:  85% (391/460)   Counting objects:  86% (396/460)   Counting objects:  87% (401/460)   Counting objects:  88% (405/460)   Counting objects:  89% (410/460)   Counting objects:  90% (414/460)   Counting objects:  91% (419/460)   Counting objects:  92% (424/460)   Counting objects:  93% (428/460)   Counting objects:  94% (433/460)   Counting objects:  95% (437/460)   Counting objects:  96% (442/460)   Counting objects:  97% (447/460)   Counting objects:  98% (451/460)   Counting objects:  99% (456/460)   Counting objects: 100% (460/460)   Counting objects: 100% (460/460), done.
+Delta compression using up to 8 threads
+Compressing objects:   0% (1/353)   Compressing objects:   1% (4/353)   Compressing objects:   2% (8/353)   Compressing objects:   3% (11/353)   Compressing objects:   4% (15/353)   Compressing objects:   5% (18/353)   Compressing objects:   6% (22/353)   Compressing objects:   7% (25/353)   Compressing objects:   8% (29/353)   Compressing objects:   9% (32/353)   Compressing objects:  10% (36/353)   Compressing objects:  11% (39/353)   Compressing objects:  12% (43/353)   Compressing objects:  13% (46/353)   Compressing objects:  14% (50/353)   Compressing objects:  15% (53/353)   Compressing objects:  16% (57/353)   Compressing objects:  17% (61/353)   Compressing objects:  18% (64/353)   Compressing objects:  19% (68/353)   Compressing objects:  20% (71/353)   Compressing objects:  21% (75/353)   Compressing objects:  22% (78/353)   Compressing objects:  23% (82/353)   Compressing objects:  24% (85/353)   Compressing objects:  25% (89/353)   Compressing objects:  26% (92/353)   Compressing objects:  27% (96/353)   Compressing objects:  28% (99/353)   Compressing objects:  29% (103/353)   Compressing objects:  30% (106/353)   Compressing objects:  31% (110/353)   Compressing objects:  32% (113/353)   Compressing objects:  33% (117/353)   Compressing objects:  34% (121/353)   Compressing objects:  35% (124/353)   Compressing objects:  36% (128/353)   Compressing objects:  37% (131/353)   Compressing objects:  38% (135/353)   Compressing objects:  39% (138/353)   Compressing objects:  40% (142/353)   Compressing objects:  41% (145/353)   Compressing objects:  42% (149/353)   Compressing objects:  43% (152/353)   Compressing objects:  44% (156/353)   Compressing objects:  45% (159/353)   Compressing objects:  46% (163/353)   Compressing objects:  47% (166/353)   Compressing objects:  48% (170/353)   Compressing objects:  49% (173/353)   Compressing objects:  50% (177/353)   Compressing objects:  51% (181/353)   Compressing objects:  52% (184/353)   Compressing objects:  53% (188/353)   Compressing objects:  54% (191/353)   Compressing objects:  55% (195/353)   Compressing objects:  56% (198/353)   Compressing objects:  57% (202/353)   Compressing objects:  58% (205/353)   Compressing objects:  59% (209/353)   Compressing objects:  60% (212/353)   Compressing objects:  61% (216/353)   Compressing objects:  62% (219/353)   Compressing objects:  63% (223/353)   Compressing objects:  64% (226/353)   Compressing objects:  65% (230/353)   Compressing objects:  66% (233/353)   Compressing objects:  67% (237/353)   Compressing objects:  68% (241/353)   Compressing objects:  69% (244/353)   Compressing objects:  70% (248/353)   Compressing objects:  71% (251/353)   Compressing objects:  72% (255/353)   Compressing objects:  73% (258/353)   Compressing objects:  74% (262/353)   Compressing objects:  75% (265/353)   Compressing objects:  76% (269/353)   Compressing objects:  77% (272/353)   Compressing objects:  78% (276/353)   Compressing objects:  79% (279/353)   Compressing objects:  80% (283/353)   Compressing objects:  81% (286/353)   Compressing objects:  82% (290/353)   Compressing objects:  83% (293/353)   Compressing objects:  84% (297/353)   Compressing objects:  85% (301/353)   Compressing objects:  86% (304/353)   Compressing objects:  87% (308/353)   Compressing objects:  88% (311/353)   Compressing objects:  89% (315/353)   Compressing objects:  90% (318/353)   Compressing objects:  91% (322/353)   Compressing objects:  92% (325/353)   Compressing objects:  93% (329/353)   Compressing objects:  94% (332/353)   Compressing objects:  94% (335/353)   Compressing objects:  95% (336/353)   Compressing objects:  96% (339/353)   Compressing objects:  96% (342/353)   Compressing objects:  97% (343/353)   Compressing objects:  97% (344/353)   Compressing objects:  98% (346/353)   Compressing objects:  99% (350/353)   Compressing objects: 100% (353/353)   Compressing objects: 100% (353/353), done.
+Writing objects:   0% (1/459)   Writing objects:   1% (5/459)   Writing objects:   2% (10/459)   Writing objects:   3% (14/459)   Writing objects:   4% (19/459)   Writing objects:   5% (23/459)   Writing objects:   6% (28/459)   Writing objects:   7% (33/459)   Writing objects:   8% (37/459)   Writing objects:   9% (42/459)   Writing objects:  10% (46/459)   Writing objects:  11% (51/459)   Writing objects:  12% (57/459)   Writing objects:  13% (60/459)   Writing objects:  14% (65/459)   Writing objects:  15% (69/459)   Writing objects:  16% (74/459)   Writing objects:  17% (80/459)   Writing objects:  18% (83/459)   Writing objects:  19% (88/459)   Writing objects:  20% (92/459)   Writing objects:  21% (98/459)   Writing objects:  21% (100/459), 1.30 MiB | 449.00 KiB/s   Writing objects:  22% (101/459), 1.30 MiB | 449.00 KiB/s   Writing objects:  23% (106/459), 1.30 MiB | 449.00 KiB/s   Writing objects:  24% (111/459), 1.30 MiB | 449.00 KiB/s   Writing objects:  25% (115/459), 1.30 MiB | 449.00 KiB/s   Writing objects:  26% (120/459), 1.30 MiB | 449.00 KiB/s   Writing objects:  27% (124/459), 1.30 MiB | 449.00 KiB/s   Writing objects:  27% (126/459), 1.92 MiB | 413.00 KiB/s   Writing objects:  28% (129/459), 1.92 MiB | 413.00 KiB/s   Writing objects:  29% (134/459), 1.92 MiB | 413.00 KiB/s   Writing objects:  30% (138/459), 1.92 MiB | 413.00 KiB/s   Writing objects:  30% (138/459), 2.56 MiB | 454.00 KiB/s   Writing objects:  31% (143/459), 2.56 MiB | 454.00 KiB/s   Writing objects:  31% (145/459), 3.19 MiB | 452.00 KiB/s   Writing objects:  32% (147/459), 3.19 MiB | 452.00 KiB/s   Writing objects:  33% (152/459), 3.19 MiB | 452.00 KiB/s   Writing objects:  34% (157/459), 3.19 MiB | 452.00 KiB/s   Writing objects:  35% (161/459), 3.19 MiB | 452.00 KiB/s   Writing objects:  36% (166/459), 3.19 MiB | 452.00 KiB/s   Writing objects:  37% (170/459), 3.19 MiB | 452.00 KiB/s   Writing objects:  38% (175/459), 3.19 MiB | 452.00 KiB/s   Writing objects:  39% (180/459), 3.19 MiB | 452.00 KiB/s   Writing objects:  39% (182/459), 3.82 MiB | 448.00 KiB/s   Writing objects:  40% (184/459), 3.82 MiB | 448.00 KiB/s   Writing objects:  41% (189/459), 3.82 MiB | 448.00 KiB/s   Writing objects:  42% (193/459), 3.82 MiB | 448.00 KiB/s   Writing objects:  43% (198/459), 3.82 MiB | 448.00 KiB/s   Writing objects:  44% (202/459), 3.82 MiB | 448.00 KiB/s   Writing objects:  45% (207/459), 3.82 MiB | 448.00 KiB/s   Writing objects:  45% (207/459), 4.45 MiB | 466.00 KiB/s   Writing objects:  46% (212/459), 4.45 MiB | 466.00 KiB/s   Writing objects:  47% (216/459), 4.45 MiB | 466.00 KiB/s   Writing objects:  48% (221/459), 4.45 MiB | 466.00 KiB/s   Writing objects:  48% (223/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  49% (225/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  50% (230/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  51% (235/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  52% (239/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  53% (244/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  54% (248/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  55% (253/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  56% (258/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  57% (262/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  58% (267/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  59% (271/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  60% (276/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  61% (280/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  62% (285/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  63% (290/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  64% (294/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  65% (299/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  66% (303/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  67% (308/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  68% (313/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  69% (317/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  70% (322/459), 5.09 MiB | 496.00 KiB/s   Writing objects:  70% (322/459), 5.73 MiB | 487.00 KiB/s   Writing objects:  71% (326/459), 5.73 MiB | 487.00 KiB/s   Writing objects:  72% (331/459), 5.73 MiB | 487.00 KiB/s   Writing objects:  72% (331/459), 6.36 MiB | 500.00 KiB/s   Writing objects:  73% (336/459), 6.36 MiB | 500.00 KiB/s   Writing objects:  74% (340/459), 6.36 MiB | 500.00 KiB/s   Writing objects:  74% (340/459), 6.99 MiB | 512.00 KiB/s   Writing objects:  75% (345/459), 6.99 MiB | 512.00 KiB/s   Writing objects:  76% (349/459), 6.99 MiB | 512.00 KiB/s   Writing objects:  77% (354/459), 6.99 MiB | 512.00 KiB/s   Writing objects:  77% (358/459), 7.63 MiB | 531.00 KiB/s   Writing objects:  77% (358/459), 8.27 MiB | 515.00 KiB/s   Writing objects:  77% (358/459), 8.90 MiB | 499.00 KiB/s   Writing objects:  78% (359/459), 8.90 MiB | 499.00 KiB/s   Writing objects:  79% (363/459), 8.90 MiB | 499.00 KiB/s   Writing objects:  79% (366/459), 9.53 MiB | 507.00 KiB/s   Writing objects:  79% (366/459), 10.16 MiB | 490.00 KiB/s   Writing objects:  79% (366/459), 10.80 MiB | 474.00 KiB/s   Writing objects:  79% (366/459), 11.43 MiB | 486.00 KiB/s   Writing objects:  79% (366/459), 12.07 MiB | 482.00 KiB/s   Writing objects:  80% (368/459), 12.07 MiB | 482.00 KiB/s   Writing objects:  81% (372/459), 12.07 MiB | 482.00 KiB/s   Writing objects:  81% (375/459), 12.26 MiB | 401.00 KiB/s   Writing objects:  81% (375/459), 13.34 MiB | 453.00 KiB/s   Writing objects:  81% (375/459), 13.98 MiB | 449.00 KiB/s   Writing objects:  81% (375/459), 14.60 MiB | 478.00 KiB/s   Writing objects:  81% (375/459), 15.23 MiB | 489.00 KiB/s   Writing objects:  81% (375/459), 15.88 MiB | 500.00 KiB/s   Writing objects:  81% (375/459), 16.51 MiB | 482.00 KiB/s   Writing objects:  81% (375/459), 17.14 MiB | 482.00 KiB/s   Writing objects:  81% (375/459), 17.77 MiB | 460.00 KiB/s   Writing objects:  81% (375/459), 18.41 MiB | 580.00 KiB/s   Writing objects:  81% (375/459), 19.04 MiB | 522.00 KiB/s   Writing objects:  81% (375/459), 19.68 MiB | 538.00 KiB/s   Writing objects:  81% (375/459), 20.31 MiB | 525.00 KiB/s   Writing objects:  81% (375/459), 20.95 MiB | 536.00 KiB/s   Writing objects:  81% (375/459), 21.58 MiB | 531.00 KiB/s   Writing objects:  81% (375/459), 22.21 MiB | 556.00 KiB/s   Writing objects:  81% (375/459), 22.84 MiB | 554.00 KiB/s   Writing objects:  81% (375/459), 23.48 MiB | 600.00 KiB/s   Writing objects:  81% (375/459), 24.12 MiB | 589.00 KiB/s   Writing objects:  81% (375/459), 24.76 MiB | 617.00 KiB/s   Writing objects:  81% (375/459), 25.39 MiB | 634.00 KiB/s   Writing objects:  81% (375/459), 26.02 MiB | 665.00 KiB/s   Writing objects:  81% (375/459), 27.30 MiB | 692.00 KiB/s   Writing objects:  81% (375/459), 27.93 MiB | 686.00 KiB/s   Writing objects:  81% (375/459), 28.55 MiB | 694.00 KiB/s   Writing objects:  81% (375/459), 29.19 MiB | 621.00 KiB/s   Writing objects:  81% (375/459), 29.82 MiB | 613.00 KiB/s   Writing objects:  81% (375/459), 30.46 MiB | 559.00 KiB/s   Writing objects:  81% (375/459), 31.09 MiB | 532.00 KiB/s   Writing objects:  81% (375/459), 31.73 MiB | 499.00 KiB/s   Writing objects:  81% (375/459), 32.36 MiB | 472.00 KiB/s   Writing objects:  81% (375/459), 33.00 MiB | 447.00 KiB/s   Writing objects:  81% (375/459), 33.63 MiB | 433.00 KiB/s   Writing objects:  81% (375/459), 34.27 MiB | 429.00 KiB/s   Writing objects:  81% (375/459), 34.90 MiB | 443.00 KiB/s   Writing objects:  81% (375/459), 35.54 MiB | 428.00 KiB/s   Writing objects:  81% (375/459), 36.17 MiB | 435.00 KiB/s   Writing objects:  81% (375/459), 36.80 MiB | 420.00 KiB/s   Writing objects:  81% (375/459), 37.44 MiB | 428.00 KiB/s   Writing objects:  81% (375/459), 38.07 MiB | 424.00 KiB/s   Writing objects:  81% (375/459), 38.70 MiB | 423.00 KiB/s   Writing objects:  81% (375/459), 39.34 MiB | 424.00 KiB/s   Writing objects:  81% (375/459), 39.97 MiB | 432.00 KiB/s   Writing objects:  81% (375/459), 40.60 MiB | 448.00 KiB/s   Writing objects:  81% (375/459), 41.88 MiB | 502.00 KiB/s   Writing objects:  81% (375/459), 42.51 MiB | 539.00 KiB/s   Writing objects:  81% (375/459), 43.14 MiB | 514.00 KiB/s   Writing objects:  81% (375/459), 43.77 MiB | 527.00 KiB/s   Writing objects:  81% (375/459), 44.41 MiB | 522.00 KiB/s   Writing objects:  81% (375/459), 45.05 MiB | 524.00 KiB/s   Writing objects:  81% (375/459), 45.68 MiB | 485.00 KiB/s   Writing objects:  81% (375/459), 46.31 MiB | 464.00 KiB/s   Writing objects:  81% (375/459), 46.95 MiB | 437.00 KiB/s   Writing objects:  81% (375/459), 47.58 MiB | 404.00 KiB/s   Writing objects:  81% (375/459), 48.22 MiB | 387.00 KiB/s   Writing objects:  81% (375/459), 48.85 MiB | 394.00 KiB/s   Writing objects:  81% (375/459), 49.49 MiB | 390.00 KiB/s   Writing objects:  81% (375/459), 50.12 MiB | 403.00 KiB/s   Writing objects:  81% (375/459), 50.75 MiB | 386.00 KiB/s   Writing objects:  81% (375/459), 51.38 MiB | 387.00 KiB/s   Writing objects:  81% (375/459), 52.02 MiB | 379.00 KiB/s   Writing objects:  81% (375/459), 52.66 MiB | 374.00 KiB/s   Writing objects:  81% (375/459), 53.29 MiB | 381.00 KiB/s   Writing objects:  81% (375/459), 53.92 MiB | 384.00 KiB/s   Writing objects:  81% (375/459), 54.56 MiB | 379.00 KiB/s   Writing objects:  81% (375/459), 55.20 MiB | 357.00 KiB/s   Writing objects:  81% (375/459), 55.83 MiB | 341.00 KiB/s   Writing objects:  81% (375/459), 56.46 MiB | 352.00 KiB/s   Writing objects:  81% (375/459), 57.09 MiB | 360.00 KiB/s   Writing objects:  81% (375/459), 57.73 MiB | 361.00 KiB/s   Writing objects:  81% (375/459), 58.36 MiB | 371.00 KiB/s   Writing objects:  81% (375/459), 59.00 MiB | 371.00 KiB/s   Writing objects:  81% (375/459), 59.63 MiB | 332.00 KiB/s   Writing objects:  81% (375/459), 60.27 MiB | 305.00 KiB/s   Writing objects:  81% (375/459), 60.90 MiB | 302.00 KiB/s   Writing objects:  81% (375/459), 61.53 MiB | 300.00 KiB/s   Writing objects:  81% (375/459), 62.16 MiB | 298.00 KiB/s   Writing objects:  81% (375/459), 62.81 MiB | 294.00 KiB/s   Writing objects:  81% (375/459), 63.44 MiB | 287.00 KiB/s   Writing objects:  81% (375/459), 64.07 MiB | 282.00 KiB/s   Writing objects:  81% (375/459), 64.71 MiB | 282.00 KiB/s   Writing objects:  81% (375/459), 65.34 MiB | 305.00 KiB/s   Writing objects:  81% (375/459), 65.98 MiB | 326.00 KiB/s   Writing objects:  81% (375/459), 66.61 MiB | 348.00 KiB/s   Writing objects:  81% (375/459), 67.24 MiB | 359.00 KiB/s   Writing objects:  81% (375/459), 67.88 MiB | 354.00 KiB/s   Writing objects:  81% (375/459), 68.51 MiB | 358.00 KiB/s   Writing objects:  81% (375/459), 69.14 MiB | 359.00 KiB/s   Writing objects:  81% (375/459), 69.78 MiB | 372.00 KiB/s   Writing objects:  81% (375/459), 70.41 MiB | 390.00 KiB/s   Writing objects:  81% (375/459), 71.05 MiB | 414.00 KiB/s   Writing objects:  81% (375/459), 72.31 MiB | 483.00 KiB/s   Writing objects:  81% (375/459), 72.95 MiB | 517.00 KiB/s   Writing objects:  81% (375/459), 73.59 MiB | 569.00 KiB/s   Writing objects:  81% (375/459), 74.22 MiB | 619.00 KiB/s   Writing objects:  81% (375/459), 74.85 MiB | 697.00 KiB/s   Writing objects:  81% (375/459), 75.48 MiB | 725.00 KiB/s   Writing objects:  81% (375/459), 76.13 MiB | 730.00 KiB/s   Writing objects:  82% (377/459), 76.76 MiB | 747.00 KiB/s   Writing objects:  82% (378/459), 77.39 MiB | 726.00 KiB/s   Writing objects:  82% (378/459), 78.02 MiB | 733.00 KiB/s   Writing objects:  83% (383/459), 78.02 MiB | 733.00 KiB/s   Writing objects:  84% (387/459), 78.02 MiB | 733.00 KiB/s   Writing objects:  84% (387/459), 78.66 MiB | 732.00 KiB/s   Writing objects:  85% (391/459), 78.66 MiB | 732.00 KiB/s   Writing objects:  86% (395/459), 78.66 MiB | 732.00 KiB/s   Writing objects:  86% (395/459), 78.89 MiB | 680.00 KiB/s   Writing objects:  86% (395/459), 79.92 MiB | 734.00 KiB/s   Writing objects:  86% (395/459), 80.55 MiB | 750.00 KiB/s   Writing objects:  86% (395/459), 81.82 MiB | 735.00 KiB/s   Writing objects:  86% (395/459), 82.45 MiB | 728.00 KiB/s   Writing objects:  86% (395/459), 83.09 MiB | 719.00 KiB/s   Writing objects:  86% (395/459), 83.73 MiB | 707.00 KiB/s   Writing objects:  86% (395/459), 84.37 MiB | 696.00 KiB/s   Writing objects:  86% (395/459), 84.99 MiB | 750.00 KiB/s   Writing objects:  86% (395/459), 85.63 MiB | 694.00 KiB/s   Writing objects:  86% (395/459), 86.26 MiB | 686.00 KiB/s   Writing objects:  86% (395/459), 86.90 MiB | 672.00 KiB/s   Writing objects:  86% (395/459), 87.54 MiB | 635.00 KiB/s   Writing objects:  86% (395/459), 88.16 MiB | 619.00 KiB/s   Writing objects:  86% (395/459), 88.80 MiB | 610.00 KiB/s   Writing objects:  86% (395/459), 89.43 MiB | 614.00 KiB/s   Writing objects:  86% (395/459), 90.06 MiB | 618.00 KiB/s   Writing objects:  86% (395/459), 90.70 MiB | 601.00 KiB/s   Writing objects:  86% (395/459), 91.34 MiB | 584.00 KiB/s   Writing objects:  86% (395/459), 91.98 MiB | 580.00 KiB/s   Writing objects:  86% (395/459), 92.60 MiB | 561.00 KiB/s   Writing objects:  86% (395/459), 93.23 MiB | 574.00 KiB/s   Writing objects:  86% (395/459), 93.88 MiB | 564.00 KiB/s   Writing objects:  86% (395/459), 94.52 MiB | 572.00 KiB/s   Writing objects:  86% (395/459), 95.14 MiB | 554.00 KiB/s   Writing objects:  87% (400/459), 95.14 MiB | 554.00 KiB/s   Writing objects:  87% (400/459), 95.27 MiB | 517.00 KiB/s   Writing objects:  87% (400/459), 95.77 MiB | 526.00 KiB/s   Writing objects:  87% (400/459), 96.41 MiB | 491.00 KiB/s   Writing objects:  87% (400/459), 97.05 MiB | 477.00 KiB/s   Writing objects:  87% (400/459), 97.68 MiB | 471.00 KiB/s   Writing objects:  87% (400/459), 98.31 MiB | 459.00 KiB/s   Writing objects:  87% (400/459), 98.95 MiB | 450.00 KiB/s   Writing objects:  87% (400/459), 99.58 MiB | 433.00 KiB/s   Writing objects:  87% (400/459), 100.21 MiB | 411.00 KiB/s   Writing objects:  87% (400/459), 100.84 MiB | 411.00 KiB/s   Writing objects:  87% (400/459), 101.49 MiB | 397.00 KiB/s   Writing objects:  87% (400/459), 102.12 MiB | 387.00 KiB/s   Writing objects:  87% (400/459), 102.76 MiB | 372.00 KiB/s   Writing objects:  87% (401/459), 103.38 MiB | 371.00 KiB/s   Writing objects:  87% (401/459), 104.02 MiB | 359.00 KiB/s   Writing objects:  87% (401/459), 104.66 MiB | 333.00 KiB/s   Writing objects:  87% (401/459), 105.29 MiB | 324.00 KiB/s   Writing objects:  87% (401/459), 105.92 MiB | 312.00 KiB/s   Writing objects:  87% (401/459), 106.55 MiB | 311.00 KiB/s   Writing objects:  87% (401/459), 107.20 MiB | 298.00 KiB/s   Writing objects:  87% (401/459), 107.82 MiB | 308.00 KiB/s   Writing objects:  87% (401/459), 108.46 MiB | 308.00 KiB/s   Writing objects:  87% (401/459), 109.09 MiB | 298.00 KiB/s   Writing objects:  87% (401/459), 109.73 MiB | 302.00 KiB/s   Writing objects:  88% (404/459), 109.73 MiB | 302.00 KiB/s   Writing objects:  88% (404/459), 110.36 MiB | 325.00 KiB/s   Writing objects:  88% (408/459), 110.99 MiB | 332.00 KiB/s   Writing objects:  88% (408/459), 111.63 MiB | 354.00 KiB/s   Writing objects:  88% (408/459), 112.27 MiB | 360.00 KiB/s   Writing objects:  88% (408/459), 112.90 MiB | 375.00 KiB/s   Writing objects:  89% (409/459), 112.90 MiB | 375.00 KiB/s   Writing objects:  90% (414/459), 112.90 MiB | 375.00 KiB/s   Writing objects:  91% (418/459), 112.90 MiB | 375.00 KiB/s   Writing objects:  91% (420/459), 113.54 MiB | 388.00 KiB/s   Writing objects:  91% (420/459), 114.16 MiB | 398.00 KiB/s   Writing objects:  91% (420/459), 114.80 MiB | 417.00 KiB/s   Writing objects:  91% (420/459), 115.44 MiB | 423.00 KiB/s   Writing objects:  91% (420/459), 116.07 MiB | 425.00 KiB/s   Writing objects:  91% (420/459), 116.71 MiB | 438.00 KiB/s   Writing objects:  91% (420/459), 117.34 MiB | 439.00 KiB/s   Writing objects:  91% (420/459), 117.97 MiB | 447.00 KiB/s   Writing objects:  91% (420/459), 118.60 MiB | 457.00 KiB/s   Writing objects:  91% (420/459), 119.24 MiB | 470.00 KiB/s   Writing objects:  91% (422/459), 119.54 MiB | 465.00 KiB/s   Writing objects:  91% (422/459), 120.51 MiB | 528.00 KiB/s   Writing objects:  91% (422/459), 121.14 MiB | 564.00 KiB/s   Writing objects:  91% (422/459), 121.78 MiB | 589.00 KiB/s   Writing objects:  91% (422/459), 122.41 MiB | 613.00 KiB/s   Writing objects:  91% (422/459), 123.04 MiB | 650.00 KiB/s   Writing objects:  91% (422/459), 124.31 MiB | 743.00 KiB/s   Writing objects:  91% (422/459), 124.90 MiB | 682.00 KiB/s   Writing objects:  91% (422/459), 126.20 MiB | 784.00 KiB/s   Writing objects:  91% (422/459), 126.82 MiB | 741.00 KiB/s   Writing objects:  91% (422/459), 127.46 MiB | 738.00 KiB/s   Writing objects:  91% (422/459), 128.09 MiB | 732.00 KiB/s   Writing objects:  91% (422/459), 128.73 MiB | 725.00 KiB/s   Writing objects:  92% (424/459), 129.36 MiB | 725.00 KiB/s   Writing objects:  93% (427/459), 129.36 MiB | 725.00 KiB/s   Writing objects:  93% (427/459), 129.58 MiB | 600.00 KiB/s   Writing objects:  93% (427/459), 130.63 MiB | 662.00 KiB/s   Writing objects:  93% (427/459), 131.25 MiB | 711.00 KiB/s   Writing objects:  93% (427/459), 131.88 MiB | 653.00 KiB/s   Writing objects:  93% (427/459), 132.52 MiB | 652.00 KiB/s   Writing objects:  93% (427/459), 133.16 MiB | 649.00 KiB/s   Writing objects:  93% (427/459), 134.43 MiB | 668.00 KiB/s   Writing objects:  93% (427/459), 135.06 MiB | 668.00 KiB/s   Writing objects:  93% (428/459), 135.69 MiB | 825.00 KiB/s   Writing objects:  93% (429/459), 136.32 MiB | 739.00 KiB/s   Writing objects:  93% (429/459), 136.96 MiB | 716.00 KiB/s   Writing objects:  94% (432/459), 136.96 MiB | 716.00 KiB/s   Writing objects:  95% (437/459), 136.96 MiB | 716.00 KiB/s   Writing objects:  95% (439/459), 137.59 MiB | 712.00 KiB/s   Writing objects:  96% (441/459), 137.59 MiB | 712.00 KiB/s   Writing objects:  96% (441/459), 138.23 MiB | 725.00 KiB/s   Writing objects:  96% (441/459), 138.86 MiB | 732.00 KiB/s   Writing objects:  96% (441/459), 139.50 MiB | 720.00 KiB/s   Writing objects:  96% (441/459), 140.77 MiB | 725.00 KiB/s   Writing objects:  96% (441/459), 141.40 MiB | 720.00 KiB/s   Writing objects:  96% (441/459), 142.03 MiB | 724.00 KiB/s   Writing objects:  96% (441/459), 142.66 MiB | 751.00 KiB/s   Writing objects:  96% (441/459), 143.30 MiB | 749.00 KiB/s   Writing objects:  96% (441/459), 143.94 MiB | 710.00 KiB/s   Writing objects:  96% (441/459), 144.57 MiB | 701.00 KiB/s   Writing objects:  96% (441/459), 145.20 MiB | 722.00 KiB/s   Writing objects:  96% (441/459), 145.84 MiB | 717.00 KiB/s   Writing objects:  96% (441/459), 146.47 MiB | 705.00 KiB/s   Writing objects:  96% (441/459), 147.75 MiB | 721.00 KiB/s   Writing objects:  96% (441/459), 148.38 MiB | 706.00 KiB/s   Writing objects:  96% (441/459), 149.01 MiB | 722.00 KiB/s   Writing objects:  96% (441/459), 149.64 MiB | 741.00 KiB/s   Writing objects:  96% (441/459), 150.27 MiB | 748.00 KiB/s   Writing objects:  96% (441/459), 150.92 MiB | 717.00 KiB/s   Writing objects:  96% (441/459), 151.55 MiB | 698.00 KiB/s   Writing objects:  96% (444/459), 152.79 MiB | 809.00 KiB/s   Writing objects:  96% (444/459), 153.45 MiB | 731.00 KiB/s   Writing objects:  96% (444/459), 154.09 MiB | 744.00 KiB/s   Writing objects:  96% (444/459), 154.72 MiB | 716.00 KiB/s   Writing objects:  96% (444/459), 155.35 MiB | 696.00 KiB/s   Writing objects:  96% (445/459), 155.35 MiB | 696.00 KiB/s   Writing objects:  97% (446/459), 155.35 MiB | 696.00 KiB/s   Writing objects:  97% (447/459), 156.62 MiB | 721.00 KiB/s   Writing objects:  97% (447/459), 157.25 MiB | 685.00 KiB/s   Writing objects:  97% (448/459), 157.89 MiB | 658.00 KiB/s   Writing objects:  97% (448/459), 158.52 MiB | 521.00 KiB/s   Writing objects:  97% (448/459), 159.16 MiB | 545.00 KiB/s   Writing objects:  97% (448/459), 159.79 MiB | 520.00 KiB/s   Writing objects:  97% (448/459), 161.05 MiB | 527.00 KiB/s   Writing objects:  97% (448/459), 161.70 MiB | 534.00 KiB/s   Writing objects:  97% (448/459), 162.33 MiB | 499.00 KiB/s   Writing objects:  98% (450/459), 162.33 MiB | 499.00 KiB/s   Writing objects:  98% (453/459), 162.33 MiB | 499.00 KiB/s   Writing objects:  98% (453/459), 162.96 MiB | 520.00 KiB/s   Writing objects:  99% (455/459), 162.96 MiB | 520.00 KiB/s   Writing objects: 100% (459/459), 163.59 MiB | 549.00 KiB/s   Writing objects: 100% (459/459), 164.08 MiB | 498.00 KiB/s, done.
+Total 459 (delta 42), reused 0 (delta 0)
+remote: Resolving deltas:   0% (0/42)[Kremote: Resolving deltas:   2% (1/42)[Kremote: Resolving deltas:   7% (3/42)[Kremote: Resolving deltas:   9% (4/42)[Kremote: Resolving deltas:  11% (5/42)[Kremote: Resolving deltas:  14% (6/42)[Kremote: Resolving deltas:  16% (7/42)[Kremote: Resolving deltas:  21% (9/42)[Kremote: Resolving deltas:  23% (10/42)[Kremote: Resolving deltas:  28% (12/42)[Kremote: Resolving deltas:  30% (13/42)[Kremote: Resolving deltas:  35% (15/42)[Kremote: Resolving deltas:  38% (16/42)[Kremote: Resolving deltas:  40% (17/42)[Kremote: Resolving deltas:  42% (18/42)[Kremote: Resolving deltas:  45% (19/42)[Kremote: Resolving deltas:  69% (29/42)[Kremote: Resolving deltas:  76% (32/42)[Kremote: Resolving deltas:  78% (33/42)[Kremote: Resolving deltas:  85% (36/42)[Kremote: Resolving deltas:  90% (38/42)[Kremote: Resolving deltas:  95% (40/42)[Kremote: Resolving deltas: 100% (42/42)[Kremote: Resolving deltas: 100% (42/42), done.[K
+remote: [1;33mwarning[m: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.[K
+remote: [1;33mwarning[m: See http://git.io/iEPt8g for more information.[K
+remote: [1;33mwarning[m: File data/BCAA catabolism in brown fat controls energy homeostasis through SLC25A44/s41586-019-1503-x.pdf is 68.09 MB; this is larger than GitHub's recommended maximum file size of 50.00 MB[K
+To github.com:middleprofessor/auc.git
+   4dfa0fd..9def99e  master -> master
+[KC02Y52NRJHD3:auc jwalker$ git pull origin master
+From github.com:middleprofessor/auc
+ * branch            master     -> FETCH_HEAD
+Already up to date.
+[KC02Y52NRJHD3:auc jwalker$ git pull origin mastersh[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccommit -m "init site"add .[K

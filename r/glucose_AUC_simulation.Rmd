@@ -184,7 +184,7 @@ fake_Rho <- function(p=5,
   return(Rho_fake)
 }
 
-simulate_it <- function(n=5, mu, beta, Sigma, times, niter=1000, method_list){
+simulate_it <- function(n=5, mu, beta, alpha_1, Sigma, times, niter=1000, method_list){
   p_cols <- paste0(method_list, "_p")
   sim_stats_cols <- c("d_baseline",
                       "r.baseline",
@@ -265,6 +265,12 @@ simulate_it <- function(n=5, mu, beta, Sigma, times, niter=1000, method_list){
     }
     if("lm_mean_cov" %in% method_list){
       m5 <- lm(glucose_mean ~ treatment + glucose_0, data=fd)
+      sim_stats[iter, "lm_mean_cov_p"] <- coef(summary(m5))["treatmenttr","Pr(>|t|)"]
+      #sim_stats[iter, "lm_mean_cov_b"] <- coef(m5)["treatmenttr"]
+    }
+    if("lm_mean_cov_alpha" %in% method_list){
+      m5a <- lm(glucose_0 ~ treatment, data=fd)
+      m5b <- lm(glucose_mean ~ treatment + glucose_0, data=fd)
       sim_stats[iter, "lm_mean_cov_p"] <- coef(summary(m5))["treatmenttr","Pr(>|t|)"]
       #sim_stats[iter, "lm_mean_cov_b"] <- coef(m5)["treatmenttr"]
     }
@@ -434,14 +440,16 @@ simulation_wrapper <- function(
     R_0 <- R[,1] # correlation of each time with time0
     R_0[1] <- 0 # don't add this component to first beta
     Sigma <- diag(sigma)%*%R%*%diag(sigma)
-    # total = direct + indirect
-    alpha_1 <- gtt_effects[1]*cohen
-    beta_1 <- R_0*sigma
-    beta <- gtt_effects*cohen*sigma + alpha_1*beta_1
     
+    # total = direct + indirect
+    alpha_1 <- gtt_effects[1]*cohen*sigma[1]
+    beta_1 <- R_0*sigma/sigma[1]
+    beta <- gtt_effects*cohen*sigma + alpha_1*beta_1
+
     sim_stats <- simulate_it(n = n, 
                              mu = mu, 
-                             beta = beta, 
+                             beta = beta,
+                             alpha_1 = alpha_1,
                              Sigma = Sigma,
                              times = times, 
                              niter = niter,

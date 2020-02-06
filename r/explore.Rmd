@@ -7,6 +7,10 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(data.table)
+library(nlme)
+library(mvtnorm)
 ```
 
 
@@ -42,6 +46,102 @@ gg1 <- ggplot(data=plot_data,
   guides(col = guide_legend(ncol = 4)) +
   NULL
 gg1
+
+```
+
+## back to simple pre-post with an initial difference
+
+```{r}
+n <- 10
+rho <- 0.6
+alpha_1 <- 0 # treatment effect at baseline
+sigma <- 5
+beta_1 <- 0.5 # regression of post on pre
+tau <- 0 # treatment
+
+treatment <- rep(c("cn", "tr"), each=n)
+X <- model.matrix(~treatment)
+alpha <- c(10, alpha_1)
+done <- FALSE
+#set.seed(1)
+i <- 0
+while(done == FALSE){
+  i <- i+1
+  pre <- X%*%alpha + rnorm(n*2, mean=0, sd=sigma)
+  delta <- abs(mean(pre[treatment=="tr"]) - mean(pre[treatment=="cn"]))
+  if(delta > 5){done <- TRUE}
+  if(i == 10^4){done <- TRUE}
+}
+X <- model.matrix(~pre + treatment)
+beta <- c(0, beta_1, tau)
+post <- pre*beta_1 + X%*%beta + rnorm(n*2, mean=0, sd=sigma*2)
+sd(pre)
+cor(pre, post)
+
+qplot(x=pre, y=post, color=treatment) 
+```
+
+
+Generation of pre-post or AUC data using path model and using mvtnorm
+```{r generation model}
+n <- 10^4
+
+# using path model
+alpha_1 <- 0.5 # treatment effect at baseline
+treatment <- rep(c("cn", "tr"), each=n)
+X <- model.matrix(~treatment)
+treatmenttr <- X[, "treatmenttr"]
+alpha <- c(10, alpha_1)
+sigma_pre <- 2
+pre <- X%*%alpha + rnorm(n*2, mean=0, sd=sigma_pre)
+
+rho <- 0.6
+sigma_post <- 3
+beta_1 <- rho*sigma_post/sigma_pre
+tau <- 0.5 # treatment
+
+post <- beta_1*pre + (alpha_1 + tau)*treatmenttr + sqrt(sigma_post^2 - (beta_1*sigma_pre)^2)*rnorm(n*2)
+
+sd(pre)
+sd(post)
+cor(pre, post)
+
+coef(lm(post ~ pre + treatment))
+
+# using rmvnorm
+R <- diag(2)
+R[2,1] <- R[1, 2] <- rho
+sigma <- c(sigma_pre, sigma_post)
+Sigma <- diag(sigma)%*%R%*%diag(sigma)
+
+beta_1_vec <- c(0, beta_1)
+gtt_effects <- c(alpha_1, alpha_1 + tau)
+beta <- gtt_effects + alpha_1*beta_1_vec
+y_cols <- c("pre", "post")
+mu <- c(10, 10)
+names(mu) <- y_cols
+Y <- rbind(rmvnorm(n, mu, Sigma),
+           rmvnorm(n, mu+beta, Sigma))
+fd <- data.table(treatment=treatment, each=n)
+fd[, id:=factor(1:.N)]
+fd_wide <- cbind(fd, Y)
+coef(lm(pre ~ treatment, data=fd_wide))
+coef(lm(post ~ pre + treatment, data=fd_wide))
+fd_wide[, .(pre=mean(pre), post=mean(post)), by=treatment]
+
+fd_long <- melt(fd_wide, id.vars=c("treatment", "id"),
+                measure.vars = y_cols,
+                variable.name = "time",
+                value.name = "glucose")
+fd_long[, time:=factor(time, y_cols)]
+fit <- gls(glucose ~ factor(time)*treatment,
+           data = fd_long,
+           weights = varIdent(form= ~ 1 | time),
+           correlation= corSymm(form=~ 1| id)
+)
+Sigma_fit <- getVarCov(fit, individual=fd_long[1,id])
+Rho_fit <- cov2cor(Sigma_fit)
+Rho_fit
 
 ```
 

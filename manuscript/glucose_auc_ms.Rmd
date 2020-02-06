@@ -297,6 +297,9 @@ gg1
 
 ## Consequence true initial effect on of Type I error (simulation 3)
 
+```{r}
+```
+
 ## Consequence of pattern of effect on rmanova (simulation 4)
 ```{r}
 res[, multi_t_adj_p := multi_t_p*4]
