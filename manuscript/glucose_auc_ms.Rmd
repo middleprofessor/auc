@@ -25,7 +25,7 @@ logit <- function(p) {log(p/(1-p))} # the log of the odds or "logodds" given the
 melt_it <- function(res, method_list){
   p_cols <- paste0(method_list, "_p")
   res_long <- melt(res, 
-                    id.vars=c("iter", "effect", "baseline_max", "non_baseline_max", "d_baseline", "r.baseline", "abs.r.baseline", "r.nonbaseline", "abs.r.nonbaseline"),
+                    id.vars=c("iter", "effect_model", "effect", "baseline_max", "non_baseline_max", "d_baseline", "r.baseline", "abs.r.baseline", "r.nonbaseline", "abs.r.nonbaseline"),
                     measure.vars = p_cols,
                     variable.name = "method",
                     value.name = c("p"))
@@ -36,7 +36,7 @@ melt_it <- function(res, method_list){
 
 sim_summary <- function(res_long){
   p_summary <- res_long[!is.na(p), .(freq_lt_05 = sum(p < 0.05)/max(iter)),
-          by=.(effect, baseline_max, non_baseline_max, method)]
+          by=.(effect, baseline_max, non_baseline_max, method, effect_model)]
   return(p_summary)
 }
 
@@ -269,7 +269,7 @@ gg1
 
 ```
 
-## Consequence of location of effect (simulation 2)
+## Consequence of location of effect (simulation 3)
 
 ```{r fig-freq-lt-05}
 jco_pal1 <- pal_jco()(6)
@@ -295,124 +295,58 @@ gg1 <- ggplot(data = res_summary[time_model=="standard" & rmax=="0.8"],
 gg1
 ```
 
-## Consequence true initial effect on of Type I error (simulation 3)
+## Consequence true initial effect on of Type I error (simulation 4)
 
-```{r}
+```{r sim4-alpha}
+fn <- "simulation-4.dyUoA.Rds"
+file_path <- here(output_path, fn)
+sim4 <- data.table(readRDS(file_path))
+sim4[, lm_mean_cov_alpha_p:=NULL]
+
+# add simulation 1
+fn <- "simulation-1.Le6N9.Rds"
+file_path <- here(output_path, fn)
+sim1b <- data.table(readRDS(file_path))[effect=="0"]
+sim1b[, effect_model:="no pre"]
+
+sim4 <- rbind(sim4, sim1b)
+sim4[, effect_model := factor(effect_model)]
+
+method_list <- c("lm_area", "lm_base", "lm_cov", "lm_mean", "lm_mean_change", "lm_mean_cov", "multi_t",  "rmanova", "clda", "lda_cov", "obrien", "roast")
+
+# bonferroni rmanova and multi_t
+sim4[, rmanova_p:=ifelse(rmanova_p*4>1,1,rmanova_p*4)]
+sim4[, multi_t_p:=ifelse(multi_t_p*4>1,1,multi_t_p*4)]
+
+sim4_long <- melt_it(sim4, method_list)
+sim4_long[!is.na(p), .(freq_lt_05 = sum(p < 0.05)/max(iter)),
+          by=.(effect_model, method)]
+
 ```
 
-## Consequence of pattern of effect on rmanova (simulation 4)
-```{r}
-res[, multi_t_adj_p := multi_t_p*4]
-res[, rmanova_adj_p := rmanova_p*4]
-method_list.4 <- c(method_list, "multi_t_adj", "rmanova_adj")
-p_cols.4 <- paste0(method_list.4, "_p")
-res_table <- melt(res, 
-                  id.vars=c("iter","rmax", "effect","effect_model", "time_model", "d_baseline"),
-                  measure.vars = p_cols.4,
-                  variable.name = "method",
-                  value.name = c("p"))
-res_table[, method := factor(method_list.4[method], method_list.4)]
-res_table[, significant := ifelse(p < 0.05, 1, 0)]
+```{r sim4-conditional}
+jco_pal <- pal_jco()(6)
+group_colors <- c(rep(jco_pal[c(2,5,4,6)], each=3))[1:length(method_list)]
+group_shapes <- c(rep(c(15, 16, 17), 4))[1:length(method_list)]
 
-res_summary <- res_table[!is.na(p), .(freq_lt_05 = sum(p < 0.05)/max(iter),
-                       rmse_theta = sqrt(mean((theta-b)^2))),
-          by=.(effect_model, time_model, method, effect, rmax)]
-
-```
-
-```{r}
-jco_pal1 <- pal_jco()(6)
-#scales::show_col(jco_pal)
-
-group_colors <- c(rep(jco_pal[c(2,1,4)], each=3), jco_pal[4], jco_pal[4])[1:length(method_list)]
-group_shapes <- c(rep(c(15, 16, 17), 3), 18, 19)[1:length(method_list)]
-  
-gg1 <- ggplot(data = res_summary[effect_model=="time1-2r"],
-       aes(x=effect_model, y=freq_lt_05, color=method, shape=method)) +
-  geom_hline(yintercept = 0.05, linetype = "dashed", alpha=0.5) +
-  geom_point(position = pd, size = 2) +
-  scale_color_manual(values = group_colors) +
-  scale_shape_manual(values = group_shapes) +
-  ylab("Frequency p < 0.05") +
-  xlab("Method") +
-  theme_pubr() +
-  theme(legend.position="bottom") +
- # guides(col = guide_legend(ncol = 3)) +
-  guides(col = guide_legend(ncol = 4)) +
-  NULL
-#gg1
-
-gg2 <- ggplot(data = res_summary[effect_model=="time0"],
-       aes(x=effect_model, y=freq_lt_05, color=method, shape=method)) +
-  geom_hline(yintercept = 0.05, linetype = "dashed", alpha=0.5) +
-  geom_point(position = pd, size = 2) +
-  scale_color_manual(values = group_colors) +
-  scale_shape_manual(values = group_shapes) +
-  ylab("Frequency p < 0.05") +
-  xlab("Method") +
-  theme_pubr() +
-  theme(legend.position="bottom") +
- # guides(col = guide_legend(ncol = 3)) +
-  guides(col = guide_legend(ncol = 4)) +
-  NULL
-#gg2
-plot_grid(gg1, gg2, labels="AUTO")
-```
-
-
-## difference at baseline
-
-```{r}
-jco_pal1 <- pal_jco()(6)
-group_colors <- c(rep(jco_pal[c(2,1,4)], each=3), jco_pal[4], jco_pal[4])[1:length(method_list)]
-group_shapes <- c(rep(c(15, 16, 17), 3), 18, 19)[1:length(method_list)]
-  
-pd <- position_dodge(0.8)
-gg1 <- ggplot(data = res_summary,
-       aes(x=method, y=freq_lt_05, color=method, shape=method)) +
-  geom_hline(yintercept = 0.05, linetype = "dashed", alpha=0.5) +
-  geom_point(position = pd) +
-  scale_color_manual(values = group_colors) +
-  scale_shape_manual(values = group_shapes) +
-  facet_grid(. ~ effect, scales = "free_y", labeller = "label_both") +
-  ylab("Frequency p < 0.05") +
-  xlab("") +
-  theme_pubr() +
-  theme(legend.position="bottom",
-        axis.text.x = element_blank()) +
-  guides(col = guide_legend(ncol = 4)) +
-  facet_grid(. ~ effect_model, scales = "free_y") +
-  NULL
-gg1
-```
-
-```{r}
-jco_pal1 <- pal_jco()(6)
-group_colors <- c(rep(jco_pal[c(2,1,4)], each=3), jco_pal[4], jco_pal[4])[1:length(method_list)]
-group_shapes <- c(rep(c(15, 16, 17), 3), 18, 19)[1:length(method_list)]
-
-subdata <- res_table[effect_model == "time0"]
-subdata[, d_baseline_std := abs(d_baseline)/sd(d_baseline)]
-subdata[, logit_p := ifelse(is.infinite(logit(p)), NA, logit(p))]
+sim4_long[, d_baseline_std := abs(d_baseline)/emp.sigma]
+sim4_long[, logit_p := ifelse(is.infinite(logit(p)), NA, logit(p))]
 plot_data <- data.table(NULL)
-new_x <- seq(0,4, by=0.1) # uniform values of d_baseline_std for prediction
-new_data <- data.table(d_baseline_std = new_x)
-for(rmax_i in unique(subdata$rmax)){
+new_d_baseline <- seq(0, 1.5, by=0.1) # uniform values of d_baseline_std for prediction
+new_data <- data.table(d_baseline_std = new_d_baseline)
+for(model_i in levels(sim4_long$effect_model)){
   for(method_i in method_list){
     m1 <- glm(significant ~ d_baseline_std, 
               family = binomial(link="logit"), 
-              data=subdata[method==method_i & rmax == rmax_i])
+              data=sim4_long[method==method_i & effect_model==model_i])
     prob.m1 <- predict(m1, new_data, type="response")
-    m2 <- lm(logit_p ~ d_baseline_std, 
-             data=subdata[method==method_i & rmax == rmax_i])
-    prob.m2 <- expit(predict(m2, new_data))
     plot_data <- rbind(plot_data, data.table(method = method_i,
-                                             rmax = rmax_i,
-                                             d_baseline_std = new_x, 
-                                             prob.m1=prob.m1,
-                                             prob.m2=prob.m2))
+                                             effect_model = model_i,
+                                             d_baseline_std = new_d_baseline, 
+                                             prob.m1=prob.m1))
   }
 }
+
 plot_data[, method := factor(method, method_list)]
 gg1 <- ggplot(data=plot_data,
               aes(x=d_baseline_std, y=prob.m1, color=method, shape=method)) +
@@ -426,23 +360,12 @@ gg1 <- ggplot(data=plot_data,
   theme_pubr() +
   theme(legend.position="top") +
   guides(col = guide_legend(ncol = 4)) +
-  facet_grid(. ~ rmax, labeller = "label_both") +
+  facet_grid(.~effect_model, labeller = "label_both") +
   NULL
 gg1
 
-gg2 <- ggplot(data=plot_data,
-              aes(x=d_baseline_std, y=prob.m2, color=method, shape=method)) +
-  geom_hline(yintercept = 0.05, linetype = "dashed", alpha=0.5) +
-  geom_point() +
-  geom_line() +
-  scale_color_manual(values = group_colors) +
-  scale_shape_manual(values = group_shapes) +
-  ylab("Probability of p < 0.05") +
-  xlab("Difference at Time0 (in standard deviation units)") +
-  theme_pubr() +
-  theme(legend.position="top") +
-  guides(col = guide_legend(ncol = 4)) +
-  NULL
-#gg2
+
+
 ```
+
 

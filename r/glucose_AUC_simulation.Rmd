@@ -184,7 +184,7 @@ fake_Rho <- function(p=5,
   return(Rho_fake)
 }
 
-simulate_it <- function(n=5, mu, beta, alpha_1, Sigma, times, niter=1000, method_list){
+simulate_it <- function(n=5, mu, beta, alpha, Sigma, times, niter=1000, method_list){
   p_cols <- paste0(method_list, "_p")
   sim_stats_cols <- c("d_baseline",
                       "r.baseline",
@@ -211,7 +211,7 @@ simulate_it <- function(n=5, mu, beta, alpha_1, Sigma, times, niter=1000, method
   
   for(iter in 1:niter){
     Y <- rbind(rmvnorm(n, mu, Sigma),
-               rmvnorm(n, mu+beta, Sigma))
+               rmvnorm(n, mu+beta+alpha, Sigma))
     fd[, glucose_0 := Y[,1]]
     #fd[, area := apply(Y, 1, auc, x=times)]
     fd[, area := apply(Y, 1, trap.rule, x=times)] # faster because compiled?
@@ -269,9 +269,19 @@ simulate_it <- function(n=5, mu, beta, alpha_1, Sigma, times, niter=1000, method
       #sim_stats[iter, "lm_mean_cov_b"] <- coef(m5)["treatmenttr"]
     }
     if("lm_mean_cov_alpha" %in% method_list){
-      m5a <- lm(glucose_0 ~ treatment, data=fd)
+      m5a <- lm(glucose_mean ~ treatment, data=fd)
       m5b <- lm(glucose_mean ~ treatment + glucose_0, data=fd)
-      sim_stats[iter, "lm_mean_cov_p"] <- coef(summary(m5))["treatmenttr","Pr(>|t|)"]
+      m5a_table <- coef(summary(m5a))
+      m5b_table <- coef(summary(m5b))
+      b_alpha_1 <- m5a_table["treatmenttr", "Estimate"]
+      b_beta_2 <- m5b_table["treatmenttr", "Estimate"]
+      se_b_alpha_1 <- m5a_table["treatmenttr", "Std. Error"]
+      se_b_beta_2 <- m5b_table["treatmenttr", "Std. Error"]
+      z_SED <- sqrt(se_b_alpha_1^2 + se_b_beta_2^2)
+      z <- (b_beta_2 - b_alpha_1)/z_SED
+      p_z <- (1-(pnorm(abs(z))))*2 # 2-tailed z-test for large sample
+      
+      sim_stats[iter, "lm_mean_cov_alpha_p"] <- p_z
       #sim_stats[iter, "lm_mean_cov_b"] <- coef(m5)["treatmenttr"]
     }
     if("lm_mean_change" %in% method_list){
@@ -417,7 +427,8 @@ simulation_wrapper <- function(
   n = 5,
   method_list,
   times = c(0, 15, 30, 60, 120),
-  gtt_effects = c(0, 1, 1, 1, 0),
+  gtt_effects = c(0, 1, 1, 1, 0), # added effect of gtt
+  pre_effect = 0, # effect that would occur without gtt
   mu,
   sigma,
   cohen_list = c(0, 0.8, 2),
@@ -442,14 +453,14 @@ simulation_wrapper <- function(
     Sigma <- diag(sigma)%*%R%*%diag(sigma)
     
     # total = direct + indirect
-    alpha_1 <- gtt_effects[1]*cohen*sigma[1]
     beta_1 <- R_0*sigma/sigma[1]
-    beta <- gtt_effects*cohen*sigma + alpha_1*beta_1
+    beta <- gtt_effects*cohen*sigma
+    alpha <- pre_effect*cohen*sigma[1]
 
     sim_stats <- simulate_it(n = n, 
                              mu = mu, 
                              beta = beta,
-                             alpha_1 = alpha_1,
+                             alpha = alpha,
                              Sigma = Sigma,
                              times = times, 
                              niter = niter,
@@ -681,17 +692,12 @@ emp.sigma.ratio <- c(0.12, 0.3, 0.3, 0.3, 0.3) # rougly median of empirical
 emp.sigma <- emp.sigma.ratio*(mu[2]-mu[1])
 
 res <- data.table(NULL)
-method_list <- c("lm_area", "lm_base", "lm_cov", "lm_mean", "lm_mean_change", "lm_mean_cov", "multi_t",  "rmanova", "clda", "lda_cov", "obrien", "roast")
+method_list <- c("lm_area", "lm_base", "lm_cov", "lm_mean", "lm_mean_change", "lm_mean_cov", "lm_mean_cov_alpha", "multi_t",  "rmanova", "clda", "lda_cov", "obrien", "roast")
 
 times <- c(0, 15, 30, 60, 120)
-gtt_effect_model <- (matrix(c(
-  c(0.5, 0.5, 0.5, 0.5, 0.5), # no added effect other than expected if no gtt
-  c(0.5, 1.5, 1.5, 1.5, 0.5)), # added gtt effect of 1
-  ncol = 2
-))
-colnames(gtt_effect_model) <- c("no gtt effect", "gtt effect")
+gtt_effect_model <- c(0, 0, 0, 0, 0)
 
-cohen_list <- c(1.5)
+cohen_list <- c(0.8)
 cor_models <- t(matrix(c(
   c(0.6, 0.8)),
   nrow = 2
@@ -699,31 +705,33 @@ cor_models <- t(matrix(c(
 colnames(cor_models) <- c("baseline_max", "non_baseline_max")
 
 set.seed(3)
-res0 <- simulation_wrapper(
-  niter = niter,
-  n = n,
-  method_list,
-  times = times,
-  gtt_effects = gtt_effect_model[,1],
-  mu = mu,
-  sigma = emp.sigma,
-  cohen_list = cohen_list,
-  cor_models
-)
+res <- data.table(NULL)
+# res0 <- simulation_wrapper(
+#   niter = niter,
+#   n = n,
+#   method_list,
+#   times = times,
+#   gtt_effects = gtt_effect_model,
+#   pre_effect = 0,
+#   mu = mu,
+#   sigma = emp.sigma,
+#   cohen_list = cohen_list,
+#   cor_models
+# )
+#res0 <- rbind(res, data.table(effect_model="no pre", res0))
 res1 <- simulation_wrapper(
   niter = niter,
   n = n,
   method_list,
   times = times,
-  gtt_effects = gtt_effect_model[,2],
+  gtt_effects = gtt_effect_model,
+  pre_effect = 1, # this is presence/absence, cohen sets the magnitude
   mu = mu,
   sigma = emp.sigma,
   cohen_list = cohen_list,
   cor_models
 )
-res <- rbind(data.table(effect_model="no added", res0),
-             data.table(effect_model="added", res1))
-
+res <- rbind(res, data.table(effect_model="pre", res1))
 
 if(write_it == TRUE){
   fn <- paste0(sim_id, file_id, ".Rds")

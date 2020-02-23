@@ -84,7 +84,7 @@ qplot(x=pre, y=post, color=treatment)
 
 Generation of pre-post or AUC data using path model and using mvtnorm
 ```{r generation model}
-n <- 10^4
+n <- 10
 
 # using path model
 alpha_1 <- 0.5 # treatment effect at baseline
@@ -143,5 +143,89 @@ Sigma_fit <- getVarCov(fit, individual=fd_long[1,id])
 Rho_fit <- cov2cor(Sigma_fit)
 Rho_fit
 
+# test
+#      m5a <- lm(glucose_0 ~ treatment, data=fd)
+#      m5b <- lm(glucose_mean ~ treatment + glucose_0, data=fd)
+m5a <- lm(pre ~ treatment, data=fd_wide)
+m5b <- lm(post ~ pre + treatment, data=fd_wide)
+m5a_table <- coef(summary(m5a))
+m5b_table <- coef(summary(m5b))
+b_alpha_1 <- m5a_table["treatmenttr", "Estimate"]
+b_beta_2 <- m5b_table["treatmenttr", "Estimate"]
+se_b_alpha_1 <- m5a_table["treatmenttr", "Std. Error"]
+se_b_beta_2 <- m5b_table["treatmenttr", "Std. Error"]
+z_SED <- sqrt(se_b_alpha_1^2 + se_b_beta_2^2)
+z <- (b_beta_2 - b_alpha_1)/z_SED
+p_z <- (1-(pnorm(abs(z))))*2 # 2-tailed z-test for large sample
+```
+
+```{r}
+n <- 10^6
+b <- 0.6
+a1 <- 0.9
+a2 <- 0.8
+A <- rnorm(n)
+Y <- b*A + sqrt(1 - b^2)*rnorm(n)
+astar <- a1*A + sqrt(1 - a1^2)*rnorm(n)
+ystar <- a2*Y + sqrt(1 - a2^2)*rnorm(n)
+var(A)
+var(Y)
+var(astar)
+var(ystar)
+a1*a2*b
+coef(lm(ystar ~ astar))
+cor(ystar, astar)
+
+n <- 10^5
+rho_a1 <- 0.9
+rho_a2 <- 0.8
+rho_b <- 0.6
+sigma_A <- 2 # total variation in A
+sigma_Y <- 10 # total variation in Y
+sigma_astar <- 2.2 # total variation
+sigma_ystar <- 20 # total variation
+a1 <- rho_a1*sigma_astar/sigma_A # to astar
+a2 <- rho_a2*sigma_ystar/sigma_Y # to ystar
+b <- rho_b*sigma_Y/sigma_A
+A <- rnorm(n, sd=sigma_A)
+R2_Y <- (b*sigma_A)^2/sigma_Y^2
+Y <- b*A + sqrt(1-R2_Y)*rnorm(n, sd=sigma_Y)
+R2_astar <- (a1*sigma_A)^2/sigma_astar^2
+astar <- a1*A + sqrt(1-R2_astar)*rnorm(n, sd=sigma_astar)
+R2_ystar <- (a2*sigma_Y)^2/sigma_ystar^2
+ystar <- a2*Y + sqrt(1-R2_ystar)*rnorm(n, sd=sigma_ystar)
+coef(lm(ystar ~ astar))
+```
+
+```{r}
+coef(lm(ystar ~ Y))
+a2
+```
+
+```{r}
+coef(lm(ystar ~ A))
+a2*b
+```
+
+```{r}
+coef(lm(astar ~ A))
+a1
+```
+
+```{r}
+coef(lm(ystar ~ astar))
+rho_a1*rho_a2*rho_b*sigma_ystar/sigma_astar
+rho_a1*sigma_A/sigma_Y*rho_a2*sigma_ystar/sigma_astar*b
+b
+```
+
+
+```{r}
+sd(A)
+sd(Y)
+sd(astar)
+sd(ystar)
+cor(A, astar)
+cor(Y, ystar)
 ```
 
