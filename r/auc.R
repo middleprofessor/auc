@@ -1,4 +1,8 @@
 # script to compute various area under the curves (AUC) using trapezoidal method
+# le Floch's "incremental" auc substracts the baseline value from all points.
+# This can create some elements with negative area if post-baseline values are less
+# than baseline value.
+# Some researchers "correct" this by setting any(y - ybar < 0 to zero. Don't do this.
 
 auc <- function(x, y, method="auc"){
   # method = "auc", auc computed using trapezoidal calc

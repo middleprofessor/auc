@@ -440,3 +440,52 @@ remote: Resolving deltas:   0% (0/44)[Kremote: Resolving deltas:   2% (1/44)[
 To github.com:middleprofessor/auc.git
    9def99e..204388c  master -> master
 [KC02Y52NRJHD3:auc jwalker$ [KC02Y52NRJHD3:auc jwalker$ git push origin mastercommit -m "update books"add .[K
+]0;~/Documents/Github projects/Research Projects/aucC02Y52NRJHD3:auc jwalker$ git add .push origin mastercommit -m "update books"[K[K[K[K[K[Kauc"
+[master b9176e0] update auc
+ 51 files changed, 751 insertions(+), 1247 deletions(-)
+ rewrite .Rhistory (100%)
+ rewrite .Rproj.user/7CCE8BFF/console06/INDEX001 (86%)
+ delete mode 100644 .Rproj.user/shared/notebooks/B47FD639-glucose_AUC_simulation/1/s/c0q5g4by8agmx/000032.csv
+ delete mode 100644 .Rproj.user/shared/notebooks/B47FD639-glucose_AUC_simulation/1/s/csetup_chunk/000004.csv
+ delete mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/c45fg6hzokqc8/000010.csv
+ delete mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/c45fg6hzokqc8/000011.metadata
+ delete mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/c45fg6hzokqc8/000011.png
+ delete mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/c45fg6hzokqc8/000011.snapshot
+ delete mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/c7x8de9qf8se8/000007.csv
+ delete mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/c7x8de9qf8se8/000008.metadata
+ delete mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/c7x8de9qf8se8/000008.png
+ delete mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/c7x8de9qf8se8/000008.snapshot
+ delete mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/c7x8de9qf8se8/000009.csv
+ delete mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/ck2tu9acx4eam/000014.csv
+ delete mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/ck2tu9acx4eam/000015.metadata
+ delete mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/ck2tu9acx4eam/000015.png
+ delete mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/ck2tu9acx4eam/000015.snapshot
+ delete mode 100644 .Rproj.user/shared/notebooks/DD78F9E8-glucose_auc_ms/1/s/cssbkg03gkah5/00000a.csv
+ delete mode 100644 output/simulation-1. 5PpF7 .Rds
+ delete mode 100644 output/simulation-1.9OYaG.Rds
+ delete mode 100644 output/simulation-1.L9mRZ.Rds
+ delete mode 100644 output/simulation-1.NTBxF.Rds
+ delete mode 100644 output/simulation-1.Wy13c.Rds
+ delete mode 100644 output/simulation-1.dIW3e.Rds
+ delete mode 100644 output/simulation-1.h6Htx.Rds
+ delete mode 100644 output/simulation-1.iOB4r.Rds
+ delete mode 100644 output/simulation-1.qwH1l.Rds
+ delete mode 100644 output/simulation-2.IHnEG.Rds
+ delete mode 100644 output/simulation-2.IYuLw.Rds
+ delete mode 100644 output/simulation-2.Le6N9.Rds
+ delete mode 100644 output/simulation-2.OkGqR.Rds
+ delete mode 100644 output/simulation-2.bQnBI.Rds
+ delete mode 100644 output/simulation-2.kjduG.Rds
+ create mode 100644 output/simulation-4.dyUoA.Rds
+ delete mode 100644 output/simulation-4.fAbh3.Rds
+]0;~/Documents/Github projects/Research Projects/aucC02Y52NRJHD3:auc jwalker$ git commit -m "update auc"add .[Kpush origin master
+Enumerating objects: 80, done.
+Counting objects:   1% (1/80)   Counting objects:   2% (2/80)   Counting objects:   3% (3/80)   Counting objects:   5% (4/80)   Counting objects:   6% (5/80)   Counting objects:   7% (6/80)   Counting objects:   8% (7/80)   Counting objects:  10% (8/80)   Counting objects:  11% (9/80)   Counting objects:  12% (10/80)   Counting objects:  13% (11/80)   Counting objects:  15% (12/80)   Counting objects:  16% (13/80)   Counting objects:  17% (14/80)   Counting objects:  18% (15/80)   Counting objects:  20% (16/80)   Counting objects:  21% (17/80)   Counting objects:  22% (18/80)   Counting objects:  23% (19/80)   Counting objects:  25% (20/80)   Counting objects:  26% (21/80)   Counting objects:  27% (22/80)   Counting objects:  28% (23/80)   Counting objects:  30% (24/80)   Counting objects:  31% (25/80)   Counting objects:  32% (26/80)   Counting objects:  33% (27/80)   Counting objects:  35% (28/80)   Counting objects:  36% (29/80)   Counting objects:  37% (30/80)   Counting objects:  38% (31/80)   Counting objects:  40% (32/80)   Counting objects:  41% (33/80)   Counting objects:  42% (34/80)   Counting objects:  43% (35/80)   Counting objects:  45% (36/80)   Counting objects:  46% (37/80)   Counting objects:  47% (38/80)   Counting objects:  48% (39/80)   Counting objects:  50% (40/80)   Counting objects:  51% (41/80)   Counting objects:  52% (42/80)   Counting objects:  53% (43/80)   Counting objects:  55% (44/80)   Counting objects:  56% (45/80)   Counting objects:  57% (46/80)   Counting objects:  58% (47/80)   Counting objects:  60% (48/80)   Counting objects:  61% (49/80)   Counting objects:  62% (50/80)   Counting objects:  63% (51/80)   Counting objects:  65% (52/80)   Counting objects:  66% (53/80)   Counting objects:  67% (54/80)   Counting objects:  68% (55/80)   Counting objects:  70% (56/80)   Counting objects:  71% (57/80)   Counting objects:  72% (58/80)   Counting objects:  73% (59/80)   Counting objects:  75% (60/80)   Counting objects:  76% (61/80)   Counting objects:  77% (62/80)   Counting objects:  78% (63/80)   Counting objects:  80% (64/80)   Counting objects:  81% (65/80)   Counting objects:  82% (66/80)   Counting objects:  83% (67/80)   Counting objects:  85% (68/80)   Counting objects:  86% (69/80)   Counting objects:  87% (70/80)   Counting objects:  88% (71/80)   Counting objects:  90% (72/80)   Counting objects:  91% (73/80)   Counting objects:  92% (74/80)   Counting objects:  93% (75/80)   Counting objects:  95% (76/80)   Counting objects:  96% (77/80)   Counting objects:  97% (78/80)   Counting objects:  98% (79/80)   Counting objects: 100% (80/80)   Counting objects: 100% (80/80), done.
+Delta compression using up to 8 threads
+Compressing objects:   2% (1/34)   Compressing objects:   5% (2/34)   Compressing objects:   8% (3/34)   Compressing objects:  11% (4/34)   Compressing objects:  14% (5/34)   Compressing objects:  17% (6/34)   Compressing objects:  20% (7/34)   Compressing objects:  23% (8/34)   Compressing objects:  26% (9/34)   Compressing objects:  29% (10/34)   Compressing objects:  32% (11/34)   Compressing objects:  35% (12/34)   Compressing objects:  38% (13/34)   Compressing objects:  41% (14/34)   Compressing objects:  44% (15/34)   Compressing objects:  47% (16/34)   Compressing objects:  50% (17/34)   Compressing objects:  52% (18/34)   Compressing objects:  55% (19/34)   Compressing objects:  58% (20/34)   Compressing objects:  61% (21/34)   Compressing objects:  64% (22/34)   Compressing objects:  67% (23/34)   Compressing objects:  70% (24/34)   Compressing objects:  73% (25/34)   Compressing objects:  76% (26/34)   Compressing objects:  79% (27/34)   Compressing objects:  82% (28/34)   Compressing objects:  85% (29/34)   Compressing objects:  88% (30/34)   Compressing objects:  91% (31/34)   Compressing objects:  94% (32/34)   Compressing objects:  97% (33/34)   Compressing objects: 100% (34/34)   Compressing objects: 100% (34/34), done.
+Writing objects:   2% (1/42)   Writing objects:   4% (2/42)   Writing objects:   7% (3/42)   Writing objects:   9% (4/42)   Writing objects:  11% (5/42)   Writing objects:  14% (6/42)   Writing objects:  16% (7/42)   Writing objects:  19% (8/42)   Writing objects:  21% (9/42)   Writing objects:  23% (10/42)   Writing objects:  26% (11/42)   Writing objects:  28% (12/42)   Writing objects:  30% (13/42)   Writing objects:  33% (14/42)   Writing objects:  35% (15/42)   Writing objects:  38% (16/42)   Writing objects:  40% (17/42)   Writing objects:  42% (18/42)   Writing objects:  45% (19/42)   Writing objects:  47% (20/42)   Writing objects:  50% (21/42)   Writing objects:  52% (22/42)   Writing objects:  54% (23/42)   Writing objects:  57% (24/42)   Writing objects:  61% (26/42)   Writing objects:  64% (27/42)   Writing objects:  66% (28/42)   Writing objects:  69% (29/42)   Writing objects:  71% (30/42)   Writing objects:  73% (31/42)   Writing objects:  76% (32/42)   Writing objects:  78% (33/42)   Writing objects:  80% (34/42)   Writing objects:  83% (35/42)   Writing objects:  85% (36/42)   Writing objects:  88% (37/42)   Writing objects:  90% (38/42)   Writing objects:  92% (39/42)   Writing objects:  95% (40/42)   Writing objects:  97% (41/42)   Writing objects: 100% (42/42)   Writing objects: 100% (42/42), 69.38 KiB | 634.00 KiB/s, done.
+Total 42 (delta 19), reused 0 (delta 0)
+remote: Resolving deltas:   0% (0/19)[Kremote: Resolving deltas:  10% (2/19)[Kremote: Resolving deltas:  15% (3/19)[Kremote: Resolving deltas:  21% (4/19)[Kremote: Resolving deltas:  26% (5/19)[Kremote: Resolving deltas:  31% (6/19)[Kremote: Resolving deltas:  36% (7/19)[Kremote: Resolving deltas:  42% (8/19)[Kremote: Resolving deltas:  47% (9/19)[Kremote: Resolving deltas:  52% (10/19)[Kremote: Resolving deltas:  57% (11/19)[Kremote: Resolving deltas:  63% (12/19)[Kremote: Resolving deltas:  68% (13/19)[Kremote: Resolving deltas:  73% (14/19)[Kremote: Resolving deltas:  78% (15/19)[Kremote: Resolving deltas:  84% (16/19)[Kremote: Resolving deltas:  89% (17/19)[Kremote: Resolving deltas:  94% (18/19)[Kremote: Resolving deltas: 100% (19/19)[Kremote: Resolving deltas: 100% (19/19), completed with 17 local objects.[K
+To github.com:middleprofessor/auc.git
+   204388c..b9176e0  master -> master
+[KC02Y52NRJHD3:auc jwalker$ [KC02Y52NRJHD3:auc jwalker$ git push origin mastercommit -m "update books"add .[K

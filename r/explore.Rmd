@@ -229,3 +229,9 @@ cor(A, astar)
 cor(Y, ystar)
 ```
 
+# advantage (if any) of lda as opposed to analysis of means
+
+```{r}
+
+```
+

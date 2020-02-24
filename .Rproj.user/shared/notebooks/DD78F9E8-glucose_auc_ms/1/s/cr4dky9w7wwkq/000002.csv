@@ -1,2 +1,0 @@
-"0","expit <- function(x) {exp(x)/(1+exp(x))} # the inverse logit function. This generates the probability of the event p"
-"0","logit <- function(p) {log(p/(1-p))} # the log of the odds or ""logodds"" given the probability of an event p. This is NOT the odds ratio, which is the ratio of two odds."
