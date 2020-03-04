@@ -235,3 +235,18 @@ cor(Y, ystar)
 
 ```
 
+
+```{r }
+# https://www.graphpad.com/guides/prism/7/statistics/stat_anova_table_in_two_ways_rm_ano.htm
+
+dt <- data.table(
+  y = c(34,23,36,19,41,26,98,32,87,29,95,26,77,33,89,45,97,35),
+  id = as.factor(c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9)),
+  time=as.factor(c(1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2)),
+  treatment=as.factor(c(rep(c("a", "b", "c"), each=6)))
+)
+m7 <- aov_4(y ~ time*treatment + (time|id),
+                 data=dt)
+m7
+```
+

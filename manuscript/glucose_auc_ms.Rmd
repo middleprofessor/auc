@@ -4,6 +4,7 @@ title: Tests of the individual mean response have more power than tests of the a
 author: "Jeffrey A. Walker"
 date: "1/11/2020"
 output:
+  pdf_document: default
   html_document:
     df_print: paged
 ---
@@ -16,6 +17,51 @@ library(ggplot2)
 library(ggpubr)
 library(cowplot)
 library(data.table)
-
+library(kableExtra)
 ```
+
+# Methods
+1. is a more powerful test. That is, it takes fewer samples to provide sufficient evidence of the direction of the treatment effect.
+2. has the expected Type I error rate, while that of the comparison of individual time points is inflated.
+3. has the expected Type I error rate conditional on the difference in baseline between treatments, while that of the comparison of AUC increases with the magnitude of the baseline difference.
+
+# methods - make this into a table
+
+```{r make methods table, echo=FALSE}
+method_dt <- data.table(Methods = c("AUC",
+                                    "IAUC",
+                                    "Area-cov",
+                                    "Mean",
+                                    "Change",
+                                    "Mean-cov",
+                                    "Multi-t",
+                                    "RM-ANOVA",
+                                    "CLDA",
+                                    "LDA-cov",
+                                    "Roast",
+                                    "O'Brien"),
+                        Description = c("Area under the curve",
+                  "Incremental area under the curve",
+                  "Area under the post-baseline curve with baseline covariate",
+                  "Mean of the post-baseline measures",
+                  "Change from baseline of the post-baseline measures",
+                  "Mean of the post-baseline measures with baseline covariate",
+                  "Multiple t-tests",
+                  "Repeated measures ANOVA",
+                  "Constrained longitudinal data analysis",
+                  "Longitudinal data analysis with baseline covariate",
+                  "Rotational test of multivariate response",
+                  "Non-parametric test of multivariate response"))
+method_kable <- kable(method_dt, "latex", caption = "Methods for comparing the response between treatments", booktabs = T) %>%
+  kable_styling() %>%
+  pack_rows("Linear models of AUC", 1, 3) %>%
+  pack_rows("Linear models of the mean response", 4, 6)  %>%
+  pack_rows("Multivariate linear models", 7, 10)
+
+method_kable
+```
+
+# Results
+# Discussion
+# References
 
